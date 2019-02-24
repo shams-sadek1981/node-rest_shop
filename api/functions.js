@@ -4,6 +4,26 @@
  * @param { group by item } groupItemIndex 
  * @param { sum by item } sumItemIndex 
  */
+exports.groupByNameAndSum = (readData, sumItemIndex) => {
+
+    //-- remove first record for header
+    const column = readData.shift();
+
+    const newData = readData.map( item => item[sumItemIndex])
+
+    const workingHours = newData.reduce( (acc, cur) => parseFloat(acc) + parseFloat(cur) )
+
+    return workingHours;
+}
+
+
+
+/**
+ * 
+ * @param { array } data 
+ * @param { group by item } groupItemIndex 
+ * @param { sum by item } sumItemIndex 
+ */
 exports.groupByAndSum = (readData, groupItemIndex, sumItemIndex) => {
 
     //-- remove first record for header
@@ -32,7 +52,6 @@ const twoColumnForGroupBy = (data, groupItemIndex, sumItemIndex) => {
             item[sumItemIndex]
         ]
     })
-
     return newData;
 }
 
