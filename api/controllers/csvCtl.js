@@ -51,9 +51,20 @@ exports.readFile = (req, res, next) => {
  * ------------------------------------------------
  */
 exports.readAndWrite = (req, res, next) => {
+
+    //-- 0 => Data, 1 => Task, 2 => SubTask, 3 => Hour, 4 => Type, 5 => Project
+    const readDir = 'csvFiles/';
+
+    // Task
+    fs.readdirSync(readDir).forEach(file => processData(file, [1, 3], 'csvTaskResult/') );
     
+    // Type
+    fs.readdirSync(readDir).forEach(file => processData(file, [4, 3], 'csvTypeResult/') );
     
-    processData('tasks')
+    // Project
+    fs.readdirSync(readDir).forEach(file => processData(file, [5, 3], 'csvProjectResult/') );
+
+    // processData('tasks')
 
     res.status(200).json({
         message: 'Successful'
@@ -61,12 +72,17 @@ exports.readAndWrite = (req, res, next) => {
 }
 
 
-//-- Process Data
-const processData = async (fileName) => {
-    
-    const readFileName = fileName + '.csv';
+/**
+ * Process Data
+ * @param {*} fileName 
+ * @param {*} groupFields 
+ * @param {*} writeDir 
+ * @param {*} readDir 
+ */
+const processData = async (fileName, groupFields=[1,3], writeDir='csvTaskResult/', readDir='csvFiles/') => {
 
-    
+    const readFileName = readDir + fileName;
+
     //-- Read .csv file
     let myData = []
     const readData = await new Promise((resolve, reject) => {
@@ -77,7 +93,7 @@ const processData = async (fileName) => {
                 myData.push(data)
             })
             .on('end', data => {
-                console.log('Read finished')
+                console.log('Read finished: ', fileName)
                 resolve(myData)
             });
     });
@@ -86,15 +102,17 @@ const processData = async (fileName) => {
     //-- Process Data
     const processData = await new Promise((resolve, reject) => {
 
-        const result1 = fn.groupByAndSum(readData, 1, 2)
+        const result1 = fn.groupByAndSum(readData, ...groupFields)
 
         resolve(result1)
     })
 
-    
+
     //-- Write Result.csv file
-    const newFileName = await fileName + 'Result.csv';
-    const ws = fs.createWriteStream( newFileName );
+    const newFileName = await writeDir + fileName;
+    const ws = fs.createWriteStream(newFileName);
     csv.write(processData, { headers: true })
         .pipe(ws)
-}
+
+
+}//-- end process
