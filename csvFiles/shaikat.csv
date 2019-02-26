@@ -1,4 +1,4 @@
-Date,Task, SubTask, Hour,Type,Project,Version
+Date,Task,SubTask,Hour,Type,Project,Version
 01-Jan-2019,"Merge develop with trello", "Subtask...", 6,New Feature,PM Free,
 01-Jan-2019,"with trello", "Subtask...", 7,New Feature,PM Free,
 01-Jan-2019,"Merge develop", "Subtask...", 6,New Feature,PM,
