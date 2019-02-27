@@ -1,3 +1,6 @@
+const fs = require('fs');
+const csv = require('fast-csv');
+
 /**
  * 
  * @param { array } data 
@@ -10,10 +13,10 @@ exports.groupByNameAndSum = (readData, sumItemIndex) => {
     const column = readData.shift();
 
     const newData = readData.map( item => item[sumItemIndex])
-    const estHourData = readData.map( item => item[2])
+    const estHourData = readData.map( item =>item[2])
 
-    const workingHours = newData.reduce( (acc, cur) => parseFloat(acc) + parseFloat(cur) )
-    const estHours = estHourData.reduce( (acc, cur) => parseFloat(acc) + parseFloat(cur) )
+    const workingHours = newData.reduce( (acc, cur) => parseFloat(acc) + parseFloat(cur),0 )
+    const estHours = estHourData.reduce( (acc, cur) => parseFloat(acc) + parseFloat(cur),0 )
 
     return [workingHours, estHours];
 }
@@ -80,7 +83,7 @@ const twoColumnForGroupBy = (data, groupItemIndex, sumItemIndex) => {
 }
 
 //-- Group By And Sum
-const groupBySum = (data, estData) => {
+const groupBySum = (data, estData=[]) => {
     let newResult = [];
 
     for (let rs of data) {
@@ -101,4 +104,42 @@ const groupBySum = (data, estData) => {
     }
 
     return newResult;
+}
+
+
+//-- Read .CSV file
+exports.readCsvFile = (filePath) => {
+    
+    //-- Est Hour Generate
+    if (!fs.existsSync(filePath)) {
+        console.log('File does not exists')
+        return res.status(404).json({
+            message: 'File is not exists.'
+        })
+    }
+
+    return new Promise((resolve, reject) => {
+        let arrayData = []
+        fs.createReadStream(filePath)
+            .pipe(csv())
+            .on('data', data => {
+                arrayData.push(data)
+            })
+            .on('end', data => {
+                resolve(arrayData)
+            });
+    })
+}
+
+exports.writeCsvFile = (processData,filePath) => {
+    const dirName = filePath.split('/')[0]
+    if (!fs.existsSync(dirName)){
+        fs.mkdirSync(dirName);
+    }
+
+    const ws = fs.createWriteStream(filePath);
+    csv.write(processData, { headers: true, quoteColumns: true })
+        .pipe(ws)
+
+    return true;
 }

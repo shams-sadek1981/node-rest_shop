@@ -1,8 +1,30 @@
-Date,Task, SubTask, Hour,Type,Project,Version
-01-Jan-2019,"Merge develop with trello", "Subtask...", 40,New Feature,PM Free,
-01-Jan-2019,"with trello", "Subtask...", 2,New Feature,PM Free,
-01-Jan-2019,"Merge develop", "Subtask...", 6,New Feature,PM,
-01-Jan-2019,"User Overview", "Subtask...", 2,Bug,PM Free,
-01-Jan-2019,"Merge develop with trello", "Subtask...", 7,New Feature,PM Pro,
-01-Jan-2019,"Merge develop with trello", "Subtask...", 17,New Feature,PM Pro,
-01-Jan-2019,"Merge develop with trello", "Subtask...", 207,New Feature,PM Pro,
+Date,Task / Feature,Sub Task,Hour,Type,Project,Version,,,,,,,,,,,,,,,
+01-Feb-2019,Release Issue,"Meeting, check zapier, and fixing new project form show hide, Discuss with new member, Update welcome page content",6,Bug Fixes,PM Free,,,,,,,,,,,,,,,,Meeting
+04-Feb-2019,Release Issue,"Merging with trello integration, upadate content for premiumm page, discuss about vue with Rakib, Task filter  does not get task list title, wemail meeing",7,Update,PM Free,,,,,,,,,,,,,#VALUE!,,,Overview Page
+05-Feb-2019,Release Issue,Prepare Release environment 2.1.0 with admin notice,1,New Feature,PM Free,,,,,,,,,,,,,,,,Task List
+05-Feb-2019,Discuss,How to work PM front end brief  to Rakib,3,New Feature,PM Free,,,,,,,,,,,,,,,,Landing Page
+05-Feb-2019,Calendar User View,Calendar user view,5,New Feature,PM Pro,,,,,,,,,,,,,,,,Calendar User View
+06-Feb-2019,Calendar User View,Calendar user view,9,New Feature,PM Pro,,,,,,,,,,,,,,,,Testing
+07-Feb-2019,Calendar User View,Caledar user view,9,New Feature,PM Pro,,,,,,,,,,,,,,,,Set label for task
+08-Feb-2019,Release Issue,"Release, meeting, and fix some client issue",5,Bug Fixes,PM Pro,,,,,,,,,,,,,,,,Project Manager Release
+09-Feb-2019,Calendar User View,Redesign query for getting calendar event,8,Update,PM Pro,,,,,,,,,,,,,,,,Release Issue for ERP
+10-Feb-2019,Calendar User View,Update query for calendar project dorpdown,5,Update,PM Pro,,,,,,,,,,,,,,,,
+11-Feb-2019,Calendar User View,calendar ,7,New Feature,PM Pro,,,,,,,,,,,,,,,,
+12-Feb-2019,Calendar User View,calendar,7,New Feature,PM Pro,,,,,,,,,,,,,,,,
+13-Feb-2019,Calendar User View,calendar,5,New Feature,PM Pro,,,,,,,,,,,,,,,,
+14-Feb-2019,ERP setup wizard,ERP setup wizard,3,New Feature,ERP,,,,,,,,,,,,,,,,
+14-Feb-2019,Enhancement for milestore migration,Upgrade migration for milestone dueDate,3,Update,PM Free,,,,,,,,,,,,,,,,
+15-Feb-2019,Release Issue for ERP,Release Issue for ERP,2,Others,ERP,,,,,,,,,,,,,,,,
+15-Feb-2019,Project Manager Release,Project Manager Release,4,New Feature,PM Free,,,,,,,,,,,,,,,,
+18-Feb-2019,Set label for task,label settings CRUD,8,New Feature,PM Pro,,,,,,,,,,,,,,,,
+19-Feb-2019,,label settings CRUD design,9,New Feature,PM Pro,,,,,,,,,,,,,,,,
+20-Feb-2019,,Set wp hook if it not exist in wordpress built in.,2,New Feature,PM Free,,,,,,,,,,,,,,,,
+20-Feb-2019,,Introduce with vue-tooltip and set it project manager,2,New Feature,PM Free,,,,,,,,,,,,,,,,
+20-Feb-2019,,add js filter before submit task ,4,New Feature,PM Pro,,,,,,,,,,,,,,,,
+21-Feb-2019,,design vue-tooltip for task label,2,New Feature,PM Pro,,,,,,,,,,,,,,,,
+22-Feb-2019,,CRUD,7,,,,,,,,,,,,,,,,,,
+23-Feb-2019,,show in task inline label,2,,,,,,,,,,,,,,,,,,
+25-Feb-2019,,Fix label update issue,1,,,,,,,,,,,,,,,,,,
+25-Feb-2019,,label update from single task popup,4,,,,,,,,,,,,,,,,,,
+26-Feb-2019,,set animation spinner,1,,,,,,,,,,,,,,,,,,
+26-Feb-2019,,"label setting update desing, sorting, php function arrangement ",5,,,,,,,,,,,,,,,,,,
