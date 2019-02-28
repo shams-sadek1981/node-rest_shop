@@ -1,4 +1,5 @@
-"POS","50"
-"Elementor", "80"
-"Abuse Report","120"
-"with trello", 700
+"Task","Est Hour","Task Type"
+"POS","50","New Feature"
+"Elementor", "80","Plugin Issue"
+"Abuse Report","120","New Feature"
+"with trello", 700,"New Feature"
