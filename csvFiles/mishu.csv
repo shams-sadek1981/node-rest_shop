@@ -1,4 +1,4 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,Version,,,,,,,,,,,,,,,
-01-Feb-2019,Release Issue,"Meeting, check zapier, and fixing new project form show hide, Discuss with new member, Update welcome page content",6,Bug Fixes,PM Free,,,,,,,,,,,,,,,,Meeting
-04-Feb-2019,Release Issue,"Merging with trello integration, upadate content for premiumm page, discuss about vue with Rakib, Task filter  does not get task list title, wemail meeing",7,Update,PM Free,,,,,,,,,,,,,#VALUE!,,,Overview Page
-05-Feb-2019,Overview Page,Prepare Release environment 2.1.0 with admin notice,1,New Feature,PM Free,,,,,,,,,,,,,,,,Task List
+Date,Task,Sub Task,Hour,Type,Project
+01-Feb-2019,"Overview Page","Subtask-1",6,Bug Fixes,PM Free
+04-Feb-2019,My Task,"Subtask-2",7,Update,PM Free
+05-Feb-2019,"Overview Page","Prepare Release environment 2.1.0 with admin notice",1,New Feature,PM Free

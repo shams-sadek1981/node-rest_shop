@@ -22,7 +22,7 @@ let nameAndHours = [['SL', 'Name', 'WorkingHours', 'Est Hours']];
 exports.writeTaskLog = (req, res, next) => {
 
     //-- Delete All docs
-    TaskLog.deleteMany({}, result => {})
+    TaskLog.deleteMany({}, result => { })
 
     const readDir = 'csvFiles/';
 
@@ -56,7 +56,7 @@ exports.writeTaskLog = (req, res, next) => {
 //-- est hour save
 const estTaskHour = () => {
     //-- Delete All docs
-    TaskEstHour.deleteMany({}, result => {})
+    TaskEstHour.deleteMany({}, result => { })
 
     const readDir = 'csvEstFiles/';
 
@@ -109,15 +109,15 @@ exports.writeUserTask = async (req, res, next) => {
 
         const getTaskEstHour = taskEstHourResult.find(data => data.taskName == item._id.taskName)
 
-        let estHour=0
-        let projectName=''
-        let taskType=''
+        let estHour = 0
+        let projectName = ''
+        let taskType = ''
         if (getTaskEstHour) {
-            estHour=getTaskEstHour.estHour
-            taskType=getTaskEstHour.taskType
-            projectName=getTaskEstHour.projectName
+            estHour = getTaskEstHour.estHour
+            taskType = getTaskEstHour.taskType
+            projectName = getTaskEstHour.projectName
         }
-        
+
         return {
             userName: item._id.userName,
             taskName: item._id.taskName,
@@ -139,14 +139,33 @@ exports.writeUserTask = async (req, res, next) => {
     })
 }
 
-//-- Read Task Log
+/**
+ * ----------------------------------------------------------------------------------
+ * Read Task Log
+ * ----------------------------------------------------------------------------------
+ */
 exports.readTaskLog = async (req, res, next) => {
+
+    //-- Collect All user from DB
+    const allUsers = await new Promise((resolve, reject) => {
+        UserTask.aggregate([
+            {
+                $group: {
+                    _id: { userName: "$userName" },
+                    workingHour: { $sum: "$workingHour" },
+                    estHour: { $sum: "$estHour" }
+                }
+            }
+        ]).sort({ _id: 1 }).then(data => {
+            resolve(data)
+        })
+    })
 
     const userAllTask = await new Promise((resolve, reject) => {
         UserTask.aggregate([
             {
                 $group: {
-                    _id: { userName: "$userName", projectName: "$projectName", taskType: "$taskType"},
+                    _id: { userName: "$userName", taskName: "$taskName" },
                     workingHour: { $sum: "$workingHour" },
                     estHour: { $sum: "$estHour" }
                 }
@@ -156,26 +175,264 @@ exports.readTaskLog = async (req, res, next) => {
         })
     })
 
-    const result = userAllTask.map( item => {
-
-        return {
-            userName: item._id.userName,
-            projectName: item._id.projectName,
-            taskType: item._id.taskType,
-            workingHour: item.workingHour,
-            estHour: item.estHour
-        }
+    const userAllType = await new Promise((resolve, reject) => {
+        UserTask.aggregate([
+            {
+                $group: {
+                    _id: { userName: "$userName", taskType: "$taskType" },
+                    workingHour: { $sum: "$workingHour" },
+                    estHour: { $sum: "$estHour" }
+                }
+            }
+        ]).sort({ _id: 1, projectName: 1, taskType: 1 }).then(data => {
+            resolve(data)
+        })
     })
 
+    const userAllProject = await new Promise((resolve, reject) => {
+        UserTask.aggregate([
+            {
+                $group: {
+                    _id: { userName: "$userName", projectName: "$projectName" },
+                    workingHour: { $sum: "$workingHour" },
+                    estHour: { $sum: "$estHour" }
+                }
+            }
+        ]).sort({ _id: 1, projectName: 1, taskType: 1 }).then(data => {
+            resolve(data)
+        })
+    })
+
+
+
+    //-- get Individual user
+    let result = []
+    
+    //-- All user details
+    result.push(...generateAllUser(allUsers))
+
+    for (let user of allUsers) {
+
+        result.push(...generateTask(user, userAllTask))
+
+        result.push(...generateType(user, userAllType))
+
+        result.push(...generateProject(user, userAllProject))
+    }
+
+    //-- Write .csv file
+    fn.writeCsvFile(result, 'csvSummary/userTaskDetails.csv')
 
     res.status(200).json({
-        result
+        result,
+        // allUsers,
+        // userAllTask,
+        // userAllType,
+        // userAllProject
     })
 
+}// end readTaskLog
+
+//-- generate All User
+const generateAllUser = (allUsers) => {
+    let result = [
+        ['', '', '', ''],
+        ['SL', 'Name', 'Office Hour', 'Working Hour', 'Est Hour']
+    ]
+
+    let sl=0;
+    let totalOfficeHour = 0;
+    let totalWorkingHour = 0;
+    let totalEstHour = 0;
+    for (user of allUsers) {
+        sl++;
+        result.push([
+            sl,user._id.userName, 20*8, user.workingHour, user.estHour 
+        ])
+
+        totalOfficeHour += parseFloat(20*8)
+        totalWorkingHour += parseFloat(user.workingHour)
+        totalEstHour += parseFloat(user.estHour)
+    }
+
+    result.push(['', 'Total =', totalOfficeHour, totalWorkingHour, totalEstHour])
+    result.push(['', '', '', ''])
+    result.push(['', '', '', ''])
+    result.push(['', '', '', ''])
+
+    return result;
+
+}
+
+//-- generate Task
+const generateTask = (user, userAllTask) => {
+
+    let result = [
+        ['', '', '', ''],
+        ['User Name', user._id.userName, '', ''],
+        ['SL', 'Task Name', 'Working Hour', 'Est Hour']
+    ]
+
+    const userTask = userAllTask.filter(item => item._id.userName == user._id.userName)
+
+    let sl = 0;
+    let totalWorkingHour = 0;
+    let totalEstHour = 0;
+    for (let task of userTask) {
+        sl++;
+
+        result.push([
+            sl, task._id.taskName, task.workingHour, task.estHour
+        ])
+
+        totalWorkingHour += parseFloat(task.workingHour)
+        totalEstHour += parseFloat(task.estHour)
+    }
+
+    result.push(['', 'Total =', totalWorkingHour, totalEstHour])
 
 
+    return result;
+}
+
+//-- generate Type
+const generateType = (user, userAllType) => {
+
+    let result = [
+        ['', '', '', ''],
+        ['SL', 'Task Type', 'Working Hour', 'Est Hour'],
+    ]
+
+    const userType = userAllType.filter(item => item._id.userName == user._id.userName)
+
+    let sl = 0;
+    let totalWorkingHour = 0;
+    let totalEstHour = 0;
+    for (let type of userType) {
+        sl++;
+
+        result.push([
+            sl, type._id.taskType, type.workingHour, type.estHour
+        ])
+
+        totalWorkingHour += parseFloat(type.workingHour)
+        totalEstHour += parseFloat(type.estHour)
+    }
+
+    result.push(['', 'Total =', totalWorkingHour, totalEstHour])
 
 
+    return result;
+}
+
+//-- generate Project
+const generateProject = (user, userAllProject) => {
+
+    let result = [
+        ['', '', '', ''],
+        ['SL', 'Project Name', 'Working Hour', 'Est Hour'],
+    ]
+
+    const userProject = userAllProject.filter(item => item._id.userName == user._id.userName)
+
+    let sl = 0;
+    let totalWorkingHour = 0;
+    let totalEstHour = 0;
+    for (let project of userProject) {
+        sl++;
+
+        result.push([
+            sl, project._id.projectName, project.workingHour, project.estHour
+        ])
+
+        totalWorkingHour += parseFloat(project.workingHour)
+        totalEstHour += parseFloat(project.estHour)
+    }
+
+    result.push(['', 'Total =', totalWorkingHour, totalEstHour])
+
+    return result;
+}
+
+const taskArrayGenerate = (userAllTask, userAllType, userAllProject) => {
+
+    // let result = [
+    //     ['User Name', userAllTask[0]._id.userName, '', ''],
+    //     ['SL', 'Task Name', 'Working Hour', 'Est Hour']
+    // ]
+
+    // let userName = userAllTask[0]._id.userName
+    // let sl = 0;
+    // let workingHourTotal = 0
+    // let estHourTotal = 0
+    // for ( let item of userAllTask ) {
+    //     sl++
+
+    //     //-- set Header
+    //     if (userName != item._id.userName) {
+    //         result.push(['', 'Total =', workingHourTotal , estHourTotal])
+
+    //         result.push(...typeArrayGenerate(userAllType,item._id.userName))
+
+    //         result.push(['', '', '', ''])
+    //         result.push(['', '', '', ''])
+    //         result.push(['', '', '', ''])
+    //         result.push(['', '', '', ''])
+    //         result.push(['User Name', item._id.userName, '', ''])   
+    //         result.push(['SL', 'Task Name', 'Working Hour', 'Est Hour'])
+
+
+    //         sl=1
+    //         workingTotal = 0
+    //         estHourTotal = 0
+
+    //         userName = item._id.userName
+    //     }
+
+    //     //-- set Body for Task
+    //     workingHourTotal += parseFloat(item.workingHour)
+    //     estHourTotal += parseFloat(item.estHour)
+    //     result.push([
+    //         sl,
+    //         item._id.taskName,
+    //         item.workingHour,
+    //         item.estHour
+    //     ])
+
+    // }
+
+    //-- end user push
+    // result.push(['', 'Total =', workingHourTotal , estHourTotal])
+    // result.push(...typeArrayGenerate(userAllType,userName))
+
+
+    return result
+}
+
+
+const typeArrayGenerate = (userAllType, userName) => {
+
+    const userTaskType = userAllType.filter(item => item._id.userName == userName)
+
+    let result = [
+        ['', '', '', ''],
+        ['SL', 'Task Type', 'Working Hour', 'Est Hour']
+    ]
+
+
+    let sl = 0
+    for (let item of userTaskType) {
+        sl++
+
+        result.push([
+            sl,
+            item._id.taskType,
+            item.workingHour,
+            item.estHour
+        ])
+    }
+
+    return result
 }
 
 /**
