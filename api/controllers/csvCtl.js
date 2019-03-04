@@ -68,12 +68,11 @@ const estTaskHour = () => {
 
             readData.shift()//-- Remove Header
             const rawObject = readData.map(log => {
-
                 return {
                     projectName: mainFile.split('.')[0],
                     taskName: log[1],
-                    estHour: log[2],
-                    taskType: log[3],
+                    estHour: parseFloat(log[2]),
+                    taskType: log[3]
                 }
             })
 
@@ -162,21 +161,6 @@ exports.generateCsv = async (req, res, next) => {
         })
     })
 
-    //-- Collect All user from DB
-    const allUsers = await new Promise((resolve, reject) => {
-        UserTask.aggregate([
-            {
-                $group: {
-                    _id: { userName: "$userName" },
-                    workingHour: { $sum: "$workingHour" },
-                    estHour: { $sum: "$estHour" }
-                }
-            }
-        ]).sort({ _id: 1 }).then(data => {
-            resolve(data)
-        })
-    })
-
     const userAllTask = await new Promise((resolve, reject) => {
         UserTask.aggregate([
             {
@@ -218,6 +202,7 @@ exports.generateCsv = async (req, res, next) => {
             resolve(data)
         })
     })
+
 
 
     //-- get Individual user
@@ -267,7 +252,6 @@ const generateAllUser = (allUsers) => {
         ])
 
         totalOfficeHour += parseFloat(officeHours)
-
         totalWorkingHour += parseFloat(user.workingHour)
         totalEstHour += parseFloat(user.estHour)
     }

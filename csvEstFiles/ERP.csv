@@ -1,9 +1,4 @@
-SL,Task / Feature,Hours,Type
-1,Meeting,8,
-2,Tax API,3,
-3,Tax Mockup,,
-4,Weekly Meeting,,
-5,ERP Main Site,,
-6,Testing,,
-7,Added Journal APIs,4,New Feature
-8,"power block",20
+SL,Task,Est Hour,Type,Created At
+1,Elementor Update,8,"Plugin Issue"
+2,Elementor,3,New Feature,
+3,POS,60,New Feature,
