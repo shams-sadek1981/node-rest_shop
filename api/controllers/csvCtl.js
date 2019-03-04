@@ -37,7 +37,7 @@ exports.writeTaskLog = (req, res, next) => {
                     userName: mainFile.split('.')[0],
                     taskName: log[1],
                     workingHour: log[3],
-                    projectType: log[4],
+                    taskType: log[4],
                     projectName: log[5]
                 }
             })
@@ -48,10 +48,12 @@ exports.writeTaskLog = (req, res, next) => {
     })
 
     estTaskHour()//-- generate Estimation Hour by Project
+
     res.status(200).json({
         message: 'Success'
     })
-}
+}//-- end writeTaskLog
+
 
 //-- est hour save
 const estTaskHour = () => {
@@ -69,14 +71,13 @@ const estTaskHour = () => {
 
                 return {
                     projectName: mainFile.split('.')[0],
-                    taskName: log[0],
-                    estHour: log[1],
-                    taskType: log[2],
+                    taskName: log[1],
+                    estHour: log[2],
+                    taskType: log[3],
                 }
             })
 
             TaskEstHour.insertMany(rawObject)
-
         })
     })
 }
@@ -84,10 +85,10 @@ const estTaskHour = () => {
 
 /**
  * --------------------------------------------------------------------------------------------
- * Write User Task
+ * Write Task Est
  * --------------------------------------------------------------------------------------------
  */
-exports.writeUserTask = async (req, res, next) => {
+exports.writeTaskEst = async (req, res, next) => {
 
     const taskEstHourResult = await new Promise((resolve, reject) => {
         TaskEstHour.find({}).then(data => resolve(data))
@@ -98,7 +99,7 @@ exports.writeUserTask = async (req, res, next) => {
         TaskLog.aggregate([
             {
                 $group: {
-                    _id: { taskName: "$taskName", userName: "$userName" },
+                    _id: { taskName: "$taskName", userName: "$userName", taskType: "$taskType", projectName: "$projectName" },
                     workingHour: { $sum: "$workingHour" }
                 }
             }
@@ -109,13 +110,13 @@ exports.writeUserTask = async (req, res, next) => {
 
         const getTaskEstHour = taskEstHourResult.find(data => data.taskName == item._id.taskName)
 
-        let estHour = 0
-        let projectName = ''
-        let taskType = ''
+        let estHour = item.workingHour
+        let projectName = item._id.projectName
+        let taskType = item._id.taskType
         if (getTaskEstHour) {
             estHour = getTaskEstHour.estHour
-            taskType = getTaskEstHour.taskType
-            projectName = getTaskEstHour.projectName
+            // taskType = getTaskEstHour.taskType
+            // projectName = getTaskEstHour.projectName
         }
 
         return {
@@ -144,7 +145,7 @@ exports.writeUserTask = async (req, res, next) => {
  * Read Task Log
  * ----------------------------------------------------------------------------------
  */
-exports.readTaskLog = async (req, res, next) => {
+exports.generateCsv = async (req, res, next) => {
 
     //-- Collect All user from DB
     const allUsers = await new Promise((resolve, reject) => {
@@ -240,6 +241,7 @@ const generateAllUser = (allUsers) => {
         ['SL', 'Name', 'Office Hour', 'Working Hour', 'Est Hour']
     ]
 
+    const officeHours = parseFloat(process.env.WORKING_DAYS) * parseFloat(process.env.OFFICE_HOURS)
     let sl=0;
     let totalOfficeHour = 0;
     let totalWorkingHour = 0;
@@ -247,10 +249,10 @@ const generateAllUser = (allUsers) => {
     for (user of allUsers) {
         sl++;
         result.push([
-            sl,user._id.userName, 20*8, user.workingHour, user.estHour 
+            sl,user._id.userName, officeHours, user.workingHour, user.estHour 
         ])
 
-        totalOfficeHour += parseFloat(20*8)
+        totalOfficeHour += parseFloat(officeHours)
         totalWorkingHour += parseFloat(user.workingHour)
         totalEstHour += parseFloat(user.estHour)
     }

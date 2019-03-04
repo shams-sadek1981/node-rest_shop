@@ -9,7 +9,8 @@ const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/user');
 const routes = require('./api/routes');
 
-mongoose.connect('mongodb://shamssadek:' + process.env.MONGO_ATLAS_PW +'@projectmanager-shard-00-00-29oqc.mongodb.net:27017,projectmanager-shard-00-01-29oqc.mongodb.net:27017,projectmanager-shard-00-02-29oqc.mongodb.net:27017/test?ssl=true&replicaSet=ProjectManager-shard-0&authSource=admin&retryWrites=true', {
+// mongoose.connect('mongodb://shamssadek:' + process.env.MONGO_ATLAS_PW +'@projectmanager-shard-00-00-29oqc.mongodb.net:27017,projectmanager-shard-00-01-29oqc.mongodb.net:27017,projectmanager-shard-00-02-29oqc.mongodb.net:27017/test?ssl=true&replicaSet=ProjectManager-shard-0&authSource=admin&retryWrites=true', {
+mongoose.connect(process.env.DATABASE , {
     // useMongoClient: true
     useNewUrlParser: true
     // promiseLibrary: global.Promise

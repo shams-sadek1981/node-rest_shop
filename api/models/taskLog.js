@@ -17,7 +17,7 @@ const taskLogSchema = mongoose.Schema({
     projectName: {
         type: String
     },
-    projectType: {
+    taskType: {
         type: String
     }
 })

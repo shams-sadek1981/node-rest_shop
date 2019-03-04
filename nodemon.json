@@ -1,6 +1,9 @@
 {
     "env": {
         "MONGO_ATLAS_PW": "1234567890",
-        "JWT_KEY": "secret"
+        "JWT_KEY": "secret",
+        "DATABASE": "mongodb://127.0.0.1:27017/project_manager",
+        "WORKING_DAYS": 20,
+        "OFFICE_HOURS": 8
     }
 }
