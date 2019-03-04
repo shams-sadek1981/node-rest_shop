@@ -110,6 +110,7 @@ exports.writeTaskEst = async (req, res, next) => {
 
         const getTaskEstHour = taskEstHourResult.find(data => data.taskName == item._id.taskName)
 
+<<<<<<< HEAD
         let estHour = item.workingHour
         let projectName = item._id.projectName
         let taskType = item._id.taskType
@@ -117,6 +118,15 @@ exports.writeTaskEst = async (req, res, next) => {
             estHour = getTaskEstHour.estHour
             // taskType = getTaskEstHour.taskType
             // projectName = getTaskEstHour.projectName
+=======
+        let estHour = 0
+        let projectName = ''
+        let taskType = ''
+        if (getTaskEstHour) {
+            estHour = getTaskEstHour.estHour
+            taskType = getTaskEstHour.taskType
+            projectName = getTaskEstHour.projectName
+>>>>>>> 676643d2fad96002a715a7700a5b84438ea58658
         }
 
         return {
@@ -146,6 +156,21 @@ exports.writeTaskEst = async (req, res, next) => {
  * ----------------------------------------------------------------------------------
  */
 exports.generateCsv = async (req, res, next) => {
+
+    //-- Collect All user from DB
+    const allUsers = await new Promise((resolve, reject) => {
+        UserTask.aggregate([
+            {
+                $group: {
+                    _id: { userName: "$userName" },
+                    workingHour: { $sum: "$workingHour" },
+                    estHour: { $sum: "$estHour" }
+                }
+            }
+        ]).sort({ _id: 1 }).then(data => {
+            resolve(data)
+        })
+    })
 
     //-- Collect All user from DB
     const allUsers = await new Promise((resolve, reject) => {
@@ -205,7 +230,6 @@ exports.generateCsv = async (req, res, next) => {
     })
 
 
-
     //-- get Individual user
     let result = []
     
@@ -241,7 +265,10 @@ const generateAllUser = (allUsers) => {
         ['SL', 'Name', 'Office Hour', 'Working Hour', 'Est Hour']
     ]
 
+<<<<<<< HEAD
     const officeHours = parseFloat(process.env.WORKING_DAYS) * parseFloat(process.env.OFFICE_HOURS)
+=======
+>>>>>>> 676643d2fad96002a715a7700a5b84438ea58658
     let sl=0;
     let totalOfficeHour = 0;
     let totalWorkingHour = 0;
@@ -249,10 +276,17 @@ const generateAllUser = (allUsers) => {
     for (user of allUsers) {
         sl++;
         result.push([
+<<<<<<< HEAD
             sl,user._id.userName, officeHours, user.workingHour, user.estHour 
         ])
 
         totalOfficeHour += parseFloat(officeHours)
+=======
+            sl,user._id.userName, 20*8, user.workingHour, user.estHour 
+        ])
+
+        totalOfficeHour += parseFloat(20*8)
+>>>>>>> 676643d2fad96002a715a7700a5b84438ea58658
         totalWorkingHour += parseFloat(user.workingHour)
         totalEstHour += parseFloat(user.estHour)
     }
