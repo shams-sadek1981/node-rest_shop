@@ -36,7 +36,7 @@ exports.writeTaskLog = (req, res, next) => {
                 return {
                     userName: mainFile.split('.')[0],
                     taskName: log[1],
-                    workingHour: log[3],
+                    workingHour: parseFloat(log[3]),
                     taskType: log[4],
                     projectName: log[5]
                 }
@@ -47,7 +47,7 @@ exports.writeTaskLog = (req, res, next) => {
         })
     })
 
-    estTaskHour()//-- generate Estimation Hour by Project
+    // estTaskHour()//-- generate Estimation Hour by Project
 
     res.status(200).json({
         message: 'Success'
@@ -146,6 +146,21 @@ exports.writeTaskEst = async (req, res, next) => {
  */
 exports.generateCsv = async (req, res, next) => {
 
+    const allProjects = await new Promise( (resolve, reject) => {
+        UserTask.aggregate([
+            {
+                $group: {
+                    _id: { projectName: "$projectName"},
+                    workingHour: { $sum: "$workingHour" },
+                    estHour: { $sum: "$estHour" }
+                }
+            }
+        ]).sort({ _id: 1 }).then(data => {
+            resolve(data)
+        })
+    })
+
+
     //-- Collect All user from DB
     const allUsers = await new Promise((resolve, reject) => {
         UserTask.aggregate([
@@ -208,6 +223,9 @@ exports.generateCsv = async (req, res, next) => {
     //-- get Individual user
     let result = []
     
+    //--
+    result.push(...generateAllProject(allProjects))
+
     //-- All user details
     result.push(...generateAllUser(allUsers))
 
@@ -232,6 +250,38 @@ exports.generateCsv = async (req, res, next) => {
     })
 
 }// end readTaskLog
+
+
+
+//-- generate All Project
+const generateAllProject = (allProjects) => {
+    let result = [
+        ['', '', '',''],
+        ['SL','Project Name', 'Working Hour', 'Est Hour']
+    ]
+
+    let sl=0;
+    let totalWorkingHour = 0;
+    let totalEstHour = 0;
+    for (item of allProjects) {
+        sl++;
+        result.push([
+            sl,item._id.projectName, item.workingHour, item.estHour 
+        ])
+
+        totalWorkingHour += parseFloat(item.workingHour)
+        totalEstHour += parseFloat(item.estHour)
+    }
+
+    result.push(['Total =', totalWorkingHour, totalEstHour])
+    result.push(['', '', '',''])
+    result.push(['', '', '',''])
+    result.push(['', '', '',''])
+
+    return result;
+
+}
+
 
 //-- generate All User
 const generateAllUser = (allUsers) => {

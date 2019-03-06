@@ -1,0 +1,59 @@
+Date,Task / Feature,Subtask,Hour,Type,Project
+01-Feb-2019,Social login ( issue with sapaced name ) ,,0.50,Client Issue,Dokan Pro
+02-Feb-2019,Dokan crud options,,5.00,New Feature,Dokan Pro
+03-Feb-2019,Dokan crud options,,5.00,New Feature,Dokan Pro
+04-Feb-2019,Dokan vendor ading feature,,7.00,New Feature,Dokan Pro
+05-Feb-2019,Product inline edit is not working,,2.00,Client Issue,Dokan Pro
+05-Feb-2019,Admin report logs calculation issue,,0.50,Bug Fixed,Dokan Pro
+05-Feb-2019,Vendor editing feature,,5.00,New Feature,Dokan Pro
+06-Feb-2019,Vendor editing feature,,9.00,New Feature,Dokan Pro
+07-Feb-2019,Negetive balance issue,,1.00,Client Issue,Dokan Free
+07-Feb-2019,Vendor logged out issue on product edit,,1.00,Client Issue,Dokan Free
+07-Feb-2019,Refactoring vendor adding feature,,6.00,New Feature,Dokan Pro
+11-Feb-2019,feat: add dokan privacy policy option,,1.00,New Feature,Dokan Free
+11-Feb-2019,feat: add dokan privacy policy option in produt enquiry form,,0.50,New Feature,Dokan Pro
+12-Feb-2019,Order tracking date format is not matching with WordPress,,1.00,Bug Fixed,Dokan Free
+12-Feb-2019,fix: some icons are missing due to fontawesome 5,,1.00,Bug Fixed,Dokan Free
+12-Feb-2019,Send email to vendor on store follow and unflows,,2.00,New Feature,Dokan Pro
+12-Feb-2019,Announcement can not be sent to specific vendors,,1.00,Bug Fixed,Dokan Pro
+12-Feb-2019,Product search in geolocation filter after importing through csv,,2.00,Bug Fixed,Dokan Pro
+12-Feb-2019,Import export does not allow to update the existing product,,1.00,Bug Fixed,Dokan Pro
+13-Feb-2019,Refactor all the merge conflict of dokan pro pull requst,,2.00,Bug Fixed,Dokan Pro
+13-Feb-2019,Vendor report is not showing the currect result,,1.00,Client Issue,Dokan Free
+13-Feb-2019,Email verification is suggesting invalid redirect URL,,1.00,Client Issue,Dokan Pro
+13-Feb-2019,"refactor: show vendor, report link in the dokan dashboard when the pro version is enabled",,1.00,Bug Fixed,Dokan Free
+14-Feb-2019,Change log of dokan pro v2.9.5,,0.50,Change log,Dokan Pro
+14-Feb-2019,Refactor: subscription module,,2.00,Bug Fixed,Dokan Pro
+14-Feb-2019,"if zone id is not found in vendor's available zone id, assume it falls under Locations not covered by your other zones",,2.00,Bug Fixed,Dokan Pro
+14-Feb-2019,send email to admin on adding a new product via REST API,,0.50,Bug Fixed,Dokan Free
+14-Feb-2019,Refactor: set_social_prop and set_payment_prop method,,1.00,Bug Fixed,Dokan Free
+14-Feb-2019,fix: escape html tags being outputing in setup-wizard,,1.00,Bug Fixed,Dokan Free
+15-Feb-2019,fix: save product short & long description on quick edit,,1.00,Bug Fixed,Dokan Pro
+15-Feb-2019,Three tabs are not loading in admin dokan settings,,2.00,Client Issue,Dokan Pro
+15-Feb-2019,Fix: allow vendor to update his store via REST API #564,,1.00,Bug Fixed,Dokan Free
+15-Feb-2019,refactor: only save the newly updated pages while saving pages,,2.00,Bug Fixed,Dokan Free
+18-Feb-2019,Fix: stop being auto cancelling subscription (unlimited subscription),,1.00,Bug Fixed,Dokan Pro
+18-Feb-2019,Fix: unable to save product wise commission to 0,,0.50,Bug Fixed,Dokan Pro
+18-Feb-2019,Fix: announcement issue for new vendor,,1.00,Bug Fixed,Dokan Pro
+18-Feb-2019,Dokan pro report calculation testing,,2.00,Testing,Dokan Pro
+18-Feb-2019,Dokan pro final relase log and testing,,1.00,Other,Dokan Pro
+19-Feb-2019,Export logs to csv,,1.50,New Feature,Dokan Pro
+19-Feb-2019,Google Icon issue on social login,,0.50,Client Issue,Dokan Pro
+19-Feb-2019,Product is not visible on sort by popularity unless you edit the product,,0.50,Bug Fixed,Dokan Free
+19-Feb-2019,Work with the combined commision ( vue backend settings ),,6.00,New Feature,Dokan Pro
+20-Feb-2019,Refactor: dokan commission class,,7.00,New Feature,Dokan Free
+22-Feb-2019,Refactor: dokan commission class,,7.00,Others,Dokan Free
+25-Feb-2019,Dokan gallery images are not getting saved,,0.50,Bug Fixed,Dokan Free
+25-Feb-2019,Dokan lite changelog,,0.50,Other,Dokan Free
+25-Feb-2019,Paypal adaptive settings field is not loading in the backend,,4.00,Client Issue,Dokan Pro
+26-Feb-2019,Stripe auto refund ( send admin commission to customer ),,2.00,Bug Fixed,Dokan Pro
+26-Feb-2019,Warning while change bulk order status in vendor dashboard,,1.00,Bug Fixed,Dokan Free
+26-Feb-2019,Large loading curcle in subscription menu,,0.50,Bug Fixed,Dokan Pro
+26-Feb-2019,An order around 30 items gives an error,,3.00,Client Issue,Dokan Free
+27-Feb-2019,Error on subscription cancellation,,1.00,Bug Fixed,Dokan Pro
+27-Feb-2019,feat: show follow store button for non logged in users ,,2.50,New Feature,Dokan Pro
+27-Feb-2019,Fix: booking compatibility issue with the latest version of wc booking plugin,,1.50,Bug Fixed,Dokan Pro
+27-Feb-2019,Vendor shipping zone is not loading,,1.00,Client Issue,Dokan Pro
+27-Feb-2019,Refactor: dokan_get_earning_by_product funciton,,0.50,Bug Fixed,Dokan Free
+01-Mar-2019,enable dokan plugin CPU utilization increased to 100% plus,,3.00,Client Issue,Dokan Free
+01-Mar-2019,refactor: deprecate dokan_get_seller_id_by_order_id function,,1.00,Bug Fixed,Dokan Free
