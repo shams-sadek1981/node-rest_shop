@@ -1,0 +1,32 @@
+Date,Task / Feature,Sub Task,Hour,Type,Project
+01-Feb-2019,Fixing minor issues,,2,Bug Fix,Bnimoy
+01-Feb-2019,Meeting with Debasish vai,,2,Others,Bnimoy
+01-Feb-2019,Creating db schema for autopay,,4,New Feature,Bnimoy
+04-Feb-2019,Creating migrations,,4,New Feature,Bnimoy
+04-Feb-2019,"Creating models, relations, controllers etc.",,4,New Feature,Bnimoy
+05-Feb-2019,Implementing autopay in client app,,8,New Feature,Bnimoy
+06-Feb-2019,Refactored forms,,4,Others,Bnimoy
+06-Feb-2019,Cleaning UI,,4,Others,Bnimoy
+07-Feb-2019,Creating logos for each channel,,4,New Feature,Bnimoy
+07-Feb-2019,Customize v-tooltip and apply where needed,,4,Others,Bnimoy
+08-Feb-2019,Fixed nav items position and navbar,,4,Others,Bnimoy
+08-Feb-2019,"Updated primary color, reset font, removed misplacement of icons and other minor improvements",,4,Others,Bnimoy
+11-Feb-2019,Added payment interval scheme to all channels,,4,Others,Bnimoy
+11-Feb-2019,Prohibited users from sending contract to themselves,,2,Others,Bnimoy
+11-Feb-2019,Added pay from wallet,,2,New Feature,Bnimoy
+12-Feb-2019,Added treasury bill,,8,New Feature,Bnimoy
+13-Feb-2019,Updated treasury bill api and schema,,6,Bug Fix,Bnimoy
+13-Feb-2019,Fixed v-tooltip,,2,Bug Fix,Bnimoy
+14-Feb-2019,"Centered modal, grouped channel conntrollers",,4,New Feature,Bnimoy
+14-Feb-2019,"Added pay via wallet on revision, sent latest revision with contract",,4,New Feature,Bnimoy
+15-Feb-2019,"Scaffold new client project, added to bitbucket",,8,New Feature,Bnimoy
+16-Feb-2019,Adapting ant design,,4,New Feature,Bnimoy
+16-Feb-2019,"Set up layout, authentication and other project dependencies for new project",,4,New Feature,Bnimoy
+17-Feb-2019,"Fixed routing, responsiveness, authentication issues",,8,New Feature,Bnimoy
+18-Feb-2019,Fixed navbar,,4,New Feature,Bnimoy
+18-Feb-2019,Added wallet refill in client,,4,New Feature,Bnimoy
+19-Feb-2019,Show balance globally,,4,New Feature,Bnimoy
+19-Feb-2019,Add OTP validation,,2,New Feature,Bnimoy
+19-Feb-2019,Refactor UI,,2,New Feature,Bnimoy
+20-Feb-2019,Switch from sidebar to navbar,,4,New Feature,Bnimoy
+22-Feb-2019,Add send money feature,,4,New Feature,Bnimoy

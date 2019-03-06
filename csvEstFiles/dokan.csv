@@ -1,5 +1,10 @@
-SL,Task,Est Hour,Type,Created At
-1,Elementor Update,8,Plugin Issue,
-2,Elementor,3,New Feature,
-3,POS,60,New Feature,
-4,BDD style analysis,1,,
+SL,Task Name,Est Hour,Task Type,Project Name
+1,Dokan,13,Plugin Issue,Dokan
+2,Dokan Demo Contents,5,Discuss,Dokan
+3,Dokan Mobile App,48,New Feature,Dokan App
+4,Elementor,5,Plugin Issue,Dokan
+5,Follow Store,5,Plugin Issue,Dokan
+6,Order Rest Api,6,New Feature,Dokan
+7,Wepos Enqueue Assets,1,Plugin Issue,Dokan
+8,Wepos Refactor,1,Plugin Issue,Dokan
+9,Yith Wc Brands Addon Compatibility,12,New Feature,Dokan

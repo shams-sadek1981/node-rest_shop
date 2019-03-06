@@ -1,0 +1,26 @@
+Date,Task / Feature,Sub Task,Hour,Type,Project
+01-Feb-2019,Weekly Meeting,,1,Meeting,Dokan App
+01-Feb-2019,Explored react-native-camera library for customer profile changing purpose,,6,R&D,Dokan App
+04-Feb-2019,Fixed some formatting and proptype validation caused by eslint,,2,Bug Fix,Dokan App
+04-Feb-2019,Meeting about Dokan App Plugin Requirements,,1,Meeting,Dokan App
+04-Feb-2019,Explored react-native-svg and react-native-shadow library to render proper shadow on android according to design,,4,R&D,Dokan App
+05-Feb-2019,Explored react-native-imagepicker library for user profile changing purpose,,6,R&D,Dokan App
+06-Feb-2019,Resolved issues caused by installing external libraries,,7,Others,Dokan App
+07-Feb-2019,Started Implementing Order details Screen,,7,New Feature,Dokan App
+08-Feb-2019,Weekly Meeting,,2,Meeting,Dokan App
+08-Feb-2019,Started integrating App Data from Dokan App Plugin,,4,New Feature,Dokan App
+11-Feb-2019,Worked on Integrating App Data from Dokan App Plugin,,8,New Feature,Dokan App
+12-Feb-2019,Completed Integrating App Data from Dokan App Plugin,,8,New Feature,Dokan App
+13-Feb-2019,Worked on Order Details Screen,,8,New Feature,Dokan App
+14-Feb-2019,Worked on Order Details Screen,,8,New Feature,Dokan App
+18-Feb-2019,Worked on customer profile picture change feature,,8,New Feature,Dokan App
+19-Feb-2019,Worked on customer profile edit functionality,,2,New Feature,Dokan App
+19-Feb-2019,Meeting about implementing cart api,,1.5,Meeting,Dokan App
+19-Feb-2019,Started integrating Cart API,,6,New Feature,Dokan App
+20-Feb-2019,Worked on Integrating Cart API,,8,New Feature,Dokan App
+21-Feb-2019,Completed customer profile editing and profile picture change,,8,New Feature,Dokan App
+22-Feb-2019,Worked on shoppingccart,,8,New Feature,Dokan App
+25-Feb-2019,Worked on shoppingccart,,8,New Feature,Dokan App
+26-Feb-2019,Worked on shoppingccart,,8,New Feature,Dokan App
+27-Feb-2019,Worked on shoppingccart,,8,New Feature,Dokan App
+28-Feb-2019,Worked on shoppingccart,,8,New Feature,Dokan App

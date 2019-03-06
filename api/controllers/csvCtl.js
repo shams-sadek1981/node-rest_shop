@@ -18,6 +18,9 @@ const localStorage = require('localStorage')
 let taskAndEstHours = [];
 let nameAndHours = [['SL', 'Name', 'WorkingHours', 'Est Hours']];
 
+String.prototype.toProperCase = function () {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
 
 exports.writeTaskLog = (req, res, next) => {
 
@@ -33,12 +36,16 @@ exports.writeTaskLog = (req, res, next) => {
             readData.shift()//-- Remove Header
             const rawObject = readData.map(log => {
 
+            const taskName = log[1] || 'Others'
+            const taskType = log[4] || 'Others'
+            taskType
+
                 return {
                     userName: mainFile.split('.')[0],
-                    taskName: log[1],
-                    workingHour: parseFloat(log[3]),
-                    taskType: log[4],
-                    projectName: log[5]
+                    taskName: taskName.trim().toProperCase(),
+                    workingHour: parseFloat(log[3]) || 0,
+                    taskType: taskType.trim().toProperCase(),
+                    projectName: log[5] || 'Others'
                 }
             })
 
@@ -47,7 +54,7 @@ exports.writeTaskLog = (req, res, next) => {
         })
     })
 
-    // estTaskHour()//-- generate Estimation Hour by Project
+    estTaskHour()//-- generate Estimation Hour by Project
 
     res.status(200).json({
         message: 'Success'
@@ -57,6 +64,7 @@ exports.writeTaskLog = (req, res, next) => {
 
 //-- est hour save
 const estTaskHour = () => {
+    
     //-- Delete All docs
     TaskEstHour.deleteMany({}, result => { })
 
@@ -98,24 +106,38 @@ exports.writeTaskEst = async (req, res, next) => {
         TaskLog.aggregate([
             {
                 $group: {
-                    _id: { taskName: "$taskName", userName: "$userName", taskType: "$taskType", projectName: "$projectName" },
-                    workingHour: { $sum: "$workingHour" }
+                    _id: { taskName: "$taskName", userName: "$userName" },
+                    workingHour: { $sum: "$workingHour" },
+                    projectName: { $max: "$projectName"},
+                    taskType: { $max: "$taskType"},
                 }
             }
         ]).then(data => resolve(data))
     })
+
+    // const taskLog = await new Promise((resolve, reject) => {
+
+    //     TaskLog.aggregate([
+    //         {
+    //             $group: {
+    //                 _id: { taskName: "$taskName", userName: "$userName", taskType: "$taskType", projectName: "$projectName" },
+    //                 workingHour: { $sum: "$workingHour" }
+    //             }
+    //         }
+    //     ]).then(data => resolve(data))
+    // })
 
     const result = taskLog.map(item => {
 
         const getTaskEstHour = taskEstHourResult.find(data => data.taskName == item._id.taskName)
 
         let estHour = item.workingHour
-        let projectName = item._id.projectName
-        let taskType = item._id.taskType
+        let projectName = item.projectName
+        let taskType = item.taskType
         if (getTaskEstHour) {
             estHour = getTaskEstHour.estHour
-            // taskType = getTaskEstHour.taskType
-            // projectName = getTaskEstHour.projectName
+            taskType = getTaskEstHour.taskType || item.taskType
+            projectName = getTaskEstHour.projectName || item.projectName
         }
 
         return {
@@ -151,6 +173,20 @@ exports.generateCsv = async (req, res, next) => {
             {
                 $group: {
                     _id: { projectName: "$projectName"},
+                    workingHour: { $sum: "$workingHour" },
+                    estHour: { $sum: "$estHour" }
+                }
+            }
+        ]).sort({ _id: 1 }).then(data => {
+            resolve(data)
+        })
+    })
+    
+    const allTaskType = await new Promise( (resolve, reject) => {
+        UserTask.aggregate([
+            {
+                $group: {
+                    _id: { taskType: "$taskType"},
                     workingHour: { $sum: "$workingHour" },
                     estHour: { $sum: "$estHour" }
                 }
@@ -223,8 +259,12 @@ exports.generateCsv = async (req, res, next) => {
     //-- get Individual user
     let result = []
     
-    //--
+    
+    //--All Project
     result.push(...generateAllProject(allProjects))
+
+    //--All Task Type
+    result.push(...generateAllTaskType(allTaskType))
 
     //-- All user details
     result.push(...generateAllUser(allUsers))
@@ -253,6 +293,36 @@ exports.generateCsv = async (req, res, next) => {
 
 
 
+//-- generate All Task Type
+const generateAllTaskType = (allTaskType) => {
+    let result = [
+        ['', '', '',''],
+        ['SL','Task Type', 'Working Hour', 'Est Hour']
+    ]
+
+    let sl=0;
+    let totalWorkingHour = 0;
+    let totalEstHour = 0;
+    for (item of allTaskType) {
+        sl++;
+        result.push([
+            sl,item._id.taskType, item.workingHour, item.estHour 
+        ])
+
+        totalWorkingHour += parseFloat(item.workingHour)
+        totalEstHour += parseFloat(item.estHour)
+    }
+
+    result.push(['','Total =', totalWorkingHour, totalEstHour])
+    result.push(['', '', '',''])
+    result.push(['', '', '',''])
+    result.push(['', '', '',''])
+
+    return result;
+
+}
+
+
 //-- generate All Project
 const generateAllProject = (allProjects) => {
     let result = [
@@ -273,7 +343,7 @@ const generateAllProject = (allProjects) => {
         totalEstHour += parseFloat(item.estHour)
     }
 
-    result.push(['Total =', totalWorkingHour, totalEstHour])
+    result.push(['','Total =', totalWorkingHour, totalEstHour])
     result.push(['', '', '',''])
     result.push(['', '', '',''])
     result.push(['', '', '',''])

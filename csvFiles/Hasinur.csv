@@ -1,0 +1,33 @@
+Date,Task / Feature,Sub Task,Hour,Type,Project,,,,,,,,,,,,,,,Meeting
+01-Feb-2019,ERP Main Site,Can't set permission for an employee,1,Client Issue,ERP,,,,,,,,,,,,,,,Tax API
+01-Feb-2019,Tax API,Can't delete employee,1,Client Issue,ERP,,,,,,,,,,,,,,,Tax Mockup
+01-Feb-2019,Document manager licence can't work,Document manager licence can't work,1,Client Issue,ERP Document Manager,,,,,,,,,,,,,,,Weekly Meeting
+01-Feb-2019,Duplicate Zendesk Contact,Duplicate Zendesk Contact,4,Client Issue,ERP Zendesk,,,,,,,,,,,,,,,ERP Main Site
+04-Feb-2019,ERP Zendesk duplicate customer and can't sync ticket,ERP Zendesk duplicate customer and can't sync ticket,3,Client Issue,ERP Zendesk,,,,,,,,,,,,,,,Testing
+04-Feb-2019,Can't make employee and doesn't show employee's answeer,Can't make employee and doesn't show employee's answeer,2,Client Issue,ERP Recruitment,,,,,,,,,,,,,,,Added Journal APIs
+04-Feb-2019,Google adwords issue,Google adwords issue,1,Client Issue,WC Conversion Tracking,,,,,,,,,,,,,,,
+05-Feb-2019,Duplicate employee name,Duplicate employee name,1,Plugin Issue,ERP Recruitment,,,,,,,,,,,,,,,
+05-Feb-2019,Change year range on calender,Change year range on calender,1,Plugin Issue,ERP Recruitment,,,,,,,,,,,,,,,
+05-Feb-2019,Can't sync customer and ticket,Can't sync customer and ticket,5,Client Issue,ERP Zendesk,,,,,,,,,,,,,,,
+06-Feb-2019,CRM contact list view and edit for crm agent,CRM contact list view and edit for crm agent,4,Plugin Issue,ERP,,,,,,,,,,,,,,,
+06-Feb-2019,Attendance report doesn't show properly,Attendance report doesn't show properly,2,Client Issue,ERP Attendance,,,,,,,,,,,,,,,
+06-Feb-2019,AddToCart event could send data for facebook,AddToCart event could send data for facebook,1,Client Issue,WCCT,,,,,,,,,,,,,,,
+07-Feb-2019,Custom filter for leave report,Custom filter for leave report,7,New Feature,ERP,,,,,,,,,,,,,,,
+08-Feb-2019,ERP Demosite,ERP Demosite,8,New Feature,ERP Demo Site,,,,,,,,,,,,,,,
+11-Feb-2019,Learn Vuex,Learn Vuex,2,Others,,,,,,,,,,,,,,,,
+11-Feb-2019,ERP Main Site,ERP Site,6,,ERP-Site,,,,,,,,,,,,,,,
+12-Feb-2019,Ninja Contact form not working,Ninja Contact form not working,4,Client Issue,ERP,,,,,,,,,,,,,,,
+12-Feb-2019,Add project manager ,Add project manager ,4,New Feature,ERP-Demo-Client,,,,,,,,,,,,,,,
+12-Feb-2019,Invoice total amount less one cent,Invoice total amount less one cent,1,Client Issue,ERP,,,,,,,,,,,,,,,
+13-Feb-2019,Testing,Testing and fixing,8,Testing,ERP,,,,,,,,,,,,,,,
+14-Feb-2019,Facebook proudct catelog couldn't upload product,Facebook proudct catelog couldn't upload product,2,Client Issue,woocommerce conversion tracking,,,,,,,,,,,,,,,
+14-Feb-2019,Fix Attendance checkout reset,Fix Attendance checkout reset,2,Client Issue,ERP-Attendance,,,,,,,,,,,,,,,
+18-Feb-2019,Fix zendesk contact sync,Fix zendesk contact sync,3,Client Issue,ERP Zendesk,,,,,,,,,,,,,,,
+18-Feb-2019,Employee Blood Group Reporting ,Employee Blood Group Reporting ,5,New Feature,ERP,,,,,,,,,,,,,,,
+19-Feb-2019,Employee Blood Group Reporting ,Employee Blood Group Reporting ,1,New Feature,ERP,,,,,,,,,,,,,,,
+25-Feb-2019,Release v1.1.1,Release v1.1.1,1,Others,erp-zendesk,,,,,,,,,,,,,,,
+25-Feb-2019,Leave policy doesn't show,Leave policy doesn't show,1,Client Issue,ERP,,,,,,,,,,,,,,,
+26-Feb-2019,Fix license activation,Fix license activation,1,Plugin Issue,ERP Zendesk,,,,,,,,,,,,,,,
+26-Feb-2019,Release v1.0.1,Release v1.0.1,1,Others,ERP HR Training,,,,,,,,,,,,,,,
+26-Feb-2019,fix erp modal style,fix erp modal style,1,Plugin Issue,ERP,,,,,,,,,,,,,,,
+27-Feb-2019,Add loading spinner,Add loading spinner,1,New Feature,ERP,,,,,,,,,,,,,,,

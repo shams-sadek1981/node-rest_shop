@@ -1,0 +1,19 @@
+Date,Task / Feature,Sub Task,Hour,Type,Project
+01-Feb-2019,Feature test for Beta release,,7,Others,weMail
+03-Feb-2019,Prepare presentation,,8,Others,weMail
+04-Feb-2019,Fix some bugs,,9,Bug Fix,weMail
+05-Feb-2019,Fix some issue in cdn part,,8,Bug Fix,weMail
+06-Feb-2019,Working with bugs ,,7,Bug Fix,weMail
+07-Feb-2019,Fix some bugs and ui issue,,8,Bug Fix,weMail
+08-Feb-2019,Test all the Mail service,,7,Others,weMail
+11-Feb-2019,Create Vue cli 3 for wemail admin panel,,8,New Feature,weMail
+13-Feb-2019,Migrate previous feature to wemail new app,,8,New Feature,weMail
+14-Feb-2019,Working on Admin panel for weMail,,,,
+15-Feb-2019,migrating from app feature to admin panel,,8,Others,weMail
+18-Feb-2019,working with Admin panel dashboard design from mockup,,7,New Feature,weMail
+19-Feb-2019,working with API specification with jayonta vai,create postman file with all api endpoint,8,New Feature,weMail
+20-Feb-2019,Migrating from bootstrap to ant design,,8,New Feature,weMail
+25-Feb-2019,Create Skeleton from mockup to vuecli3 with ant design,,8,New Feature,weMail
+26-Feb-2019,Implement Passwordless Authentication from wordpress end to admin panel for wemail users,Check with api endpoint for testing the feature ,7,New Feature,weMail
+27-Feb-2019,Design login page and create login for admin panel and testing with api endpoint either it work or not ,,8,New Feature,weMail
+28-Feb-2019,Make centralize data with vuex implemation,,8,New Feature,weMail
