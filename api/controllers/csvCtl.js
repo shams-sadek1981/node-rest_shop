@@ -18,6 +18,8 @@ const localStorage = require('localStorage')
 let taskAndEstHours = [];
 let nameAndHours = [['SL', 'Name', 'WorkingHours', 'Est Hours']];
 
+const { employees, replaceTypes, replaceProjects } = require('../changeString')
+
 String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
@@ -115,25 +117,43 @@ exports.writeTaskEst = async (req, res, next) => {
         ]).then(data => resolve(data))
     })
 
-    // const taskLog = await new Promise((resolve, reject) => {
-
-    //     TaskLog.aggregate([
-    //         {
-    //             $group: {
-    //                 _id: { taskName: "$taskName", userName: "$userName", taskType: "$taskType", projectName: "$projectName" },
-    //                 workingHour: { $sum: "$workingHour" }
-    //             }
-    //         }
-    //     ]).then(data => resolve(data))
-    // })
-
     const result = taskLog.map(item => {
 
         const getTaskEstHour = taskEstHourResult.find(data => data.taskName == item._id.taskName)
 
-        let estHour = item.workingHour
-        let projectName = item.projectName
+        const findEmp = employees.find( emp => emp.name == item._id.userName)
+
+        //-- set value for percent calculation
+        let valuePercent = .10
+        if (findEmp) {
+            valuePercent = findEmp.value
+        }
+
+        //-- Process AI for Est Hour
+        let aiEstHour = item.workingHour
+        if(aiEstHour > 2 ) { //-- After Two Hours
+            aiEstHour = Math.floor(item.workingHour - (item.workingHour * valuePercent))
+        }
+
+        //-- set Task Type String
         let taskType = item.taskType
+        let findTaskType = replaceTypes.find( item => item.searchString == taskType )
+        if (findTaskType) {
+            taskType = findTaskType.replaceString
+        }
+        
+
+        //-- set Project String
+        let projectName = item.projectName
+        let findProject = replaceProjects.find( item => item.searchString == projectName )
+        if (findProject) {
+            projectName = findProject.replaceString
+        }
+        
+
+        let estHour = aiEstHour
+        
+        
         if (getTaskEstHour) {
             estHour = getTaskEstHour.estHour
             taskType = getTaskEstHour.taskType || item.taskType
@@ -258,7 +278,6 @@ exports.generateCsv = async (req, res, next) => {
 
     //-- get Individual user
     let result = []
-    
     
     //--All Project
     result.push(...generateAllProject(allProjects))
