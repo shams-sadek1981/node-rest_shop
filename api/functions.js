@@ -1,6 +1,6 @@
 const fs = require('fs');
 const csv = require('fast-csv');
-
+const jwt = require('jsonwebtoken');
 /**
  * 
  * @param { array } data 
@@ -142,4 +142,22 @@ exports.writeCsvFile = (processData,filePath) => {
         .pipe(ws)
 
     return true;
+}
+
+
+//-- check JWT
+exports.checkJwt = (req, res, next) => {
+    const { token } = req.headers
+    
+    jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
+        console.log(decoded)
+
+        if (decoded) {
+            next()
+        }else {
+            res.status(404).json({
+                message: 'Token mismatch'
+            })
+        }
+    });
 }
