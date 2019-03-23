@@ -11,11 +11,12 @@ const { deleteUser, getUserList, updateUser } = require('../controllers/userCtl'
 router.delete('/delete/:id', checkJwt, deleteUser)
 
 router.get('/list', checkJwt, getUserList)
+// router.get('/list', getUserList)
 
 router.put('/update/:id', checkJwt, updateUser)
 
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', (req, res) => {
 
     User.find({ email: req.body.email })
         .exec()
@@ -56,7 +57,7 @@ router.post('/signup', (req, res, next) => {
 })
 
 //-- POST Login url
-router.post('/login', (req, res, next) => {
+router.post('/login', (req, res) => {
     User.find({ email: req.body.email })
         .exec()
         .then(user => {
@@ -66,6 +67,7 @@ router.post('/login', (req, res, next) => {
                 })
             }
 
+            //-- compare password
             bcrypt.compare(req.body.password, user[0].password, (err, result) => {
                 if (err) {
                     return res.status(401).json({
@@ -75,10 +77,12 @@ router.post('/login', (req, res, next) => {
 
                 if (result) {
 
-                    const token = jwt.sign({
-                        email: user[0].email,
-                        userId: user[0]._id
-                    },
+                    //-- generate token
+                    const token = jwt.sign(
+                        {
+                            email: user[0].email,
+                            userId: user[0]._id
+                        },
                         process.env.JWT_KEY,
                         {
                             expiresIn: "1h"

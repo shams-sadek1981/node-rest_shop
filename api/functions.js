@@ -1,6 +1,42 @@
 const fs = require('fs');
 const csv = require('fast-csv');
 const jwt = require('jsonwebtoken');
+const jwtRefresh = require('jsonwebtoken-refresh');
+
+
+
+//-- check JWT
+exports.checkJwt = (req, res, next) => {
+
+    const { authorization } = req.headers
+
+    jwt.verify(authorization, process.env.JWT_KEY, function (err, decoded) {
+
+        if (decoded) {
+            next()
+        } else {
+
+            //-- check if expire
+            if (err.name == 'TokenExpiredError') {
+                let originalDecoded = jwt.decode(authorization, { complete: true });
+                let refreshed = jwtRefresh.refresh(originalDecoded, 3600, 'secret');
+
+                //-- Set Refresh Token
+                if (refreshed) {
+                    res.set({ 'refreshToken': refreshed })
+                }
+                next()
+            } else {
+                res.status(404).json({
+                    message: 'Token mismatch',
+                    err
+                })
+            }
+        }
+    });
+}
+
+
 /**
  * 
  * @param { array } data 
@@ -12,11 +48,11 @@ exports.groupByNameAndSum = (readData, sumItemIndex) => {
     //-- remove first record for header
     const column = readData.shift();
 
-    const newData = readData.map( item => item[sumItemIndex])
-    const estHourData = readData.map( item =>item[2])
+    const newData = readData.map(item => item[sumItemIndex])
+    const estHourData = readData.map(item => item[2])
 
-    const workingHours = newData.reduce( (acc, cur) => parseFloat(acc) + parseFloat(cur),0 )
-    const estHours = estHourData.reduce( (acc, cur) => parseFloat(acc) + parseFloat(cur),0 )
+    const workingHours = newData.reduce((acc, cur) => parseFloat(acc) + parseFloat(cur), 0)
+    const estHours = estHourData.reduce((acc, cur) => parseFloat(acc) + parseFloat(cur), 0)
 
     return [workingHours, estHours];
 }
@@ -83,21 +119,21 @@ const twoColumnForGroupBy = (data, groupItemIndex, sumItemIndex) => {
 }
 
 //-- Group By And Sum
-const groupBySum = (data, estData=[]) => {
+const groupBySum = (data, estData = []) => {
     let newResult = [];
 
     for (let rs of data) {
 
         const findIndex = newResult.findIndex(index => index[0] == rs[0])
         if (findIndex == -1) { // -1 means undefined
-            
-            const getEstHour = estData.find( task => task[0] == rs[0])// find Est Task for HOUR
-            if ( getEstHour ) {
+
+            const getEstHour = estData.find(task => task[0] == rs[0])// find Est Task for HOUR
+            if (getEstHour) {
                 newResult.push([...rs, getEstHour[1]])
             } else {
                 newResult.push([...rs, '0'])
-            }            
-            
+            }
+
         } else {
             newResult[findIndex][1] = parseFloat(newResult[findIndex][1]) + parseFloat(rs[1])
         }
@@ -109,7 +145,7 @@ const groupBySum = (data, estData=[]) => {
 
 //-- Read .CSV file
 exports.readCsvFile = (filePath) => {
-    
+
     //-- Est Hour Generate
     if (!fs.existsSync(filePath)) {
         console.log('File does not exists')
@@ -131,9 +167,9 @@ exports.readCsvFile = (filePath) => {
     })
 }
 
-exports.writeCsvFile = (processData,filePath) => {
+exports.writeCsvFile = (processData, filePath) => {
     const dirName = filePath.split('/')[0]
-    if (!fs.existsSync(dirName)){
+    if (!fs.existsSync(dirName)) {
         fs.mkdirSync(dirName);
     }
 
@@ -145,19 +181,4 @@ exports.writeCsvFile = (processData,filePath) => {
 }
 
 
-//-- check JWT
-exports.checkJwt = (req, res, next) => {
-    const { token } = req.headers
-    
-    jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
-        console.log(decoded)
 
-        if (decoded) {
-            next()
-        }else {
-            res.status(404).json({
-                message: 'Token mismatch'
-            })
-        }
-    });
-}
