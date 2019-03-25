@@ -6,7 +6,7 @@ const User = require('../models/user');
 //-- Update user
 exports.updateUser = (req, res, next) => {
     
-    User.findOneAndUpdate({_id: req.params.id}, req.body)
+    User.findOneAndUpdate({_id: req.params.id}, req.body, { new: true})
         .exec()
         .then( doc => {
             res.status(200).json(doc)
