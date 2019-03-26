@@ -3,9 +3,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const UpcomingTask = require('../models/upcomingTask');
 
-//-- Create New Task
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  Create New Task
+ * ------------------------------------------------------------------------------------------------
+ */
 exports.createNewTask = (req, res) => {
-    
+
     const upcomingTask = new UpcomingTask({
         taskName: req.body.taskName,
         subTask: req.body.subTask,
@@ -21,12 +26,12 @@ exports.createNewTask = (req, res) => {
     })
 
     upcomingTask.save()
-        .then( result => {
+        .then(result => {
             res.status(200).json({
                 result
             })
         })
-        .catch( err => {
+        .catch(err => {
 
             if (err.code == 11000) {
                 return res.status(409).json({
@@ -40,14 +45,106 @@ exports.createNewTask = (req, res) => {
         })
 }
 
+
+
+exports.taskSearch = (req, res) => {
+
+    let matchUser = { assignedUser: req.query.name }
+    let matchProject = { projectName: req.query.project }
+
+    let match = {}
+
+    if (matchProject.projectName) {
+        if(matchProject.projectName != 'all'){
+            match = {
+                ...match,
+                ...matchProject
+            }
+        }
+    }
+
+    if (matchUser.assignedUser) {
+        if (matchUser.assignedUser != 'all') {
+
+            match = {
+                ...match,
+                ...matchUser
+            }
+        }
+    }
+
+    UpcomingTask.aggregate([
+        {
+            $match: match
+        },
+        {
+            $group: {
+                _id: null,
+                totalEst: { $sum: "$estHour" }
+            }
+        }
+    ]).exec()
+        .then(estHour => {
+
+            //-- get Total Est Hour
+            const totalEstHour = estHour[0].totalEst
+
+            //-- get all task
+            UpcomingTask.find(match)
+                .exec()
+                .then(allData => {
+                    res.status(200).json({
+                        count: allData.length,
+                        totalEstHour,
+                        result: allData
+                    })
+                })
+                .catch( err => {
+                    res.status(409).json({
+                        message: 'No Data Found',
+                        err
+                    })
+                })
+        })
+        .catch( err => {
+            res.status(409).json({
+                message: 'No Data Found',
+                err
+            })
+        })
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  All List
+ * ------------------------------------------------------------------------------------------------
+ */
 exports.taskList = (req, res) => {
 
-    UpcomingTask.find({})
+    UpcomingTask.aggregate([
+        {
+            $group: {
+                _id: null,
+                totalEst: { $sum: "$estHour" }
+            }
+        }
+    ])
         .exec()
-        .then( result => {
-            res.status(200).json({
-                result
-            })
+        .then(estHour => {
+
+            //-- get Total Est Hour
+            const totalEstHour = estHour[0].totalEst
+
+            //-- get all task
+            UpcomingTask.find({})
+                .exec()
+                .then(allData => {
+                    res.status(200).json({
+                        count: allData.length,
+                        totalEstHour,
+                        result: allData
+                    })
+                })
         })
 }
 
@@ -55,12 +152,12 @@ exports.taskList = (req, res) => {
 //-- Update user
 exports.updateTask = (req, res) => {
 
-    UpcomingTask.findOneAndUpdate({_id: req.params.id}, req.body, { new: true})
+    UpcomingTask.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
         .exec()
-        .then( doc => {
+        .then(doc => {
             res.status(200).json(doc)
         })
-        .catch( err => {
+        .catch(err => {
 
             let message = 'Invalid Task id'
 

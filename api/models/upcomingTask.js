@@ -30,19 +30,19 @@ const upcomingTaskSchema = mongoose.Schema({
     },
     srs: {
         type: Boolean,
-        default: 0
+        default: false
     },
     mockup: {
         type: Boolean,
-        default: 0
+        default: false
     },
     design: {
         type: Boolean,
-        default: 0
+        default: false
     },
     frontend: {
         type: Boolean,
-        default: 0
+        default: false
     },
     createdAt : { type : Date, default: Date.now }
 })
