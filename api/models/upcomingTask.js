@@ -3,14 +3,19 @@ const mongoose = require('mongoose');
 const upcomingTaskSchema = mongoose.Schema({
     taskName: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     subTask:[
         {
-            subTaskName: {
-                type: String
-            }
+            name: {
+                type: String,
+                required: true
+            },
+            assignedUser: String,
+            estHour: Number,
+            createdAt : { type : Date, default: Date.now },
+            startAt: Date,
+            completedAt: Date
         }
     ],
     description: {

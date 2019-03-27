@@ -6,6 +6,98 @@ const UpcomingTask = require('../models/upcomingTask');
 
 /**
  * ------------------------------------------------------------------------------------------------
+ *  Create Sub Task
+ * ------------------------------------------------------------------------------------------------
+ */
+exports.createSubtask = (req, res) => {
+
+    UpcomingTask.update(
+        { _id: req.params.id },
+        {
+            $push: {
+                subTask: {
+                    $each: [{
+                        name: req.body.name,
+                        assignedUser: req.body.assignedUser,
+                        estHour: req.body.estHour
+                    }]
+                }
+            }
+        }
+    ).then(result => {
+        res.status(200).json({
+            result
+        })
+    })
+        .catch(err => {
+            res.status(409).json({
+                err
+            })
+        })
+}
+
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  Delete Sub Task
+ * ------------------------------------------------------------------------------------------------
+ */
+exports.deleteSubTask = (req, res) => {
+
+    UpcomingTask.update(
+        { _id: req.body.id },
+        {
+            $pull: {
+                subTask: { _id: req.params.id }
+            }
+        },
+        { new: true }
+    ).then(result => {
+        res.status(200).json({
+            result
+        })
+    })
+        .catch(err => {
+            res.status(409).json({
+                err
+            })
+        })
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  Update Sub Task
+ * ------------------------------------------------------------------------------------------------
+ */
+exports.updateSubTask = (req, res) => {
+
+    UpcomingTask.update(
+        { _id: req.params.id },
+        {
+            $set: {
+                subTask: {
+                    name: req.body.name,
+                    assignedUser: req.body.assignedUser,
+                    estHour: req.body.estHour
+                }
+            }
+        }
+    ).then(result => {
+        res.status(200).json({
+            result
+        })
+    })
+        .catch(err => {
+            res.status(409).json({
+                err
+            })
+        })
+}
+
+
+
+/**
+ * ------------------------------------------------------------------------------------------------
  *  Create New Task
  * ------------------------------------------------------------------------------------------------
  */
@@ -55,7 +147,7 @@ exports.taskSearch = (req, res) => {
     let match = {}
 
     if (matchProject.projectName) {
-        if(matchProject.projectName != 'all'){
+        if (matchProject.projectName != 'all') {
             match = {
                 ...match,
                 ...matchProject
@@ -99,14 +191,14 @@ exports.taskSearch = (req, res) => {
                         result: allData
                     })
                 })
-                .catch( err => {
+                .catch(err => {
                     res.status(409).json({
                         message: 'No Data Found',
                         err
                     })
                 })
         })
-        .catch( err => {
+        .catch(err => {
             res.status(409).json({
                 message: 'No Data Found',
                 err

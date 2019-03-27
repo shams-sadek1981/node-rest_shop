@@ -4,8 +4,22 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { checkJwt } = require('../functions');
-const { createNewTask, taskList, updateTask, deleteTask, taskSearch } = require('../controllers/upcomingTaskCtl')
+const { 
+    createNewTask,
+    taskList,
+    updateTask,
+    deleteTask,
+    taskSearch,
+    createSubtask,
+    deleteSubTask,
+    updateSubTask
+} = require('../controllers/upcomingTaskCtl')
 
+
+//-- subtask
+router.post('/subtask/create/:id', checkJwt, createSubtask)
+router.delete('/subtask/delete/:id', checkJwt, deleteSubTask)
+router.put('/subtask/update/:id', checkJwt, updateSubTask)
 
 router.post('/create', checkJwt, createNewTask)
 router.put('/update/:id', checkJwt, updateTask)
