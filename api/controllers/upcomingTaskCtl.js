@@ -11,7 +11,7 @@ const UpcomingTask = require('../models/upcomingTask');
  */
 exports.createSubtask = (req, res) => {
 
-    UpcomingTask.update(
+    UpcomingTask.findOneAndUpdate(
         { _id: req.params.id },
         {
             $push: {
@@ -23,10 +23,11 @@ exports.createSubtask = (req, res) => {
                     }]
                 }
             }
-        }
+        },
+        { new: true }
     ).then(result => {
         res.status(200).json({
-            result
+            result: result.subTask.pop()
         })
     })
         .catch(err => {
@@ -71,17 +72,19 @@ exports.deleteSubTask = (req, res) => {
  */
 exports.updateSubTask = (req, res) => {
 
-    UpcomingTask.update(
-        { _id: req.params.id },
+    UpcomingTask.findOneAndUpdate(
+        { "subTask._id": req.params.id },
         {
             $set: {
                 subTask: {
+                    _id: req.params.id,
                     name: req.body.name,
                     assignedUser: req.body.assignedUser,
                     estHour: req.body.estHour
                 }
             }
-        }
+        },
+        { new: true }
     ).then(result => {
         res.status(200).json({
             result
