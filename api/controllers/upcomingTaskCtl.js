@@ -19,7 +19,8 @@ exports.createSubtask = (req, res) => {
                     $each: [{
                         name: req.body.name,
                         assignedUser: req.body.assignedUser,
-                        estHour: req.body.estHour
+                        estHour: req.body.estHour,
+                        status: req.body.status
                     }]
                 }
             }
@@ -76,11 +77,11 @@ exports.updateSubTask = (req, res) => {
         { "subTask._id": req.params.id },
         {
             $set: {
-                subTask: {
-                    _id: req.params.id,
+                "subTask.$": {
                     name: req.body.name,
                     assignedUser: req.body.assignedUser,
-                    estHour: req.body.estHour
+                    estHour: req.body.estHour,
+                    status: req.body.status
                 }
             }
         },
@@ -141,72 +142,106 @@ exports.createNewTask = (req, res) => {
 }
 
 
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Search Task
+ * ----------------------------------------------------------------------------------------------------
+ */
 
-exports.taskSearch = (req, res) => {
-
-    let matchUser = { assignedUser: req.query.name }
-    let matchProject = { projectName: req.query.project }
+const sumEstHourAndTotalSubTask = (userName = 'all', projectName = 'all') => {
 
     let match = {}
+    if (userName != 'all') {
+        match = { "subTask.assignedUser": userName }
+    }
 
-    if (matchProject.projectName) {
-        if (matchProject.projectName != 'all') {
-            match = {
-                ...match,
-                ...matchProject
-            }
+    if (projectName != 'all') {
+        match = {
+            ...match,
+            projectName
         }
     }
 
-    if (matchUser.assignedUser) {
-        if (matchUser.assignedUser != 'all') {
-
-            match = {
-                ...match,
-                ...matchUser
-            }
-        }
-    }
-
-    UpcomingTask.aggregate([
+    return UpcomingTask.aggregate([
+        { "$unwind": "$subTask" },
         {
             $match: match
         },
         {
-            $group: {
+            "$group": {
+                // _id: { taskName: "$taskName" },
                 _id: null,
-                totalEst: { $sum: "$estHour" }
+                // subTasks: { $push: "$subTask" },
+                estHour: { $sum: "$subTask.estHour" },
+                totalTask: { $sum: 1 }
             }
         }
-    ]).exec()
-        .then(estHour => {
+    ]).then(data => data[0])
 
-            //-- get Total Est Hour
-            const totalEstHour = estHour[0].totalEst
+}
 
-            //-- get all task
-            UpcomingTask.find(match)
-                .exec()
-                .then(allData => {
-                    res.status(200).json({
-                        count: allData.length,
-                        totalEstHour,
-                        result: allData
-                    })
-                })
-                .catch(err => {
-                    res.status(409).json({
-                        message: 'No Data Found',
-                        err
-                    })
-                })
+
+//-- Build Query
+const queryBulder = (userName, projectName) => {
+    let queryObj = {}
+
+    if (userName != 'all') {
+        queryObj = {
+            ...queryObj,
+            subTask: {
+                $elemMatch: {
+                    assignedUser: userName
+                }
+            }
+        }
+    }
+
+    if (projectName != 'all') {
+        queryObj = {
+            ...queryObj,
+            projectName
+        }
+    }
+
+    return queryObj
+}
+
+exports.taskSearch = async (req, res) => {
+
+    const userName = req.query.name
+    const projectName = req.query.project
+
+    //-- by user
+    const userResult = await sumEstHourAndTotalSubTask(userName, projectName)
+    const userEstHour = userResult.estHour
+    const userTotalSubTask = userResult.totalTask
+
+    //-- all user
+    const totalResult = await sumEstHourAndTotalSubTask()
+    const totalEstHour = totalResult.estHour
+    const totalSubTask = totalResult.totalTask
+
+    const queryObj = queryBulder(userName, projectName)
+
+    UpcomingTask.find({
+        ...queryObj
+    }).then(data => {
+
+        res.status(200).json({
+            totalTask: data.length,
+            totalEstHour,
+            totalSubTask,
+            userName,
+            userEstHour,
+            userTotalSubTask,
+            result: data
         })
-        .catch(err => {
-            res.status(409).json({
-                message: 'No Data Found',
-                err
-            })
+    }).catch(err => {
+        res.status(404).json({
+            err
         })
+    })
+    
 }
 
 /**

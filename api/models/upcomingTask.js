@@ -13,6 +13,7 @@ const upcomingTaskSchema = mongoose.Schema({
             },
             assignedUser: String,
             estHour: Number,
+            status: Boolean,
             createdAt : { type : Date, default: Date.now },
             startAt: Date,
             completedAt: Date
