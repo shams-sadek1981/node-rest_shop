@@ -148,24 +148,14 @@ exports.createNewTask = (req, res) => {
  * ----------------------------------------------------------------------------------------------------
  */
 
-const sumEstHourAndTotalSubTask = (userName = 'all', projectName = 'all') => {
+const sumEstHourAndTotalSubTask = (queryObj={}) => {
 
-    let match = {}
-    if (userName != 'all') {
-        match = { "subTask.assignedUser": userName }
-    }
-
-    if (projectName != 'all') {
-        match = {
-            ...match,
-            projectName
-        }
-    }
+    // const match = queryBuilder(userName, projectName)
 
     return UpcomingTask.aggregate([
         { "$unwind": "$subTask" },
         {
-            $match: match
+            $match: queryObj
         },
         {
             "$group": {
@@ -182,51 +172,76 @@ const sumEstHourAndTotalSubTask = (userName = 'all', projectName = 'all') => {
 
 
 //-- Build Query
-const queryBulder = (userName, projectName) => {
-    let queryObj = {}
+const queryBuilder = (userName='all', projectName='all') => {
 
+    let match = {}
     if (userName != 'all') {
-        queryObj = {
-            ...queryObj,
-            subTask: {
-                $elemMatch: {
-                    assignedUser: userName
-                }
-            }
-        }
+        match = { "subTask.assignedUser": userName }
     }
 
     if (projectName != 'all') {
-        queryObj = {
-            ...queryObj,
+        match = {
+            ...match,
             projectName
         }
     }
 
-    return queryObj
+    return match
 }
 
 exports.taskSearch = async (req, res) => {
 
-    const userName = req.query.name
-    const projectName = req.query.project
+    const userName = await req.query.name
+    const projectName = await req.query.project
 
-    //-- by user
-    const userResult = await sumEstHourAndTotalSubTask(userName, projectName)
+    const queryObj = await queryBuilder(userName, projectName)
+
+
+    //-- by user & project
+    const userResult = await sumEstHourAndTotalSubTask(queryObj)
     const userEstHour = userResult.estHour
     const userTotalSubTask = userResult.totalTask
+
 
     //-- all user
     const totalResult = await sumEstHourAndTotalSubTask()
     const totalEstHour = totalResult.estHour
     const totalSubTask = totalResult.totalTask
 
-    const queryObj = queryBulder(userName, projectName)
 
-    UpcomingTask.find({
-        ...queryObj
-    }).then(data => {
+    UpcomingTask.aggregate([
+        { "$unwind": "$subTask" },
+        {
+            $match: queryObj
+        },
+        {
+            $group: {
+                _id: {
+                    taskName: "$taskName",
+                    projectName: "$projectName",
+                    taskType: "$taskType",
+                    description: "$description",
+                },
+                subTasks: { $push: "$subTask" },
+                estHour: {
+                    $sum: "$subTask.estHour"
+                }
+                
+            }
+        }
+        
+    ]).then(data => {
 
+        //-- Transform Data
+        const result = data.map( item => {
+            return {
+                ...item._id,
+                subTasks: item.subTasks,
+                estHour: item.estHour
+            }
+        })
+
+        //-- Return Result
         res.status(200).json({
             totalTask: data.length,
             totalEstHour,
@@ -234,15 +249,17 @@ exports.taskSearch = async (req, res) => {
             userName,
             userEstHour,
             userTotalSubTask,
-            result: data
+            result
         })
+
     }).catch(err => {
         res.status(404).json({
             err
         })
     })
-    
 }
+
+
 
 /**
  * ------------------------------------------------------------------------------------------------
