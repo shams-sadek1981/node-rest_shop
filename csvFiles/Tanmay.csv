@@ -1,32 +1,29 @@
 Date,Task / Feature,Sub Task,Hour,Type,Project
-01-Feb-2019,Fixing minor issues,,2,Bug Fix,Bnimoy
-01-Feb-2019,Meeting with Debasish vai,,2,Others,Bnimoy
-01-Feb-2019,Creating db schema for autopay,,4,New Feature,Bnimoy
-04-Feb-2019,Creating migrations,,4,New Feature,Bnimoy
-04-Feb-2019,"Creating models, relations, controllers etc.",,4,New Feature,Bnimoy
-05-Feb-2019,Implementing autopay in client app,,8,New Feature,Bnimoy
-06-Feb-2019,Refactored forms,,4,Others,Bnimoy
-06-Feb-2019,Cleaning UI,,4,Others,Bnimoy
-07-Feb-2019,Creating logos for each channel,,4,New Feature,Bnimoy
-07-Feb-2019,Customize v-tooltip and apply where needed,,4,Others,Bnimoy
-08-Feb-2019,Fixed nav items position and navbar,,4,Others,Bnimoy
-08-Feb-2019,"Updated primary color, reset font, removed misplacement of icons and other minor improvements",,4,Others,Bnimoy
-11-Feb-2019,Added payment interval scheme to all channels,,4,Others,Bnimoy
-11-Feb-2019,Prohibited users from sending contract to themselves,,2,Others,Bnimoy
-11-Feb-2019,Added pay from wallet,,2,New Feature,Bnimoy
-12-Feb-2019,Added treasury bill,,8,New Feature,Bnimoy
-13-Feb-2019,Updated treasury bill api and schema,,6,Bug Fix,Bnimoy
-13-Feb-2019,Fixed v-tooltip,,2,Bug Fix,Bnimoy
-14-Feb-2019,"Centered modal, grouped channel conntrollers",,4,New Feature,Bnimoy
-14-Feb-2019,"Added pay via wallet on revision, sent latest revision with contract",,4,New Feature,Bnimoy
-15-Feb-2019,"Scaffold new client project, added to bitbucket",,8,New Feature,Bnimoy
-16-Feb-2019,Adapting ant design,,4,New Feature,Bnimoy
-16-Feb-2019,"Set up layout, authentication and other project dependencies for new project",,4,New Feature,Bnimoy
-17-Feb-2019,"Fixed routing, responsiveness, authentication issues",,8,New Feature,Bnimoy
-18-Feb-2019,Fixed navbar,,4,New Feature,Bnimoy
-18-Feb-2019,Added wallet refill in client,,4,New Feature,Bnimoy
-19-Feb-2019,Show balance globally,,4,New Feature,Bnimoy
-19-Feb-2019,Add OTP validation,,2,New Feature,Bnimoy
-19-Feb-2019,Refactor UI,,2,New Feature,Bnimoy
-20-Feb-2019,Switch from sidebar to navbar,,4,New Feature,Bnimoy
-22-Feb-2019,Add send money feature,,4,New Feature,Bnimoy
+03-Mar-2019,Refactor UI,,4,Others,bnimoy
+03-Mar-2019,Add withdrawal request,,4,Others,bnimoy
+04-Mar-2019,Add contextually contract view switching,,4,New Feature,bnimoy
+04-Mar-2019,Fix multiple UI issues,,4,Bug Fix,bnimoy
+05-Mar-2019,Improve contract table with new UI design,,4,Others,bnimoy
+05-Mar-2019,Add utility classes in app.css and added more helpers ,,4,Others,bnimoy
+06-Mar-2019,"Move view to timeline, and improved user actions",,4,Others,bnimoy
+06-Mar-2019,Decouple contract,,4,Others,bnimoy
+07-Mar-2019,Add payment channels,,8,Others,bnimoy
+08-Mar-2019,Format validation rule and contract creators info,,2,Others,bnimoy
+08-Mar-2019,"Add paybills form, laravel echo, wallet history, footer etc.",,6,Others,bnimoy
+11-Mar-2019,Add contract timeline,,8,Others,bnimoy
+12-Mar-2019,"Add laravel websocket, fix lint errors, format momentjs",,8,Others,bnimoy
+13-Mar-2019,Update payment instruction api,,4,Others,bnimoy
+13-Mar-2019,Update payment instruction ui,,4,Others,bnimoy
+14-Mar-2019,"Fix navbar, background color and multiple responsive issues",,8,Others,bnimoy
+15-Mar-2019,Update contract role choosing UI,,4,Others,bnimoy
+15-Mar-2019,Add bills endpoints,,4,Others,bnimoy
+19-Mar-2019,Improve UI,,8,Others,bnimoy
+20-Mar-2019,Add payments list,,8,Others,bnimoy
+21-Mar-2019,"Fix margin padding, for all components",,4,Others,bnimoy
+21-Mar-2019,Add tutorial drawer for contract,,4,Others,bnimoy
+22-Mar-2019,Add withdrawal method,,4,Others,bnimoy
+22-Mar-2019,Add invoice download,,4,Others,bnimoy
+25-Mar-2019,"Add gravatar, fix route and multiple contract issues",,8,Others,bnimoy
+27-Mar-2019,"Fix menu bar, profile, balance and update add netlify settings",,8,Others,bnimoy
+28-Mar-2019,"Add PWA support, fix navbar",,8,Others,bnimoy
+29-Mar-2019,"Tweal UI, Update contract download api, test app",,8,Others,bnimoy

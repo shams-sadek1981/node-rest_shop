@@ -1,36 +1,34 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,,,Upcoming task,
-01-Feb-2019,weForms Entries,"When user fill in a form and submit the form, no data is shown in the Entries.",3,Client Issue,weForms,,,,WP User Frontend
-04-Feb-2019,Admin Bar,"After updating WP User Frontend Pro, WordPress dashboard header is now visible to users",1,Client Issue,WPUF,,,,
-04-Feb-2019,Support,Provided support on wordpress.org,1,Support,WPUF,,,,Conditional logic with hidden field
-04-Feb-2019,Stripe Module,Fatal error when Stripe module & WC Marketplace plugin is active,1,Client Issue,WPUF Pro,,,,WPUF options in single meta box (edit post screen)
-06-Feb-2019,Scripts,Minify styles/scripts into a single file for production,4,Improvement,weForms/weForms Pro,,,,Repeat Field
-06-Feb-2019,Field,Fields could not be deleted when WPERP document manager activated,0.5,Client Issue,weForms,,,,Column field
-06-Feb-2019,PayPal Transaction,Transactions listing stays empty after a live PayPal payment.,1,Client Issue,WPUF,,,,
-07-Feb-2019,PayPal Transaction,Transactions listing stays empty after a live PayPal payment.,7,Client Issue,WPUF,,,,Design update required notice of WPUF & set proper version to compare
-08-Feb-2019,PayPal Transaction,Transactions listing stays empty after a live PayPal payment.,3,Client Issue,WPUF,,,,Keep all page/post metaboxes in a single metabox
-08-Feb-2019,Post Edit,Fix: duplicate post when image field is empty in the backend,0.5,Bug,WPUF,,,,Design metaboxes for gutenberg block according to ACF
-11-Feb-2019,Checkbox,Use Switch button where single checkbox available,2,Feature,weForms,,,,Multiple notification like weForms
-11-Feb-2019,Layout,Latest version breaks the edit page layout.,1,Client Issue,WPUF,,,,weForms - Release Day - Wednesday [Test Day-Monday]
-11-Feb-2019,Setting Page Sidebar,Upgrade to pro on settings page,2,Feature,weForms,,,,
-12-Feb-2019,PDF Entries,Create new function to get country full-name & showing on the PDF,1.5,Bug,weForms,,,,Repeat Field
-12-Feb-2019,Phone Field,Phone field doesn't take the right phone number format.,0.5,Bug,weForms Pro,,,,Column Field
-12-Feb-2019,Shortcode Field,"Added label & css option for shortcode field so that user can hide shortcode field label using custom CSS class or use custom field label, fix #18",0.5,Feature,weForms Pro,,,,Update weForms content for WordPress.org
-12-Feb-2019,Numeric Field,Expression builder textarea field automatically reset When edit calculation,2.5,Bug,weForms Pro,,,,Design metaboxes for gutenberg block according to ACF
-12-Feb-2019,Calculation Feature,Calculation module is not working from preview & share option,1.5,Bug,weForms Pro,,,,Add form search field
-13-Feb-2019,Form Duplicate,"When duplicating a contact form, showing error `schedule_form of undefined`",1.5,Bug,weForms,,,,
-13-Feb-2019,Form Integrations Tab,Help mehedi(frontend developer) regarding new design for form integrations tab & added new methods to replac all logo for setting page,5,Feature,weForms,,,,
-14-Feb-2019,Release,weForms v1.3.7 & weForms Pro v1.3.4 release meeting,0.5,Meeting,weForms,,,,
-14-Feb-2019,Translation,"Translation problems with this three strings ( * Search, Search here ,Back to listing ).",0.5,Client Issue,WPUF Pro,,,,
-14-Feb-2019,Testing & Release,"Testing & release weForms v1.3.7, weForms Pro v1.3.4",5,Testing & Release,weForms,,,,
-15-Feb-2019,Conflict ,Conflict between WPUF plugin and The Event Calendar Plugin,2.5,Client Issue,WPUF,,,,
-15-Feb-2019,ACF Integration,WPFU Form Checkboxes not linking/syncing with ACF fields.,3,Client Issue,WPUF,,,,
-18-Feb-2019,Render Field Data,Checkbox data not selected when ACF compatibility option is enabled,2,Bug,WPUF,,,,
-19-Feb-2019,New Field,Column Field (Added a new field: range),6,Feature,WPUF,,,,
-18-Feb-2019,New Field,Column Field,7,Feature,WPUF,,,,
-25-Feb-2019,Conflict with Toolset Views Plugin,Error 500 when trying to reset the password,3,Client Issue,WPUF,,,,
-25-Feb-2019,New Field,Column Field,4,Feature,WPUF,,,,
-26-Feb-2019,Menu Restriction,Conflicts between MegPlus theme' mega menu and WPUF.,1,Client Issue,WPUF Pro,,,,
-26-Feb-2019,New Field,Column Field,8,Feature,WPUF,,,,
-27-Feb-2019,New Field,Column Field,9,Feature,WPUF,,,,
-28-Feb-2019,Conflict ,Stripe conclict when WC Marketplace is active,2,Bug,WPUF Pro,,,,
-28-Feb-2019,Testing & Release,"Testing & release WPUF v3.1.1, WPUF Pro v3.1.1",6,Release,WPUF,,,,
+Date,Task / Feature,Sub Task,Hour,Type,Project
+01-Mar-2019,Edit Page,Latest version breaks the page layout,1,Client Issue,WPUF
+01-Mar-2019,Image Upload,Image upload error limited on the 'Insert Image' on post body/textarea,1,Client Issue,WPUF
+01-Mar-2019,New Field,Column Field,6,Feature,WPUF
+04-Mar-2019,New Field,Column Field,8,Feature,WPUF
+05-Mar-2019,Post Edit,Checkbox value is not being saved while editing the post.,1,Client Issue,WPUF
+05-Mar-2019,New Field,Column Field,7,Feature,WPUF
+06-Mar-2019,New Field,Column Field (Builder Stage),9,Feature,WPUF
+07-Mar-2019,New Field,Column Field (Builder Stage),8,Feature,WPUF
+08-Mar-2019,New Field,"Column Field (Editing Panel, Resizable Columns)",8,Feature,WPUF
+11-Mar-2019,Registration Form,User password is not saved while registration,4,Client Issue,WPUF
+11-Mar-2019,Menu Restriction,Drop Down from the menu is only available for admin. Drop down is invisible for other user roles.,0.5,Client Issue,WPUF
+11-Mar-2019,Category Field,"Urgent: Category field in the post form is not working, when the type is "" text input "" ( Plugin & Client issue )",0.5,Client Issue,WPUF
+11-Mar-2019,New Field,Column Field,3,Feature,WPUF
+12-Mar-2019,New Field,Column Field,8,Feature,WPUF
+13-Mar-2019,New Field,Column Field,6,Feature,WPUF
+14-Mar-2019,Site Development,Alumni Site with SSL COMMERZ gateway integration,8.5,Feature,WPUF
+19-Mar-2019,New Field,Column Field (Handle frontend submission),7,Feature,WPUF
+20-Mar-2019,Site Development,https://carmichaelalumni.com,3,Site Development,WPUF
+20-Mar-2019,Google Map,When WPUF is activated the password generate option for vendor role is not working,2,Client Issue,WPUF Pro
+21-Mar-2019,New Field,Column Field,8,Feature,WPUF
+22-Mar-2019,Frontend Dashboard,Unable to render the events on the front-end,5,Bug,WPUF
+25-Mar-2019,Social Login,Facebook social login is not working,1,Client Issue,WPUF Pro
+25-Mar-2019,Login Form,"After successful registration, if the user tried to login, the user facing this error.",1,Client Issue ,WPUF
+25-Mar-2019,Post Edit,Page order getting 0(zero) after editing from the frontend,1,Bug,WPUF
+25-Mar-2019,Conflict,Conflicts with WC Frontend Manager plugin,2,Client Issue,WPUF
+27-Mar-2019,Email Notification, Email doesn't send after submitting the form,1,Client Issue,weForms
+27-Mar-2019,User Listing Module,"checkbox, radio field data not showing properly on user listing page",2,Bug,WPUF Pro
+27-Mar-2019,User Listing Module,file type Meta key in the WPUF User listing module is not being saved,2,Bug,WPUF Pro
+28-Mar-2019,Column Field,Column Field Issues,8.5,Fix,WPUF
+29-Mar-2019,Avatar Function,the args param not working with get_avatar filter,0.5,Bug,WPUF
+29-Mar-2019,Subscription Email,Fix: Subscription Reminder email being sent at a wrong time,3,Bug,WPUF Pro
+29-Mar-2019,Stripe Payment,Updated Stripe library & set Stripe AppInfo,0.5,Improvement,WPUF Pro
+29-Mar-2019,Taxonomy Field,Taxonomy data is not selected for ajax type category field,2,Bug,WPUF

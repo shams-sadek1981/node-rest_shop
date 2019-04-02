@@ -25,6 +25,7 @@ exports.replaceTypes = [
     { searchString: 'Bug Fix', replaceString: 'Bug Fixed'},
     { searchString: 'Bug Fixes', replaceString: 'Bug Fixed'},
     { searchString: 'Bux Fix', replaceString: 'Bug Fixed'},
+    { searchString: 'Fix', replaceString: 'Bug Fixed'},
     { searchString: 'Other', replaceString: 'Others'},
     { searchString: 'Manual Testing & Discussion', replaceString: 'Testing'},
     { searchString: 'Automation', replaceString: 'Testing'},
@@ -75,4 +76,7 @@ exports.replaceProjects = [
     { searchString: 'WP ERP', replaceString: 'ERP'},
     { searchString: 'ERP-Demo-Client', replaceString: 'ERP'},
     { searchString: 'WP User Frontend', replaceString: 'WPUF'},
+    { searchString: 'WP Project Manager', replaceString: 'Project Manager'},
+    { searchString: 'bnimoy', replaceString: 'Bnimoy'},
+    { searchString: 'Dokan APP', replaceString: 'Dokan App'},
 ]

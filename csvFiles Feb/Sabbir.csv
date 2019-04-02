@@ -1,0 +1,24 @@
+Date,Task / Feature,Sub Task,Hours,Type,Project,,,
+01-Feb-2019,POS,,9,New Feature,POS,,,
+04-Feb-2019,POS,,8,New Feature,POS,,Upcoming task,
+05-Feb-2019,POS,,6,New Feature,POS,,1,networking mode dokan plugin (client issue)
+11-Feb-2019,Dokan Lite release,,1,New Feature,POS,,5,Bulk assign multiple products to a single vendor
+11-Feb-2019,Dokan Lite pull request checking,,1,New Feature,POS,,6,RMA
+11-Feb-2019,POS,,7,New Feature,POS,,7,Re-design Vendor store settings page (Add each section with toggle)
+12-Feb-2019,POS,,9,New Feature,POS,,,
+13-Feb-2019,POS,,10,New Feature,POS,,,
+14-Feb-2019,POS,,9,New Feature,POS,,,
+15-Feb-2019,POS,,8,New Feature,POS,,,
+18-Feb-2019,POS finish and submit in org,,9,New Feature,POS,,,
+18-Feb-2019,Dokan Pro pull request check and merge,,2,New Feature,POS,,,
+19-Feb-2019,POS free resubmit with fix issues,,4,New Feature,POS,,,
+19-Feb-2019,Dokan pro pull check,,1,New Feature,POS,,,
+20-Feb-2019,Release dokan Pro,,1,New Feature,POS,,,
+20-Feb-2019,Analysis pos pro features,,3,New Feature,POS,,,
+20-Feb-2019,Meeting with sadik vai and sk vai ,,1,New Feature,POS,,,
+22-Feb-2019,POS pro barcode system ,,6,New Feature,POS,,,
+22-Feb-2019,Meeting with sk and sadik vai for design,,1,New Feature,POS,,,
+25-Feb-2019,Working on receipt builder,,2,New Feature,POS,,,
+25-Feb-2019,Checking codecanyon pos plugin and features,,3,New Feature,POS,,,
+25-Feb-2019,Meeting with sk vai ,,1,New Feature,POS,,,
+26-Feb-2019,Working on do action and filter in pos free,,4,New Feature,POS,,,

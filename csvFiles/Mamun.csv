@@ -1,44 +1,54 @@
 Date,Task / Feature,Sub Task,Hour,Type,Project
-01-Feb-2019,Updated Database migrations,,1,New Feature,Appsero
-,Update replay to mail for auto responder,,4,Bug Fix,Appsero
-,Added form for reply to email ,,4,New Feature,Appsero
-04-Feb-2019,Updated Exceptions,,4,Bug Fix,Appsero
-,Moved curl request to queue,,3,New Feature,Appsero
-,Fixed the problem of replay to email,,2,Bug Fix,Appsero
-05-Feb-2019,Fixed the problem of Settings and Activations limit issue,,4,Bug Fix,Appsero
-,"Added try catch block for excepiotns, Updated Remote store",,3,Bug Fix,Appsero
-,Update User Guide,,2,New Feature,Appsero
-06-Feb-2019,Update doc site,,5,Bug Fix,Appsero
-,Added tawk chatbox,,1,New Feature,Appsero
-07-Feb-2019,Updated doc Sites,,5,New Feature,Appsero
-,Created Video,,4,New Feature,Appsero
-08-Feb-2019,Added Cache for site list,,4,New Feature,Appsero
-,Created Video,,5,New Feature,Appsero
-11-Feb-2019,Added Cache on Users and Deactivations,,4,New Feature,Appsero
-,Edited Videos,,5,New Feature,Appsero
-12-Feb-2019,Edited Videos,,6,New Feature,Appsero
-,Updated doc Sites,,2,New Feature,Appsero
-13-Feb-2019,Meeting with Tareq Vai,,2,New Feature,Appsero
-,Analysis and Create ERD for team features,,6,New Feature,Appsero
-14-Feb-2019,Updated Team ERD,,4,New Feature,Appsero
-,Created Customer and Orders diagram,,4,New Feature,Appsero
-15-Feb-2019,Updated Database ERD ,,4,New Feature,Appsero
-,Working to import cutomers and orders data,,4,New Feature,Appsero
-18-Feb-2019,"Created migrations, Model, Controllers and Others classes",,4,New Feature,Appsero
-,Updated Sotre Data ER Diagram,,2,New Feature,Appsero
-,Start working on Frontend for Customer and Orders,,2,New Feature,Appsero
-19-Feb-2019,Updated Database,,1,New Feature,Appsero
-,Added Orders page and filters,,4,New Feature,Appsero
-,Added Customer page,,4,New Feature,Appsero
-20-Feb-2019,Added Order details page,,4,New Feature,Appsero
-,Added Orders and Customer page for theme,,4,New Feature,Appsero
-25-Feb-2019,Added notes to orders,,4,New Feature,Appsero
-,Created api to add Single Orders with customer,,3,New Feature,Appsero
-26-Feb-2019,Add License with Order,,3,New Feature,Appsero
-,Add license with Order on Frontend,,1,New Feature,Appsero
-,Insert Licnese while add new order,,2,New Feature,Appsero
-,Meeting with Tareq Vai,,1,New Feature,Appsero
-27-Feb-2019,Installed and learn Adobe XD and Sketch,,3,Others,Appsero
-,Creating Muckup for Appsero Dashboard,,5,New Feature,Appsero
-28-Feb-2019,Created Muckup for Stats page,,4,New Feature,Appsero
-,Created Muckup for Sites page,,4,New Feature,Appsero
+01-Mar-2019,Created Muckup for Stats page,,3,New Feature,Appsero
+,Created Muckup for Sites Page,,3,New Feature,Appsero
+,Created Muckup for Deactivations Page,,3,New Feature,Appsero
+04-Mar-2019,Create Muckup for Sales Stats page,,3,New Feature,Appsero
+,Muckup for Orders and Order details page,,3,New Feature,Appsero
+,Muckup for Customer and Cutomer details page,,3,New Feature,Appsero
+05-Mar-2019,Updated Muckup for Customer Detials Page,,3,New Feature,Appsero
+,Meeting with tareq vai,,2,New Feature,Appsero
+,Created Muckup for menu bar,,3,New Feature,Appsero
+06-Mar-2019,Created API to delete order and licenses,,3,New Feature,Appsero
+,Created ERD for Subscription,,3,New Feature,Appsero
+,Updateing Muckup,,2,New Feature,Appsero
+07-Mar-2019,Updated Menubar,,2,New Feature,Appsero
+,Updated Sitebar,,2,New Feature,Appsero
+,Updated icons and some pages,,4,New Feature,Appsero
+08-Mar-2019,Created Muckup for Email Digest,,4,New Feature,Appsero
+,Created Muckup for License page,,5,New Feature,Appsero
+11-Mar-2019,Updated Muckup for Email Digest, ,3,New Feature,Appsero
+,Created Muckup for Release page,,2,New Feature,Appsero
+,Created Muckup for Plugins/Themes Pages,,3,New Feature,Appsero
+12-Mar-2019,Created Mockup for Churn page,,3,New Feature,Appsero
+,Created mockup for subscription pages,,2,New Feature,Appsero
+,Mockup for Subscriptions details page,,2,New Feature,Appsero
+14-Mar-2019,Mockup for Edit page,,2,New Feature,Appsero
+,Mockup for license settings page,,2,New Feature,Appsero
+,Mockup for Deactivations settings page,,2,New Feature,Appsero
+,Mockup for Variations page,,1,New Feature,Appsero
+,Mockup for Extra meta fields page,,1,New Feature,Appsero
+15-Mar-2019,Updated Mockup for some pages,,4,New Feature,Appsero
+,Analysis about sales data,,3,New Feature,Appsero
+19-Mar-2019,Updated some existing Muckup,,3,New Feature,Appsero
+,Create Muckup for Product wise sales,,3,New Feature,Appsero
+20-Mar-2019,Updated Muckup,,4,New Feature,Appsero
+,meeting with Ashraf vai,,1,New Feature,Appsero
+,Check Ant design,,3,New Feature,Appsero
+21-Mar-2019,Added Subscription with orders,,5,New Feature,Appsero
+,Updated ERD and migrations,,3,New Feature,Appsero
+22-Mar-2019,Delete Subcriptions data with orders,,4,New Feature,Appsero
+,Update Subscription ,,4,New Feature,Appsero
+25-Mar-2019,Update ERD,,1,New Feature,Appsero
+,Cehck Ant Coponent,,4,New Feature,Appsero
+,Start Dashboard Design,,4,New Feature,Appsero
+26-Mar-2019,Update license list page design,,4,New Feature,Appsero
+,"Updated routes, links",,1,New Feature,Appsero
+,Added Filter and search option,,4,New Feature,Appsero
+27-Mar-2019,"Added Export CSV, Sync option",,2,New Feature,Appsero
+,Updated Single license view,,4,New Feature,Appsero
+,Updated liceses list page,,2,New Feature,Appsero
+28-Mar-2019,Updated Single licesnse view page,,4,New Feature,Appsero
+,Created Email Digest Page,,4,New Feature,Appsero
+29-Mar-2019,Added Active/Puse option for Email digest,,4,New Feature,Appsero
+,Email Digest Delete option,,1,New Feature,Appsero
+,Update Email Digest Status,,3,New Feature,Appsero

@@ -10,10 +10,14 @@ const {
     updateTask,
     deleteTask,
     taskSearch,
+} = require('../controllers/task/taskCtl')
+
+const { 
     createSubtask,
     deleteSubTask,
     updateSubTask
-} = require('../controllers/upcomingTaskCtl')
+} = require('../controllers/task/subTaskCtl')
+
 
 
 //-- subtask
@@ -23,7 +27,7 @@ router.put('/subtask/update/:id', checkJwt, updateSubTask)
 
 router.post('/create', checkJwt, createNewTask)
 router.put('/update/:id', checkJwt, updateTask)
-router.get('/list', checkJwt, taskList)
+// router.get('/list', checkJwt, taskList)
 router.delete('/delete/:id', checkJwt, deleteTask)
 router.get('/search', checkJwt, taskSearch)
 

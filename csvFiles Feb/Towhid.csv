@@ -1,0 +1,39 @@
+Date,Task / Feature,Sub Task,Hour,Type,Project,,,,,,,,,,,,,,,Meeting
+01-Feb-2019,Meeting,weekly meeting,1,Meeting,ERP Accounting,,,,,,,,,,,,,,,Tax API
+01-Feb-2019,Change expense list to show all expenses,fix expense list to show all type of expenses,3,New Feature,ERP Accounting,,,,,,,,,,,,,,,Tax Mockup
+01-Feb-2019,check single view,check single view,3,New Feature,ERP Accounting,,,,,,,,,,,,,,,Weekly Meeting
+04-Feb-2019,Meeting,tax and discount discussion with sadik bhai,4,Meeting,ERP Accounting,,,,,,,,,,,,,,,ERP Main Site
+04-Feb-2019,tested transactions and fixed some minor issues,tested transactions and fixed some minor issues,4,Update,ERP Accounting,,,,,,,,,,,,,,,Testing
+05-Feb-2019,Meeting,tax related discussion with sadik bhai,1,Meeting,ERP Accounting,,,,,,,,,,,,,,,Added Journal APIs
+05-Feb-2019,updated tax apis and frontend,updated tax apis and frontend,6,Update,ERP Accounting,,,,,,,,,,,,,,,
+06-Feb-2019,added and fixed attachment related issues in all single transactions,added and fixed attachment related issues in all single transactions,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+07-Feb-2019,Tax API,tax rate name api,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+07-Feb-2019,Tax API,new tax rate name,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+07-Feb-2019,Tax Frontend,tax category list,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+08-Feb-2019,Tax Frontend,tax agency list,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+08-Feb-2019,,tax rate name list,3,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+08-Feb-2019,Weekly Meeting,,2,Meeting,ERP Accounting,,,,,,,,,,,,,,,
+11-Feb-2019,update ledgers api and component,update ledgers api and component,2,Update,ERP Accounting,,,,,,,,,,,,,,,
+11-Feb-2019,Refactor Tax API and Frontend,continue refactoring tax based on new mockups provided by sadik bhai,6,Update,ERP Accounting,,,,,,,,,,,,,,,
+12-Feb-2019,Refactor Tax API and Frontend,refactor tax api and frontend,8,Update,ERP Accounting,,,,,,,,,,,,,,,
+13-Feb-2019,added initial validations in transactions,added initial validations in transactions,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+14-Feb-2019,update validation ux,update validation ux,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+14-Feb-2019,fix accounting menu not showing in erp admin bar menu,fix accounting menu not showing in erp admin bar menu,1,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+14-Feb-2019,added quick access menu,added quick access menu,3,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+18-Feb-2019,fixed some api issues,fixed some issues in api,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+18-Feb-2019,started working on transactions pdf generation,look into jspdf and other options other than wp-erp pdf extension,2,Others,ERP Accounting,,,,,,,,,,,,,,,
+18-Feb-2019,started working on transactions pdf generation,started working on transactions pdf generation,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+19-Feb-2019,transactions pdf generation + mail ( api functionality ),transactions pdf generation + mail ( api functionality ),8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+20-Feb-2019,transactions pdfs send by mail ( frontend ),transactions pdfs send by mail ( frontend ),8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+21-Feb-2019,integrate mail functionality in all transactions,integrate mail functionality in all transactions,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+22-Feb-2019,fix issues in erp pdf invoice plugin to solve invoice formatting issues,fix issues in erp pdf invoice plugin to solve invoice formatting issues,6,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+22-Feb-2019,made some changes in tax rate frontend,made some changes in tax rate frontend,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+25-Feb-2019,tax related frontend and component edit,tax related frontend and component edit,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+26-Feb-2019,tax related frontend and component edit,tax related frontend and component edit,5,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+26-Feb-2019,payment method and ledgers relationship,payment method and ledgers relationship,3,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+27-Feb-2019,update bank account section,update bank account section,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+27-Feb-2019,test and fix some api and frontend issues ,test and fix some api and frontend issues ,6,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+28-Feb-2019,added invoice status changing after payment functionality,added invoice status changing after payment functionality,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+28-Feb-2019,added bill status changing after bill payment functionality,added bill status changing after bill payment functionality,1,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+28-Feb-2019,added purchase status changing after purchase payment functionality,added purchase status changing after purchase payment functionality,1,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+28-Feb-2019,frontend and api improvements,frontend and api improvements,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,

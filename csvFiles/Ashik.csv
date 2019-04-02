@@ -1,19 +1,20 @@
 Date,Task / Feature,Sub Task,Hour,Type,Project
-01-Feb-2019,Feature test for Beta release,,7,Others,weMail
-03-Feb-2019,Prepare presentation,,8,Others,weMail
-04-Feb-2019,Fix some bugs,,9,Bug Fix,weMail
-05-Feb-2019,Fix some issue in cdn part,,8,Bug Fix,weMail
-06-Feb-2019,Working with bugs ,,7,Bug Fix,weMail
-07-Feb-2019,Fix some bugs and ui issue,,8,Bug Fix,weMail
-08-Feb-2019,Test all the Mail service,,7,Others,weMail
-11-Feb-2019,Create Vue cli 3 for wemail admin panel,,8,New Feature,weMail
-13-Feb-2019,Migrate previous feature to wemail new app,,8,New Feature,weMail
-14-Feb-2019,Working on Admin panel for weMail,,,,
-15-Feb-2019,migrating from app feature to admin panel,,8,Others,weMail
-18-Feb-2019,working with Admin panel dashboard design from mockup,,7,New Feature,weMail
-19-Feb-2019,working with API specification with jayonta vai,create postman file with all api endpoint,8,New Feature,weMail
-20-Feb-2019,Migrating from bootstrap to ant design,,8,New Feature,weMail
-25-Feb-2019,Create Skeleton from mockup to vuecli3 with ant design,,8,New Feature,weMail
-26-Feb-2019,Implement Passwordless Authentication from wordpress end to admin panel for wemail users,Check with api endpoint for testing the feature ,7,New Feature,weMail
-27-Feb-2019,Design login page and create login for admin panel and testing with api endpoint either it work or not ,,8,New Feature,weMail
-28-Feb-2019,Make centralize data with vuex implemation,,8,New Feature,weMail
+01-Mar-2019,Working with admin panel api to Postman collection and test every endpoint params either it working or not,,4,Others,weMail
+01-Mar-2019,Changes some endpoint data to admin panel compatible ,,2,Others,weMail
+01-Mar-2019,Check add server endpoint and read the nodequery documentation to adopt it on weMail admin panel,,2,New Feature,weMail
+05-Mar-2019,Intergrate postman Api endpoint wise data to admin panel front end working the dashboard data state and mutation handling,,4,New Feature,weMail
+06-Mar-2019,attach weMail campaign data sitewise to admin panel,Create a namespaced vuex store dashboard and fetch all the data to dashboard ,1,New Feature,weMail
+06-Mar-2019,attach weMail campaign data sitewise to admin panel,Make dashboard data request for 7days this month and last month wise,3,New Feature,weMail
+06-Mar-2019,attach weMail campaign data sitewise to admin panel,Create campaign view page and campaign overview page,5,New Feature,weMail
+07-Mar-2019,Read the documentation of nodequery and test all endpoint with postman,,8,New Feature,weMail
+08-Mar-2019,Implemet nodequery all endpoint to weMail Admin panel,,8,New Feature,weMail
+11-Mar-2019,Create Server page in weMail admin panel ,,8,New Feature,weMail
+12-Mar-2019,Integrate nodeQuery all API endpoint with weMail Admin panel ,,8,New Feature,weMail
+13-Mar-2019,"Create server details, avarage system load,current ram usage, overall disk usages,Top Processes by Resource Usage Component s",,0,New Feature,weMail
+14-Mar-2019,Create New user Graph for wemail dashboard and make it reactive with API endpoint,,0,New Feature,weMail
+15-Mar-2019,"Study horizon system, how it works, how to manage queues and jobs with horizon and test available endpoint provide by horizon package",,8,New Feature,weMail
+20-Mar-2019,Create Jobs page and a Bar chart and dognut chart on jobs page,,8,New Feature,weMail
+21-Mar-2019,Make Bar chart and dognut chart api compatible with our api.wemail.io,,8,New Feature,weMail
+22-Mar-2019,working with horizon and make vuex store with api also change some api description and data filtering,,8,New Feature,weMail
+25-Mar-2019,make userpage and user table and vuex sate for user management and role ,,,New Feature,weMail
+27-Mar-2019,Migrate campaign report and sending mechanigm from database I/O operation to Redis Cache,,8,New Feature,weMail

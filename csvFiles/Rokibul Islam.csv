@@ -1,28 +1,21 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,,,,,
-04-Feb-2019,power block,,10,New Feature,power-block,,,,,
-05-Feb-2019,power block,,9,New Feature,power-block,,,,,
-06-Feb-2019,power block,,2.5,New Feature,power-block,,,,,
-06-Feb-2019,wp user frontend issue,,5,Plugin Issue,WPUF,,,power-block,,8.5
-07-Feb-2019,power block,,4,New Feature,power-block,,,,,
-07-Feb-2019,wp user frontend issue,,4,Plugin Issue,WPUF,,,,,
-10-Feb-2019,power block team block,,8,New Feature,power blocks,,,,,
-11-Feb-2019,power block team block,,8,New Feature,power blocks,,,,,
-12-Feb-2019,power block team block,,8,New Feature,power blocks,,,,,
-13-Feb-2019,power block mailchimp block,,5,New Feature,power blocks,,,,,
-13-Feb-2019,wp user frontend issue,,3,Plugin Issue,power blocks,,,,,
-14-Feb-2019,power block mailchimp block,,8,New Feature,power blocks,,,,,
-15-Feb-2019,power block button block,,8,New Feature,power blocks,,,,,
-18-Feb-2019,wp user frontend issue,,2,Plugin Issue,power blocks,,,,,
-18-Feb-2019,power block team block,,6,New Feature,power blocks,,,,,
-19-Feb-2019,power block Button block,,4,New Feature,power blocks,,,,,
-19-Feb-2019,power block mailchimp block,,4,New Feature,power blocks,,,,,
-20-Feb-2019,power block team block,,3,New Feature,power blocks,,,,,
-20-Feb-2019,power block mailchimp block,,3,New Feature,power blocks,,,,,
-20-Feb-2019,wpuf user frontend issue,,4,Plugin Issue,WPUF,,,,,
-20-Feb-2019,"wpuf user frontend issue mindate,max date",,3,Plugin Issue,WPUF,,,,,
-20-Feb-2019,wpuf user frontend issue date set publish time,,3,Plugin Issue,WPUF,,,,,
-22-Feb-2019,power block team block,,7,New Feature,power blocks,,,,,
-25-Feb-2019,power block mailchimp & Team,,8,New Feature,power blocks,,,,,
-26-Feb-2019,power block mailchimp ,,8,New Feature,power blocks,,,,,
-27-Feb-2019,power block mailchimp & webpack image load problem,,9,New Feature,power blocks,,,,,
-28-Feb-2019,power block mailchimp & image load problem,,8,New Feature,power blocks,,,,,
+Date,Task / Feature,Sub Task,Hour,Type,Project
+04-Mar-2019,power-blocks,,8,New Feature,power blocks
+05-Mar-2019,vue-ant-design admin template,,8,New Feature,Others
+06-Mar-2019,vue-ant-design admin template,,8,New Feature,Others
+07-Mar-2019,vue-ant-design admin template,,5,New Feature,Others
+07-Mar-2019,weforms,,3,New Feature,weForms
+08-Mar-2019,weforms,,8,New Feature,weForms
+12-Mar-2019,weforms rest api,,8,New Feature,weForms
+13-Mar-2019,weforms rest api,,7,New Feature,weForms
+14-Mar-2019,weforms rest api,,8,New Feature,weForms
+15-Mar-2019,weforms rest api,,7,New Feature,weForms
+18-Mar-2019,weforms rest api,,8,New Feature,weForms
+19-Mar-2019,weforms rest api,,8,New Feature,weForms
+20-Mar-2019,weforms rest api,,8,New Feature,weForms
+21-Mar-2019,weforms rest api,,8,New Feature,weForms
+22-Mar-2019,weforms rest api,,,New Feature,weForms
+27-Mar-2019,"Fix: Repeat field with more than one column does not render data, #116",,3,New Feature,WPUF
+27-Mar-2019,weforms rest api,,4,New Feature,weForms
+28-Mar-2019,fix: In radio and checkbox field use conditional logic that value does not save in database,,4,New Feature,WPUF
+28-Mar-2019,"Fix: Text Input field for Taxonomies not working, #647",,4,New Feature,WPUF
+29-Mar-2019,"Fix: The item in ajax taxonomy field is not selected, weDevsOfficial#644 ",,8,New Feature,WPUF

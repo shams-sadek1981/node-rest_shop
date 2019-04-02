@@ -5,7 +5,16 @@ const upcomingTaskSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    subTask:[
+    description: {
+        type: String
+    },
+    taskType: {
+        type: String
+    },
+    projectName: {
+        type: String
+    },
+    subTasks:[
         {
             name: {
                 type: String,
@@ -19,37 +28,6 @@ const upcomingTaskSchema = mongoose.Schema({
             completedAt: Date
         }
     ],
-    description: {
-        type: String
-    },
-    taskType: {
-        type: String
-    },
-    projectName: {
-        type: String
-    },
-    assignedUser: {
-        type: String
-    },
-    estHour: {
-        type: Number
-    },
-    srs: {
-        type: Boolean,
-        default: false
-    },
-    mockup: {
-        type: Boolean,
-        default: false
-    },
-    design: {
-        type: Boolean,
-        default: false
-    },
-    frontend: {
-        type: Boolean,
-        default: false
-    },
     createdAt : { type : Date, default: Date.now }
 })
 

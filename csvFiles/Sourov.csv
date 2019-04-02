@@ -1,34 +1,23 @@
 Date,Task / Feature,Sub Task,Hour,Type,Project
-01-Feb-2019,Fix Release date time issue,,3,Bux Fix,Appsero
-01-Feb-2019,Fix Deactivation status issue,,3,Bux Fix,Appsero
-01-Feb-2019,Move Mailchimp requests to queue,,1,Bux Fix,Appsero
-04-Feb-2019,Fix client member since issue,,3,Bux Fix,Appsero
-04-Feb-2019,Meeting with tareq vai,,1,Others,Appsero
-04-Feb-2019,Fix memory limit exhausted issue,,2,Bux Fix,Appsero
-05-Feb-2019,Fix Appsero bugs,license_source and activation_limit issue,3,Bux Fix,Appsero
-05-Feb-2019,Study on API testing,,2,New Feature,Appsero
-05-Feb-2019,Create API test on postman,Create Projects API test,5,New Feature,Appsero
-06-Feb-2019,Create API test on postman,Tracking tests,5,Others,Appsero
-06-Feb-2019,Install tawk chat with visitor info,,4,New Feature,Appsero
-07-Feb-2019,Create API test on postman,,5,Others,Appsero
-07-Feb-2019,Update Appsero Client,,4,Others,Appsero
-08-Feb-2019,Cache database query result,,7,New Feature,Appsero
-11-Feb-2019,Cache database query result,Project details cache,5,New Feature,Appsero
-11-Feb-2019,Fix client exceptions,,3,Bux Fix,Appsero
-12-Feb-2019,Test staging cache,,2,Others,Appsero
-12-Feb-2019,Update email template of digest,,4,New Feature,Appsero
-13-Feb-2019,Update email template of digest,,7,New Feature,Appsero
-14-Feb-2019,Order endpoint for EDD,Generate order data to serve,7,New Feature,Appsero
-15-Feb-2019,Order endpoint for EDD,,5,New Feature,Appsero
-18-Feb-2019,Appsero Helper Order for WooCommerce,,7,New Feature,Appsero
-19-Feb-2019,Appsero Helper Order data for WooCommerce,,5,New Feature,Appsero
-20-Feb-2019,"Appsero Client, Fix getting admin user info",,4,Plugin Issue,Appsero
-22-Feb-2019,Activation/Deactivation comparison graph,,5,New Feature,Appsero
-25-Feb-2019,Fix client id not found exception,,1,Bux Fix,Appsero
-25-Feb-2019,Add order note to order API,,3,New Feature,Appsero
-25-Feb-2019,Activation/Deactivation comparison graph,Change typo,1,New Feature,Appsero
-26-Feb-2019,Save project version of site,Update project version on new release,6,New Feature,Appsero
-26-Feb-2019,Meeting with tareq vai,,1,New Feature,Appsero
-26-Feb-2019,Send request to add order from Appsero Helper,Add order for EDD,3,New Feature,Appsero
-27-Feb-2019,Send EDD Order Add and Update request,,7,New Feature,Appsero
-28-Feb-2019,Add order and license for WooCommerce,,7,New Feature,Appsero
+01-Mar-2019,"Create mockup for stats, Users, Sites",,5,New Feature,Appsero
+04-Mar-2019,Fix new email digest logo not found issue,,2,Bux Fix,Appsero
+04-Mar-2019,Fix activations graph issue,Release new version : 2.0.3,4,New Feature,Appsero
+04-Mar-2019,Meeting with tareq vai,,1,Others,Appsero
+05-Mar-2019,Research on feature tracking,,6,New Feature,Appsero
+05-Mar-2019,Meeting with tareq vai,,1,Others,Appsero
+06-Mar-2019,Study on Subscription,,6,New Feature,Appsero
+07-Mar-2019,WooComerce Subscription API,Add subscription data with orders,8,New Feature,Appsero
+11-Mar-2019,Subscription API with EDD data,,9,New Feature,Appsero
+12-Mar-2019,Refector Subscription codes,,5,New Feature,Appsero
+13-Mar-2019,Study on Active Install count,,5,New Feature,Appsero
+14-Mar-2019,Add new design login page and layout,Study on ant design,9,New Feature,Appsero
+15-Mar-2019,Dynamic Password reset page,,5,New Feature,Appsero
+19-Mar-2019,Signup form dynamic,Fixed sidebar layout,8,New Feature,Appsero
+20-Mar-2019,Implement new design,"Overview page, Plugin list page",8,New Feature,Appsero
+21-Mar-2019,Project pagination and sidebar menu issue,,5,New Feature,Appsero
+21-Mar-2019,Project overview page,,3,New Feature,Appsero
+22-Mar-2019,Project overview page,"Doughnut charts, Sidebar menu items",8,New Feature,Appsero
+25-Mar-2019,Project sites page,,8,New Feature,Appsero
+27-Mar-2019,Site details page and Users list,,8,New Feature,Appsero
+28-Mar-2019,User details page and Deactivation list,,8,New Feature,Appsero
+29-Mar-2019,Deactivation chart ,,6,New Feature,Appsero

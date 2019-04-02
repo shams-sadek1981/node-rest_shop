@@ -1,20 +1,18 @@
 Date,Task / Feature,Sub Task,Hour,Type,Project
-01-Feb-2019,Full feature test for private beta release,,6,Others,weMail
-04-Feb-2019,Testing for release & prepare for presentation,,7,Others,weMail
-05-Feb-2019,Fix bugs & issues,,6,Bug Fix,weMail
-06-Feb-2019,Fix some new bugs & issues,,6,Bug Fix,weMail
-07-Feb-2019,FIxed issue on Preview mail sending bug & some other small bugs,,6,Bug Fix,weMail
-08-Feb-2019,Fix bugs & issues,,6,Bug Fix,weMail
-11-Feb-2019,Fix bugs & issues,,7,Bug Fix,weMail
-12-Feb-2019,Create a test mode to send campaign to limited subscribers,,7,New Feature,weMail
-13-Feb-2019,Create a test mode to send campaign to limited subscribers (completed),,7,New Feature,weMail
-14-Feb-2019,API endpoints for User Management Admin Panel,,7,New Feature,weMail
-15-Feb-2019,API endpoints for User Management Admin Panel,,7,New Feature,weMail
-18-Feb-2019,API endpoints for User Management Admin Panel,,7,New Feature,weMail
-19-Feb-2019,API endpoints for User Management Admin Panel & API Documentation,,7,New Feature,weMail
-20-Feb-2019,API endpoints for Events & Logs & Update API Documentation,,7,New Feature,weMail
-22-Feb-2019,Fix some new bugs & issues,,7,Bug Fix,weMail
-25-Feb-2019,Implementation of events & logs for different scenarios,,7,New Feature,weMail
-26-Feb-2019,hangle errors while sending a campaign,,7,Bug Fix,weMail
-27-Feb-2019,"Track IP Address, Location & Timezone",,7,New Feature,weMail
-28-Feb-2019,Fix some bugs & issues of WeMail User Management admin panel,,5,Bug Fix,weMail
+01-Mar-2019,"Implement storing ip address, location & timezone while opened email",,7,New Feature,weMail
+06-Mar-2019,"Implement Maxmind for gettting location, city timezone & implement refresh token for JWT",,7,New Feature,weMail
+07-Mar-2019,Fix some bugs & issues from Sentry.,,6,Bug Fix,weMail
+08-Mar-2019,Upgrade bounce handling system by using queue to avoid errors & data loss,,7.5,New Feature,weMail
+11-Mar-2019,Setup for Elastic email integration,,7,New Feature,weMail
+12-Mar-2019,Send emails & manage sending quota using elastic email,,7,New Feature,weMail
+13-Mar-2019,Setup bounce handler for Elastic email,,6.5,New Feature,weMail
+14-Mar-2019,Roles & Permissions for Admin Panel User Management,,7,New Feature,weMail
+15-Mar-2019,Migration & Seeder for Admin Roles & Permissions,,6,New Feature,weMail
+19-Mar-2019,Middleware & implementation for Admin Roles & Permissions,,5,New Feature,weMail
+20-Mar-2019,Stats of WeMail Admin Panel,,7,New Feature,weMail
+21-Mar-2019,Stats of WeMail Admin Panel (Continue),,7,New Feature,weMail
+22-Mar-2019,Api endpoints of Display overview of Sites graph,,7,New Feature,weMail
+25-Mar-2019,API endpoints of details of the campaigns and lists,,7,New Feature,weMail
+27-Mar-2019,Research on calculating email sending rate,,7,New Feature,weMail
+28-Mar-2019,Testing broadcasting integration using laravel-websockets,,6,Others,Others
+29-Mar-2019,Calculating Mail sending rate (in minutes) for wemail Admin Panel,,6,New Feature,weMail
