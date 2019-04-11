@@ -28,7 +28,11 @@ const upcomingTaskSchema = mongoose.Schema({
             completedAt: Date
         }
     ],
-    createdAt : { type : Date, default: Date.now }
+    createdAt : { type : Date, default: Date.now },
+    status: {
+        type: Boolean,
+        default: false
+    }
 })
 
 

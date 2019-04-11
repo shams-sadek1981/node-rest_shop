@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const UpcomingTask = require('../../models/upcomingTask');
 
-const { queryBuilder, sumEstHourAndTotalSubTask } = require('./helperFunctions')
+const { queryBuilder, singleUserEst, totalEst, totalTask } = require('./helperFunctions')
 
 
 /**
@@ -14,29 +14,35 @@ exports.taskSearch = async (req, res) => {
 
     const userName = await req.query.name
     const projectName = await req.query.project
+    const searchText = await req.query.text
+    const status = await req.query.status
+    
+    //-- Pagination settings
+    const pageNo = await req.query.page
+    const limit = 3 //-- initialize the limit / pageSize / perPage data
+    const skip = pageNo * limit - limit
+    
+    //-- Set Query Object
+    const queryObj = await queryBuilder(userName, projectName, searchText, status)
 
-    const queryObj = await queryBuilder(userName, projectName)
+    
+    // return res.json(
+    //     queryObj
+    // )
 
+    //-- Count total tasks
+    const totalTasks = await totalTask(queryObj)
+
+    // return res.json({
+    //     totalTasks
+    // })
 
     //-- by user & project
-    let userEstHour = 0
-    let userTotalSubTask = 0
-    const userResult = await sumEstHourAndTotalSubTask(queryObj)
-    if (userResult.length > 0) {
-        userEstHour = userResult[0].estHour
-        userTotalSubTask = userResult[0].totalTask
-    }
+    const { userEstHour, userTotalSubTask } = await singleUserEst(queryObj)
 
     //-- all user
-    let totalEstHour = 0
-    let totalSubTask = 0
-    const totalResult = await sumEstHourAndTotalSubTask()
-    if (totalResult.length > 0) {
-        totalEstHour = totalResult[0].estHour
-        totalSubTask = totalResult[0].totalTask
-    }
-
-
+    const { totalEstHour, totalSubTask } = await totalEst(queryObj)
+    
     UpcomingTask.aggregate([
         {
             "$unwind": {
@@ -57,30 +63,36 @@ exports.taskSearch = async (req, res) => {
                     projectName: "$projectName",
                     taskType: "$taskType",
                     description: "$description",
+                    status: "$status"
                 },
                 subTasks: { $push: "$subTasks" },
                 estHour: {
                     $sum: "$subTasks.estHour"
                 }
-
             }
         },
         { $sort: { "_id.taskName": 1 } }
 
-    ]).then(data => {
+    ])
+    .skip(skip).limit(limit)
+    .then(data => {
 
         //-- Transform Data
         const result = data.map(item => {
             return {
                 ...item._id,
                 subTasks: item.subTasks,
-                estHour: item.estHour
+                estHour: item.estHour,
             }
         })
 
         //-- Return Result
         res.status(200).json({
-            totalTask: data.length,
+            pagination: {
+                total: totalTasks,
+                current: JSON.parse(pageNo),
+                pageSize: limit
+            },
             totalEstHour,
             totalSubTask,
             userName,

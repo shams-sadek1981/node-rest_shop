@@ -26,17 +26,10 @@ const sumEstHourAndTotalSubTask = (queryObj = {}) => {
 exports.sumEstHourAndTotalSubTask = sumEstHourAndTotalSubTask
 
 //-- Build Query
-exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", status = false) => {
+exports.queryBuilder = (projectName = 'all', searchText, status = false) => {
 
     let match = {
         $and: []
-    }
-
-    if (userName != 'all') {
-        match.$and = [
-            ...match.$and,
-            { "subTasks.assignedUser": userName }
-        ]
     }
 
     if (projectName != 'all') {
@@ -44,20 +37,17 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
             ...match.$and,
             { projectName: projectName }
         ]
-        // {
-        //     ...match,
-        //     projectName
-        // }
     }
-
+    
     if (searchText != "") {
         match = {
             $and: [
                 ...match.$and,
                 {
                     $or: [
-                        { taskName: { $regex: searchText, $options: "si" } },
-                        { "subTasks.name": { $regex: searchText, $options: "si" } }
+                        { projectName: { $regex: searchText, $options: "si" } },
+                        { projectType: { $regex: searchText, $options: "si" } },
+                        { version: { $regex: searchText, $options: "si" } }
                     ]
                 }
             ]
@@ -81,6 +71,7 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
 
     return match
 }
+
 
 //-- Single user
 const singleUserEst = async (queryObj) => {

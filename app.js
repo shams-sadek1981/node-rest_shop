@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Set up a whitelist and check against it:
-var whitelist = ['http://localhost:3001', 'http://example2.com']
+var whitelist = ['http://localhost:3001']
 var corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {

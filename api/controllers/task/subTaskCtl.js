@@ -93,11 +93,11 @@ exports.updateSubTask = (req, res) => {
             taskType: result.taskType,
             projectName: result.projectName,
             createdAt: result.createdAt,
-            subTasks: result.subTasks
+            subTasks: result.subTasks,
         }
 
         res.status(200).json({
-            result: newResult
+            result: 'newResult'
         })
     })
         .catch(err => {
