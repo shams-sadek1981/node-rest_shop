@@ -15,6 +15,7 @@ exports.search = async (req, res) => {
     const projectName = await req.query.project
     const status = await req.query.status
     const searchText = await req.query.text
+    const limit = await req.query.limit
 
     // Release.find({})
     //     .then(doc => {
@@ -23,10 +24,9 @@ exports.search = async (req, res) => {
     //         })
     //     })
 
-
     // //-- Pagination settings
     const pageNo = await req.query.page
-    const limit = 3 //-- initialize the limit / pageSize / perPage data
+    // const limit = 3 //-- initialize the limit / pageSize / perPage data
     const skip = pageNo * limit - limit
 
     // //-- Set Query Object

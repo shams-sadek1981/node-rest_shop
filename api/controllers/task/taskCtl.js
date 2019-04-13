@@ -16,16 +16,16 @@ exports.taskSearch = async (req, res) => {
     const projectName = await req.query.project
     const searchText = await req.query.text
     const status = await req.query.status
+    const pageSize = await JSON.parse(req.query.pageSize)
     
     //-- Pagination settings
     const pageNo = await req.query.page
-    const limit = 3 //-- initialize the limit / pageSize / perPage data
-    const skip = pageNo * limit - limit
+    // const pageSize = 3 //-- initialize the pageSize / pageSize / perPage data
+    const skip = pageNo * pageSize - pageSize
     
     //-- Set Query Object
     const queryObj = await queryBuilder(userName, projectName, searchText, status)
 
-    
     // return res.json(
     //     queryObj
     // )
@@ -33,16 +33,15 @@ exports.taskSearch = async (req, res) => {
     //-- Count total tasks
     const totalTasks = await totalTask(queryObj)
 
-    // return res.json({
-    //     totalTasks
-    // })
-
+    
     //-- by user & project
     const { userEstHour, userTotalSubTask } = await singleUserEst(queryObj)
 
+
     //-- all user
     const { totalEstHour, totalSubTask } = await totalEst(queryObj)
-    
+
+
     UpcomingTask.aggregate([
         {
             "$unwind": {
@@ -74,7 +73,7 @@ exports.taskSearch = async (req, res) => {
         { $sort: { "_id.taskName": 1 } }
 
     ])
-    .skip(skip).limit(limit)
+    .skip(skip).limit(pageSize)
     .then(data => {
 
         //-- Transform Data
@@ -91,7 +90,7 @@ exports.taskSearch = async (req, res) => {
             pagination: {
                 total: totalTasks,
                 current: JSON.parse(pageNo),
-                pageSize: limit
+                pageSize
             },
             totalEstHour,
             totalSubTask,

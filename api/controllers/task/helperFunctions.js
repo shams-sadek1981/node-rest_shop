@@ -5,16 +5,21 @@ const UpcomingTask = require('../../models/upcomingTask');
 //-- Est. Hour Calculation from subtask
 const sumEstHourAndTotalSubTask = (queryObj = {}) => {
 
+    const { status } = queryObj
+
     return UpcomingTask.aggregate([
         { "$unwind": "$subTasks" },
         {
-            $match: queryObj
+            $match: {
+                $and: [
+                    queryObj,
+                    { "subTasks.status": status }
+                ]
+            }
         },
         {
             "$group": {
-                // _id: { taskName: "$taskName" },
                 _id: null,
-                // subTasks: { $push: "$subTasks" },
                 estHour: { $sum: "$subTasks.estHour" },
                 totalTask: { $sum: 1 }
             }
@@ -25,8 +30,12 @@ const sumEstHourAndTotalSubTask = (queryObj = {}) => {
 }
 exports.sumEstHourAndTotalSubTask = sumEstHourAndTotalSubTask
 
+
+
 //-- Build Query
 exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", status = false) => {
+
+    status = JSON.parse(status)
 
     let match = {
         $and: []
@@ -35,6 +44,7 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
     if (userName != 'all') {
         match.$and = [
             ...match.$and,
+            { "subTasks.status": status },
             { "subTasks.assignedUser": userName }
         ]
     }
@@ -44,10 +54,6 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
             ...match.$and,
             { projectName: projectName }
         ]
-        // {
-        //     ...match,
-        //     projectName
-        // }
     }
 
     if (searchText != "") {
@@ -57,16 +63,19 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
                 {
                     $or: [
                         { taskName: { $regex: searchText, $options: "si" } },
-                        { "subTasks.name": { $regex: searchText, $options: "si" } }
+                        {
+                            $and: [
+                                { "subTasks.name": { $regex: searchText, $options: "si" } },
+                                { "subTasks.status": status }
+                            ]
+                        },
                     ]
                 }
             ]
         }
     }
 
-    status = JSON.parse(status)
-
-    //-- set status
+    
 
     if (match.$and.length > 0) {
         match = {
@@ -89,6 +98,7 @@ const singleUserEst = async (queryObj) => {
     let userTotalSubTask = 0
 
     const userResult = await sumEstHourAndTotalSubTask(queryObj)
+
     if (userResult.length > 0) {
         userEstHour = userResult[0].estHour
         userTotalSubTask = userResult[0].totalTask
@@ -104,15 +114,16 @@ exports.singleUserEst = singleUserEst
 //-- Total Est
 exports.totalEst = async (queryObj) => {
 
-    const { status } = queryObj
+    // const { status } = queryObj
 
-    queryObj = {
-        status
-    }
+    // queryObj = {
+    //     status
+    // }
 
     let totalEstHour = 0
     let totalSubTask = 0
     const totalResult = await sumEstHourAndTotalSubTask(queryObj)
+
 
     if (totalResult.length > 0) {
         totalEstHour = totalResult[0].estHour
