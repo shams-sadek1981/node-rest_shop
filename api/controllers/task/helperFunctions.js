@@ -44,7 +44,7 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
     if (userName != 'all') {
         match.$and = [
             ...match.$and,
-            { "subTasks.status": status },
+            // { "subTasks.status": status },
             { "subTasks.assignedUser": userName }
         ]
     }
@@ -66,7 +66,7 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
                         {
                             $and: [
                                 { "subTasks.name": { $regex: searchText, $options: "si" } },
-                                { "subTasks.status": status }
+                                // { "subTasks.status": status }
                             ]
                         },
                     ]

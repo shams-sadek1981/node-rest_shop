@@ -14,8 +14,8 @@ const releaseSchema = mongoose.Schema({
         type: String
     },
     createdAt : { type : Date, default: Date.now },
-    expectedDate : { type : Date },
-    releasedDate : { type : Date },
+    releaseDate : { type : Date },
+    releasedAt : { type : Date },
     status: {
         type: Boolean,
         default: false

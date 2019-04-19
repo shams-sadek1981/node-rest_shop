@@ -10,6 +10,8 @@ const {
     updateTask,
     deleteTask,
     taskSearch,
+    summaryUser,
+    summaryProject
 } = require('../controllers/task/taskCtl')
 
 const { 
@@ -30,6 +32,8 @@ router.put('/update/:id', checkJwt, updateTask)
 // router.get('/list', checkJwt, taskList)
 router.delete('/delete/:id', checkJwt, deleteTask)
 router.get('/search', checkJwt, taskSearch)
+router.get('/summary-user', checkJwt, summaryUser)
+router.get('/summary-project', checkJwt, summaryProject)
 
 //-- Delete user
 

@@ -35,6 +35,14 @@ const upcomingTaskSchema = mongoose.Schema({
     status: {
         type: Boolean,
         default: false
+    },
+    running: {
+        type: Boolean,
+        default: false
+    },
+    rate: {
+        type: Number,
+        default: 0
     }
 })
 

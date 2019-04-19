@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Release = require('../../models/release');
-
+const moment = require('moment')
 
 const { queryBuilder } = require('./helperFunctions')
 
@@ -13,9 +13,14 @@ const { queryBuilder } = require('./helperFunctions')
 exports.search = async (req, res) => {
 
     const projectName = await req.query.project
-    const status = await req.query.status
+    const status = await JSON.parse((req.query.status))
     const searchText = await req.query.text
     const limit = await req.query.limit
+
+    let sortBy = 1
+    if ( status == true ) {
+        sortBy = -1
+    }
 
     // Release.find({})
     //     .then(doc => {
@@ -39,23 +44,25 @@ exports.search = async (req, res) => {
 
     Release.find(queryObj)
     .skip(skip).limit(limit)
+    .sort( { releaseDate: sortBy } )
     .then(data => {
 
         //-- Transform Data
         const result = data.map(item => {
+
             return {
                 _id: item._id,
+                status: item.status,
+                releaseDate: item.releaseDate,
                 projectName: item.projectName,
-                projectType: item.projectType,
                 version: item.version,
                 description: item.description
             }
         })
 
-        res.json(
-            // data,
+        res.status(200).json({
             result
-        )
+        })
     })
     .catch(err => {
         res.status(404).json({
@@ -72,10 +79,9 @@ exports.search = async (req, res) => {
 exports.createNew = (req, res) => {
 
     const release = new Release({
+        releaseDate: req.body.releaseDate,
         projectName: req.body.projectName,
-        projectType: req.body.projectType,
         version: req.body.version,
-        expectedDate: req.body.expectedDate,
         description: req.body.description,
     })
 
@@ -83,10 +89,9 @@ exports.createNew = (req, res) => {
         .then(result => {
             const formatedData = {
                 _id: result._id,
+                releaseDate: result.releaseDate,
                 projectName: result.projectName,
-                projectType: result.projectType,
                 version: result.version,
-                expectedDate: result.expectedDate,
                 description: result.description,
                 createdAt: result.createdAt
             }

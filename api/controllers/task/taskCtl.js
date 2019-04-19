@@ -62,7 +62,9 @@ exports.taskSearch = async (req, res) => {
                     projectName: "$projectName",
                     taskType: "$taskType",
                     description: "$description",
-                    status: "$status"
+                    status: "$status",
+                    running: "$running",
+                    rate: "$rate",
                 },
                 subTasks: { $push: "$subTasks" },
                 estHour: {
@@ -70,7 +72,7 @@ exports.taskSearch = async (req, res) => {
                 }
             }
         },
-        { $sort: { "_id.taskName": 1 } }
+        { $sort: { "_id.running": -1, "_id.rate": -1, "_id.taskName": 1 } }
 
     ])
     .skip(skip).limit(pageSize)
@@ -120,7 +122,7 @@ exports.createNewTask = (req, res) => {
         taskName: req.body.taskName,
         description: req.body.description,
         taskType: req.body.taskType,
-        projectName: req.body.projectName
+        projectName: req.body.projectName,
     })
 
     upcomingTask.save()
@@ -128,6 +130,7 @@ exports.createNewTask = (req, res) => {
 
             const formatedData = {
                 _id: result._id,
+                rate: result.rate,
                 taskName: result.taskName,
                 description: result.description,
                 projectName: result.projectName,
@@ -229,4 +232,108 @@ exports.deleteTask = (req, res, next) => {
         .catch(err => {
             res.status(500).json({ error: err })
         })
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * user Summary Report
+ * ----------------------------------------------------------------------------------------------------
+ */
+exports.summaryUser = (req, res) => {
+
+    UpcomingTask.aggregate([
+        {
+            "$unwind": {
+                'path': '$subTasks',
+                "preserveNullAndEmptyArrays": true,
+                "includeArrayIndex": "arrayIndex"
+            }
+        },
+        {
+            $match: {
+                status: false
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    assignedUser: "$subTasks.assignedUser"
+                },
+                estHour: {
+                    $sum: "$subTasks.estHour"
+                }
+            }
+        },
+        {
+            $match: {
+                "_id.assignedUser": { $ne: null }
+            }
+        },
+        { $sort: { "_id.assignedUser": 1 } }
+
+    ])
+    .then(data => {
+
+        //-- Transform Data
+        const result = data.map(item => {
+            return {
+                ...item._id,
+                estHour: item.estHour,
+            }
+        })
+
+
+        res.json({
+            result
+        })
+    })
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Project Summary Report
+ * ----------------------------------------------------------------------------------------------------
+ */
+exports.summaryProject = (req, res) => {
+
+    UpcomingTask.aggregate([
+        {
+            "$unwind": {
+                'path': '$subTasks',
+                "preserveNullAndEmptyArrays": true,
+                "includeArrayIndex": "arrayIndex"
+            }
+        },
+        {
+            $match: {
+                status: false
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    projectName: "$projectName"
+                },
+                estHour: {
+                    $sum: "$subTasks.estHour"
+                }
+            }
+        },
+        { $sort: { "_id.projectName": 1 } }
+    ])
+    .then(data => {
+        //-- Transform Data
+        const result = data.map(item => {
+            return {
+                ...item._id,
+                estHour: item.estHour,
+            }
+        })
+
+        res.json({
+            result
+        })
+    })
 }

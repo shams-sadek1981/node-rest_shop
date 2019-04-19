@@ -21,6 +21,8 @@
     "jsonwebtoken-refresh": "^5.7.0",
     "localStorage": "^1.0.4",
     "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.23",
     "mongoose": "^5.4.13",
     "morgan": "^1.9.1"
   }
