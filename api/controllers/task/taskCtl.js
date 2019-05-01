@@ -367,7 +367,10 @@ exports.summaryUser = (req, res) => {
         },
         {
             $match: {
-                status: false
+                $and: [
+                    { completedAt: { $eq: null } },
+                    { "subTasks.completedAt": { $eq: null } }
+                ]
             }
         },
         {
@@ -423,7 +426,10 @@ exports.summaryProject = (req, res) => {
         },
         {
             $match: {
-                status: false
+                $and: [
+                    { completedAt: { $eq: null } },
+                    { "subTasks.completedAt": { $eq: null } }
+                ]
             }
         },
         {
