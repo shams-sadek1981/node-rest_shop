@@ -18,7 +18,10 @@ exports.createSubtask = (req, res) => {
                         name: req.body.name,
                         assignedUser: req.body.assignedUser,
                         estHour: req.body.estHour,
-                        status: req.body.status
+                        status: req.body.status,
+                        startDate: req.body.startDate,
+                        dueDate: req.body.dueDate,
+                        completedAt: req.body.completedAt
                     }]
                 }
             }
@@ -71,6 +74,13 @@ exports.deleteSubTask = (req, res) => {
  */
 exports.updateSubTask = (req, res) => {
 
+    let status = true
+    if(req.body.completedAt==null){
+        status = false
+    }
+
+    console.log("Completed At: ",req.body.completedAt)
+
     UpcomingTask.findOneAndUpdate(
         { "subTasks._id": req.params.id },
         {
@@ -79,7 +89,10 @@ exports.updateSubTask = (req, res) => {
                     name: req.body.name,
                     assignedUser: req.body.assignedUser,
                     estHour: req.body.estHour,
-                    status: req.body.status
+                    status: status,
+                    startDate: req.body.startDate,
+                    dueDate: req.body.dueDate,
+                    completedAt: req.body.completedAt
                 }
             }
         },
@@ -88,12 +101,14 @@ exports.updateSubTask = (req, res) => {
 
         const newResult = {
             _id: result._id,
-            taskName: result.taskName,
-            description: result.description,
-            taskType: result.taskType,
-            projectName: result.projectName,
+            name: result.name,
+            assignedUser: result.assignedUser,
+            estHour: result.estHour,
             createdAt: result.createdAt,
             subTasks: result.subTasks,
+            startDate: result.startDate,
+            dueDate: result.dueDate,
+            completedAt: result.completedAt
         }
 
         res.status(200).json({

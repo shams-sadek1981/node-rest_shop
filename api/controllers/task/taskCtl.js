@@ -12,28 +12,37 @@ const { queryBuilder, singleUserEst, totalEst, totalTask } = require('./helperFu
  */
 exports.taskSearch = async (req, res) => {
 
+
+
     const userName = await req.query.name
     const projectName = await req.query.project
     const searchText = await req.query.text
-    const status = await req.query.status
     const pageSize = await JSON.parse(req.query.pageSize)
-    
+    const running = await JSON.parse(req.query.running)
+    const completedAt = await JSON.parse(req.query.completedAt)
+
     //-- Pagination settings
-    const pageNo = await req.query.page
+    const pageNo = await JSON.parse(req.query.page)
     // const pageSize = 3 //-- initialize the pageSize / pageSize / perPage data
     const skip = pageNo * pageSize - pageSize
-    
+
+
     //-- Set Query Object
-    const queryObj = await queryBuilder(userName, projectName, searchText, status)
+    const queryObj = await queryBuilder(userName, projectName, searchText, running, completedAt)
 
     // return res.json(
     //     queryObj
     // )
 
+    // UpcomingTask.find({
+    //     completedAt: { $eq: null}
+    // }).then(data => res.json(data))
+
+
     //-- Count total tasks
     const totalTasks = await totalTask(queryObj)
 
-    
+
     //-- by user & project
     const { userEstHour, userTotalSubTask } = await singleUserEst(queryObj)
 
@@ -41,6 +50,10 @@ exports.taskSearch = async (req, res) => {
     //-- all user
     const { totalEstHour, totalSubTask } = await totalEst(queryObj)
 
+
+    // return res.json({
+    //     totalEstHour
+    // })
 
     UpcomingTask.aggregate([
         {
@@ -62,6 +75,8 @@ exports.taskSearch = async (req, res) => {
                     projectName: "$projectName",
                     taskType: "$taskType",
                     description: "$description",
+                    assignedBy: "$assignedBy",
+                    completedAt: "$completedAt",
                     status: "$status",
                     running: "$running",
                     rate: "$rate",
@@ -75,39 +90,154 @@ exports.taskSearch = async (req, res) => {
         { $sort: { "_id.running": -1, "_id.rate": -1, "_id.taskName": 1 } }
 
     ])
-    .skip(skip).limit(pageSize)
-    .then(data => {
+        .skip(skip).limit(pageSize)
+        .then(data => {
 
-        //-- Transform Data
-        const result = data.map(item => {
-            return {
-                ...item._id,
-                subTasks: item.subTasks,
-                estHour: item.estHour,
-            }
-        })
+            //-- Transform Data
+            const result = data.map(item => {
 
-        //-- Return Result
-        res.status(200).json({
-            pagination: {
-                total: totalTasks,
-                current: JSON.parse(pageNo),
-                pageSize
-            },
-            totalEstHour,
-            totalSubTask,
-            userName,
-            userEstHour,
-            userTotalSubTask,
-            result
-        })
+                //-- calculation of completed hour
+                const completedHour = item.subTasks.filter(item1 => {
+                    if (item1.completedAt != null) {
+                        return item1
+                    }
+                }).reduce( (acc, cur) => acc + cur.estHour, 0)
 
-    }).catch(err => {
-        res.status(404).json({
-            err
+                const percent = Math.floor(completedHour * 100 / item.estHour)
+
+                return {
+                    ...item._id,
+                    subTasks: item.subTasks,
+                    estHour: item.estHour,
+                    completedHour,
+                    dueHour: item.estHour - completedHour,
+                    percent: percent || 0
+                }
+            })
+
+            //-- Return Result
+            res.status(200).json({
+                pagination: {
+                    total: totalTasks,
+                    current: pageNo,
+                    pageSize
+                },
+                totalEstHour,
+                totalSubTask,
+                userName,
+                userEstHour,
+                userTotalSubTask,
+                result
+            })
+
+        }).catch(err => {
+            res.status(404).json({
+                err
+            })
         })
-    })
 }
+
+// exports.taskSearch = async (req, res) => {
+
+//     const userName = await req.query.name
+//     const projectName = await req.query.project
+//     const searchText = await req.query.text
+//     const status = await JSON.parse(req.query.status)
+//     const pageSize = await JSON.parse(req.query.pageSize)
+//     const running = await JSON.parse(req.query.running)
+
+//     //-- Pagination settings
+//     const pageNo = await JSON.parse(req.query.page)
+//     // const pageSize = 3 //-- initialize the pageSize / pageSize / perPage data
+//     const skip = pageNo * pageSize - pageSize
+
+//     //-- Set Query Object
+//     const queryObj = await queryBuilder(userName, projectName, searchText, status, running)
+
+//     // return res.json(
+//     //     queryObj
+//     // )
+
+//     //-- Count total tasks
+//     const totalTasks = await totalTask(queryObj)
+
+
+//     //-- by user & project
+//     const { userEstHour, userTotalSubTask } = await singleUserEst(queryObj)
+
+
+//     //-- all user
+//     const { totalEstHour, totalSubTask } = await totalEst(queryObj)
+
+
+//     UpcomingTask.aggregate([
+//         {
+//             "$unwind": {
+//                 'path': '$subTasks',
+//                 "preserveNullAndEmptyArrays": true,
+//                 "includeArrayIndex": "arrayIndex"
+//             }
+//         },
+//         { $sort: { "subTasks.name": 1 } },
+//         {
+//             $match: queryObj
+//         },
+//         {
+//             $group: {
+//                 _id: {
+//                     _id: "$_id",
+//                     taskName: "$taskName",
+//                     projectName: "$projectName",
+//                     taskType: "$taskType",
+//                     description: "$description",
+//                     assignedBy: "$assignedBy",
+//                     completedAt: "$completedAt",
+//                     status: "$status",
+//                     running: "$running",
+//                     rate: "$rate"
+//                 },
+//                 subTasks: { $push: "$subTasks" },
+//                 estHour: {
+//                     $sum: "$subTasks.estHour"
+//                 }
+//             }
+//         },
+//         { $sort: { "_id.running": -1, "_id.rate": -1, "_id.taskName": 1 } }
+
+//     ])
+//     .skip(skip).limit(pageSize)
+//     .then(data => {
+
+//         //-- Transform Data
+//         const result = data.map(item => {
+//             return {
+//                 ...item._id,
+//                 subTasks: item.subTasks,
+//                 estHour: item.estHour,
+//             }
+//         })
+
+//         //-- Return Result
+//         res.status(200).json({
+//             pagination: {
+//                 total: totalTasks,
+//                 current: pageNo,
+//                 pageSize
+//             },
+//             totalEstHour,
+//             totalSubTask,
+//             userName,
+//             userEstHour,
+//             userTotalSubTask,
+//             result
+//         })
+
+//     }).catch(err => {
+//         res.status(404).json({
+//             err
+//         })
+//     })
+// }
 
 
 
@@ -123,6 +253,7 @@ exports.createNewTask = (req, res) => {
         description: req.body.description,
         taskType: req.body.taskType,
         projectName: req.body.projectName,
+        assignedBy: req.body.assignedBy
     })
 
     upcomingTask.save()
@@ -135,7 +266,8 @@ exports.createNewTask = (req, res) => {
                 description: result.description,
                 projectName: result.projectName,
                 taskType: result.taskType,
-                createdAt: result.createdAt
+                createdAt: result.createdAt,
+                assignedBy: result.assignedBy,
             }
 
             res.status(200).json({
@@ -143,18 +275,9 @@ exports.createNewTask = (req, res) => {
             })
         })
         .catch(err => {
-
             res.status(403).json({
                 err
             })
-
-            // if (err.code == 11000) {
-            //     return res.status(409).json({
-            //         message: 'Already exists this Taskname'
-            //     })
-            // } else {
-
-            // }
         })
 }
 
@@ -204,15 +327,7 @@ exports.updateTask = (req, res) => {
             res.status(200).json(doc)
         })
         .catch(err => {
-
-            let message = 'Invalid Task id'
-
-            if (err.code == 11000) {
-                message = 'Task already exists'
-            }
-
             res.status(403).json({
-                message,
                 err
             })
         })
@@ -273,21 +388,21 @@ exports.summaryUser = (req, res) => {
         { $sort: { "_id.assignedUser": 1 } }
 
     ])
-    .then(data => {
+        .then(data => {
 
-        //-- Transform Data
-        const result = data.map(item => {
-            return {
-                ...item._id,
-                estHour: item.estHour,
-            }
+            //-- Transform Data
+            const result = data.map(item => {
+                return {
+                    ...item._id,
+                    estHour: item.estHour,
+                }
+            })
+
+
+            res.json({
+                result
+            })
         })
-
-
-        res.json({
-            result
-        })
-    })
 }
 
 
@@ -323,17 +438,17 @@ exports.summaryProject = (req, res) => {
         },
         { $sort: { "_id.projectName": 1 } }
     ])
-    .then(data => {
-        //-- Transform Data
-        const result = data.map(item => {
-            return {
-                ...item._id,
-                estHour: item.estHour,
-            }
-        })
+        .then(data => {
+            //-- Transform Data
+            const result = data.map(item => {
+                return {
+                    ...item._id,
+                    estHour: item.estHour,
+                }
+            })
 
-        res.json({
-            result
+            res.json({
+                result
+            })
         })
-    })
 }

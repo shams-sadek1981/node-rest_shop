@@ -5,7 +5,7 @@ const UpcomingTask = require('../../models/upcomingTask');
 //-- Est. Hour Calculation from subtask
 const sumEstHourAndTotalSubTask = (queryObj = {}) => {
 
-    const { status } = queryObj
+    const { completedAt } = queryObj.$and
 
     return UpcomingTask.aggregate([
         { "$unwind": "$subTasks" },
@@ -13,7 +13,7 @@ const sumEstHourAndTotalSubTask = (queryObj = {}) => {
             $match: {
                 $and: [
                     queryObj,
-                    { "subTasks.status": status }
+                    { "subTasks.completedAt": completedAt }
                 ]
             }
         },
@@ -33,13 +33,28 @@ exports.sumEstHourAndTotalSubTask = sumEstHourAndTotalSubTask
 
 
 //-- Build Query
-exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", status = false) => {
+exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", running = false, completedAt = null) => {
 
-    status = JSON.parse(status)
-
+    // status = JSON.parse(status)
     let match = {
-        $and: []
+        $and: [
+        ]
     }
+
+    //-- CompletedAt == null
+    if (completedAt == null) {
+        match.$and = [
+            ...match.$and,
+            { completedAt:  { $eq: null }},
+            { running: running }
+        ]
+    } else {
+        match.$and = [
+            ...match.$and,
+            { completedAt:  { $ne: null }}
+        ]
+    }
+
 
     if (userName != 'all') {
         match.$and = [
@@ -75,21 +90,91 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
         }
     }
 
-    
 
-    if (match.$and.length > 0) {
-        match = {
-            ...match,
-            status
-        }
-    } else {
-        match = {
-            status
-        }
-    }
+    // if (match.$and.length > 0) {
+    //     match = {
+    //         ...match,
+    //         $or: [
+    //             { completedAt: { $exists: completedAt } },
+    //             { completedAt: completedAt }
+    //         ]
+    //     }
+    // } else {
+    //     match = {
+    //         $or: [
+    //             { completedAt: { $exists: completedAt } },
+    //             { completedAt: completedAt }
+    //         ]
+    //     }
+    // }
 
     return match
 }
+
+// exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", status = false, running=false) => {
+
+//     // status = JSON.parse(status)
+
+//     let match = {
+//         $and: [ { running } ]
+//     }
+
+//     //-- Completed Status, must remove running
+//     if (status == true) {
+//         match = {
+//             $and: []
+//         }
+//     }
+
+//     if (userName != 'all') {
+//         match.$and = [
+//             ...match.$and,
+//             // { "subTasks.status": status },
+//             { "subTasks.assignedUser": userName }
+//         ]
+//     }
+
+//     if (projectName != 'all') {
+//         match.$and = [
+//             ...match.$and,
+//             { projectName: projectName }
+//         ]
+//     }
+
+//     if (searchText != "") {
+//         match = {
+//             $and: [
+//                 ...match.$and,
+//                 {
+//                     $or: [
+//                         { taskName: { $regex: searchText, $options: "si" } },
+//                         {
+//                             $and: [
+//                                 { "subTasks.name": { $regex: searchText, $options: "si" } },
+//                                 // { "subTasks.status": status }
+//                             ]
+//                         },
+//                     ]
+//                 }
+//             ]
+//         }
+//     }
+
+
+
+//     if (match.$and.length > 0) {
+//         match = {
+//             ...match,
+//             status
+//         }
+//     } else {
+//         match = {
+//             status
+//         }
+//     }
+
+//     return match
+// }
 
 //-- Single user
 const singleUserEst = async (queryObj) => {
@@ -142,7 +227,7 @@ exports.totalTask = (queryObj) => {
 
     const query = {
         ...queryObj,
-        status: JSON.parse(queryObj.status)
+        // status: JSON.parse(queryObj.status)
     }
 
     return UpcomingTask.aggregate([
