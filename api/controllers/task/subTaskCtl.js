@@ -1,6 +1,88 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const moment = require('moment');
 const UpcomingTask = require('../../models/upcomingTask');
+// const TaskNo = require('../../models/taskNo');
+const TaskNo = require('../../models/taskNo');
+const { queryBuilder, singleUserEst, totalEst, totalTask } = require('./helperFunctions')
+
+exports.userReport = (req, res) => {
+
+    const startDate = new Date(req.query.startDate)
+    const endDate = new Date(req.query.endDate)
+    const userName = req.query.userName
+
+    const queryObj = {
+        "subTasks.completedAt": {
+            "$gte": startDate,
+            "$lte": endDate
+        },
+        "subTasks.assignedUser": userName
+    }
+
+    //-- Count total tasks
+    // const totalTasks = await totalTask(queryObj)
+
+    // return res.json({
+    //     totalTAsks
+    // })
+
+    UpcomingTask.aggregate([
+        {
+            "$unwind": {
+                'path': '$subTasks',
+                "preserveNullAndEmptyArrays": true,
+                "includeArrayIndex": "arrayIndex"
+            }
+        },
+        { $sort: { "subTasks.completedAt": 1, "subTasks.name": 1 } },
+        {
+            $match: queryObj
+        },
+        {
+            $group: {
+                _id: {
+                    _id: "$_id",
+                    taskName: "$taskName",
+                    projectName: "$projectName",
+                    taskType: "$taskType",
+                    completedAt: "$completedAt",
+                },
+                subTasks: { $push: "$subTasks" },
+                estHour: {
+                    $sum: "$subTasks.estHour"
+                }
+            }
+        },
+        { $sort: { "_id.completedAt": 1, "_id.taskName": 1 } }
+
+    ]).then(data => {
+        res.json(data)
+    }).catch(err => res.json(err))
+
+
+}
+
+/**
+ * --------------------------------------------------------------------------------
+ * Next Seq
+ * --------------------------------------------------------------------------------
+ */
+
+exports.nextSeq = (req, res) => {
+
+    TaskNo.findOneAndUpdate(
+        { f_year: 2019 },
+        {
+            $inc: { seq: 1 },
+        },
+        { new: true, upsert: true }
+    ).then(data => {
+        res.json(data)
+    }).catch(err => res.json(err))
+
+}
+
 
 /**
  * ------------------------------------------------------------------------------------------------
@@ -75,11 +157,11 @@ exports.deleteSubTask = (req, res) => {
 exports.updateSubTask = (req, res) => {
 
     let status = true
-    if(req.body.completedAt==null){
+    if (req.body.completedAt == null) {
         status = false
     }
 
-    console.log("Completed At: ",req.body.completedAt)
+    console.log("Completed At: ", req.body.completedAt)
 
     UpcomingTask.findOneAndUpdate(
         { "subTasks._id": req.params.id },

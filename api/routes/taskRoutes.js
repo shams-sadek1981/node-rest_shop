@@ -17,7 +17,9 @@ const {
 const { 
     createSubtask,
     deleteSubTask,
-    updateSubTask
+    updateSubTask,
+    nextSeq,
+    userReport
 } = require('../controllers/task/subTaskCtl')
 
 
@@ -26,6 +28,9 @@ const {
 router.post('/subtask/create/:id', checkJwt, createSubtask)
 router.delete('/subtask/delete/:id', checkJwt, deleteSubTask)
 router.put('/subtask/update/:id', checkJwt, updateSubTask)
+router.get('/subtask/next-seq', checkJwt, nextSeq) // next-seq or custom task no
+router.get('/subtask/report-user', checkJwt, userReport ) // next-seq or custom task no
+
 
 router.post('/create', checkJwt, createNewTask)
 router.put('/update/:id', checkJwt, updateTask)

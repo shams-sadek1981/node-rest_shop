@@ -77,7 +77,7 @@ exports.taskSearch = async (req, res) => {
                     description: "$description",
                     assignedBy: "$assignedBy",
                     completedAt: "$completedAt",
-                    status: "$status",
+                    // status: "$status",
                     running: "$running",
                     rate: "$rate",
                 },
@@ -87,7 +87,7 @@ exports.taskSearch = async (req, res) => {
                 }
             }
         },
-        { $sort: { "_id.running": -1, "_id.rate": -1, "_id.taskName": 1 } }
+        { $sort: { "_id.completedAt": -1, "_id.rate": -1, "_id.taskName": 1 } }
 
     ])
         .skip(skip).limit(pageSize)
@@ -136,110 +136,6 @@ exports.taskSearch = async (req, res) => {
             })
         })
 }
-
-// exports.taskSearch = async (req, res) => {
-
-//     const userName = await req.query.name
-//     const projectName = await req.query.project
-//     const searchText = await req.query.text
-//     const status = await JSON.parse(req.query.status)
-//     const pageSize = await JSON.parse(req.query.pageSize)
-//     const running = await JSON.parse(req.query.running)
-
-//     //-- Pagination settings
-//     const pageNo = await JSON.parse(req.query.page)
-//     // const pageSize = 3 //-- initialize the pageSize / pageSize / perPage data
-//     const skip = pageNo * pageSize - pageSize
-
-//     //-- Set Query Object
-//     const queryObj = await queryBuilder(userName, projectName, searchText, status, running)
-
-//     // return res.json(
-//     //     queryObj
-//     // )
-
-//     //-- Count total tasks
-//     const totalTasks = await totalTask(queryObj)
-
-
-//     //-- by user & project
-//     const { userEstHour, userTotalSubTask } = await singleUserEst(queryObj)
-
-
-//     //-- all user
-//     const { totalEstHour, totalSubTask } = await totalEst(queryObj)
-
-
-//     UpcomingTask.aggregate([
-//         {
-//             "$unwind": {
-//                 'path': '$subTasks',
-//                 "preserveNullAndEmptyArrays": true,
-//                 "includeArrayIndex": "arrayIndex"
-//             }
-//         },
-//         { $sort: { "subTasks.name": 1 } },
-//         {
-//             $match: queryObj
-//         },
-//         {
-//             $group: {
-//                 _id: {
-//                     _id: "$_id",
-//                     taskName: "$taskName",
-//                     projectName: "$projectName",
-//                     taskType: "$taskType",
-//                     description: "$description",
-//                     assignedBy: "$assignedBy",
-//                     completedAt: "$completedAt",
-//                     status: "$status",
-//                     running: "$running",
-//                     rate: "$rate"
-//                 },
-//                 subTasks: { $push: "$subTasks" },
-//                 estHour: {
-//                     $sum: "$subTasks.estHour"
-//                 }
-//             }
-//         },
-//         { $sort: { "_id.running": -1, "_id.rate": -1, "_id.taskName": 1 } }
-
-//     ])
-//     .skip(skip).limit(pageSize)
-//     .then(data => {
-
-//         //-- Transform Data
-//         const result = data.map(item => {
-//             return {
-//                 ...item._id,
-//                 subTasks: item.subTasks,
-//                 estHour: item.estHour,
-//             }
-//         })
-
-//         //-- Return Result
-//         res.status(200).json({
-//             pagination: {
-//                 total: totalTasks,
-//                 current: pageNo,
-//                 pageSize
-//             },
-//             totalEstHour,
-//             totalSubTask,
-//             userName,
-//             userEstHour,
-//             userTotalSubTask,
-//             result
-//         })
-
-//     }).catch(err => {
-//         res.status(404).json({
-//             err
-//         })
-//     })
-// }
-
-
 
 /**
  * ------------------------------------------------------------------------------------------------
