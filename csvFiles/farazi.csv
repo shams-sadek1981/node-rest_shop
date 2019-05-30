@@ -1,62 +1,68 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,Discussion
-01-Mar-2019,Team meeting with WP ERP team,Discussion about WP ERP accounting module for testing purpose,1.5,Testing,WP ERP,
-01-Mar-2019,Discussion with Dokan APP developer,How many tasks are pending for APP release,1,Testing,Dokan APP,
-01-Mar-2019,"Planning, Writting & Testing scenario for WP ERP Accounting",CRUD system ,3,Testing,WP ERP,
-04-Mar-2019,"Testing, Planning & Writting testing scenario for WP ERP Accounting",CRUD system ,1,Testing,WP ERP,
-04-Mar-2019,Project Manager release version testing,Project manager free & pro version version is testing for release purpose. Label is the new feature so main priority to test this feature. Also testing released version from .org,1.5,Testing,Project Manager,
-04-Mar-2019,Dokan free version testing for release ,Order processing test & also test with pro version,2.5,Testing,Dokan,
-04-Mar-2019,How to manage our project task discussion with sk & sadek bhai,"Discussion about SRS maintain, task management, kanban board management, report analysis",1.7,Testing,Project Manager,
-05-Mar-2019,"Testing, Planning & Writting testing scenario for WP ERP Accounting",CRUD system ,4,Testing,WP ERP,
-05-Mar-2019,Project manager npm build so discuss with mishu bhai,npm build problems & fork to origin repo update,0.4,Testing,Project Manager,
-05-Mar-2019,Release calendar analysis & manage,All product rlease date fixed ,0.3,Testing,Others,
-05-Mar-2019,Setup project manager automation setup for mac & writting test scenarion for add new project,,3,Testing,Project Manager,
-06-Mar-2019,"Testing, Planning & Writting testing scenario for WP ERP Accounting",,1,Testing,WP ERP,
-06-Mar-2019,Preparing presenation for video,making video for whole automation testing process,7,Testing,Others,
-06-Mar-2019,Writting accepatce testing for PM,PM acceptance testing,1,Testing,Others,
-07-Mar-2019,Dokan paypel payment gateway testing,dokan subscriptions are testing,1,Testing,Dokan,
-07-Mar-2019,Dokan payment automation script,Writting script for dokan subscription,1.7,Testing,Dokan,
-07-Mar-2019,Discuss and re-arrange the task also set milestone,,4,Testing,Others,
-08-Mar-2019,Weekly Meeting,Meeting with all develoopment team,5,Testing,Others,
-11-Mar-2019,Preparing presenation for session,get preparation and change presentation slide,7,Testing,Others,
-12-Mar-2019,Dokan comission discussion about different scenario,Discuss with developer the whole processing of dokan commission,1,Testing,Dokan,
-12-Mar-2019,Dokan comission testing,testing from different scenario,2.5,Testing,Dokan,
-12-Mar-2019,Automation Testing session,Discuss with all development team for automation process,0.5,Testing,Others,
-12-Mar-2019,Preparing for presentation,preparing for presentation,1,Testing,Others,
-13-Mar-2019,Dokan combine comission testing,testing from different scenario,0.5,Testing,Dokan,
-13-Mar-2019,PM Github and bitbucket integration discussion,"Testing github and bitbucket integration discussion, how it's works",0.7,Testing,Project Manager,
-13-Mar-2019,Test scenario re-structure,Dokan existing test scenario re-design and running automation,0.3,Testing,Dokan,
-13-Mar-2019,Reading a blog & Writting reliable locators,Writing reliable locators for Selenium and WebDriver tests,1,Testing,Others,
-13-Mar-2019,Task Management & discuss with dokan dashboard design,"dokan pro module manage for release, exisitng design review with design & dev team",2.5,Testing,Dokan,
-14-Mar-2019,"Dokan elementor module, store category & dummy data import module review",for release purpose testing those module and assign task to the content. also discuss with developer ,1.5,Testing,Dokan,
-14-Mar-2019,PM Github and bitbucket integration setup for testing,"Testing github and bitbucket integration discussion, how it's works",1,Testing,Project Manager,
-14-Mar-2019,Dokan combine comission testing,testing from different scenario,2,Testing,Dokan,
-14-Mar-2019,release calendar analysis & manage release also task in the lounge,release calendar analysis & manage release also task in the lounge,1.6,Testing,Others,
-15-Mar-2019,"Testing, Planning & Writting testing scenario for WP ERP Accounting",,1,Testing,Project Manager,
-15-Mar-2019,Writting different scenario for dokan combine comission ,testing from different scenario,2.5,Testing,Dokan,
-15-Mar-2019,Variables for UI elements of automation testing,,2,Testing,Dokan,
-15-Mar-2019,PM Github and bitbucket integration testing,"Testing github and bitbucket integration discussion, how it's works",1,Testing,Project Manager,
-19-Mar-2019,Discuss with EDI bhai for Dummy data import,Discuss with EDI bhai for Dummy data import,2.5,Testing,Dokan,
-19-Mar-2019,Dokan calculation automation,Dokan calculation automation,2,Testing,Dokan,
-20-Mar-2019,Discuss with WP ERP accoutning,,3,Testing,WP ERP,
-20-Mar-2019,Dokan brand new product feature testing,Dokan brand new product feature testing,3,Testing,Dokan,
-21-Mar-2019,Dokan social login testing,All social login are testing,4,Testing,Dokan,
-21-Mar-2019,Project Manager kanban board testing,Kanbanboard task automation testing,1,Testing,Project Manager,
-21-Mar-2019,WP ERP accouting team meeting,Dicuss about WP ERP accounting ,1.5,Testing,WP ERP,
-22-Mar-2019,Project Manager kanban board testing,Kanbanboard task automation testing,1,Testing,Project Manager,
-22-Mar-2019,Dokan Subscription testing,Dokan subcription trail balance testing,2.4,Testing,Dokan,
-22-Mar-2019,"Weekly Meeting with Dokan, Project Manager & WP ERP team",Discuss and meeting with all team,4,Testing,Others,
-25-Mar-2019,Dokan Pro testing for release purpose,Dokan pro all testing with store category and brand new products ,4.5,Testing,Dokan,
-25-Mar-2019,WPUF add column field testing,testing add column filed,1,Testing,WP User Frontend,
-25-Mar-2019,WP ERP accouting testing,Testing accounting with different scenario,1.6,Testing,WP ERP,
-25-Mar-2019,Test WPERP HelpScout completely and ready to release,,1,Testing,WP ERP,
-27-Mar-2019,WPUF add column field testing,testing add column filed,4,Testing,WP User Frontend,
-27-Mar-2019,Project Manager kanban board testing,Kanbanboard task automation testing,1.7,Testing,Project Manager,
-27-Mar-2019,Discuss with dev for Github & Bitbucket integration,,0.5,Testing,Project Manager,
-27-Mar-2019,WP ERP accouting testing,Testing accounting with different scenario,1.6,Testing,WP ERP,
-28-Mar-2019,Project Manager kanban board testing,Kanbanboard task automation testing,6,Testing,Project Manager,
-28-Mar-2019,WPUF add column field testing,testing add column filed,1.4,Testing,WP User Frontend,
-28-Mar-2019,PM Github and bitbucket integration testing & discussion,"Testing github and bitbucket integration discussion, how it's works",0.6,Testing,Project Manager,
-29-Mar-2019,WPUF free & pro testing for release ,All new & existing features are testing with changelog,1.7,Testing,WP User Frontend,
-29-Mar-2019,WP Project Manager free & pro testing for release,All new & existing features are testing,1.4,Testing,WP Project Manager,
-29-Mar-2019,"Weekly Meeting with Dokan, Project Manager & WP ERP team",Weekly meeting with all team,2.3,Testing,Others,
-29-Mar-2019,Dokan App testing,Overall App testing by different scenario,2.5,Testing,Dokan App,
+Date,Task / Feature,Sub Task,Hour,Type,Project
+01-Jan-2019,,"Recruitment, workflow, SMS notification, HR Frontend testing",1,Manual Testing,ERP
+01-Jan-2019,,WPUF testing for release purpose,2,Automation Testing,WPUF
+01-Jan-2019,,PM trello integration testing,1,Manual Testing,PM
+01-Jan-2019,,WPUF basic test case ready for team,4,Automation testing,WPUF
+02-Jan-2019,All plugin overview,Overview & update all plugin features,1,Discussion & Planning,All project
+02-Jan-2019,,Discuss with team for WPUF automation testing & writting test script,3,Discussion,WPUF
+02-Jan-2019,,Dokan Whole sale testing,1,Manual Testing,Dokan
+02-Jan-2019,,POS meeting,1,Meeting,Dokan
+02-Jan-2019,,WPUF field re-factor testing,1,Manual Testing,WPUF
+03-Jan-2019,,PM trello integration enhancement & discuss with almas,1,Discussion,PM
+03-Jan-2019,,WPUF field re-factor testing,3,Manual Testing,Dokan
+03-Jan-2019,,writting WPUF test script (paper based) & aslo discuss with team,2,Meeting & discussion,WPUF
+04-Jan-2019,,Writting WPUF test script step by step,1,Discussion & Planning,WPUF
+04-Jan-2019,,Trello enhancement testing,1,testing,PM
+04-Jan-2019,All plugin features,Listed all features,2,discussion & planning,All project
+07-Jan-2019,,Wrtting WPUF test script & Discuss about features,3,discussion & planning,WPUF
+07-Jan-2019,,Analysis plugin feature & assign to employee,3,Discussion,PM
+08-Jan-2019,,WPUF field re-factor testing,5,Manual Testing,WPUF
+08-Jan-2019,,how to write User Stories and Acceptance Criteria (following video),0.5,learning,Study
+09-Jan-2019,,Dokan release meeting,1,Meeting & Planning,Dokan
+09-Jan-2019,,WPUF field re-factor testing,2,Manual Testing,WPUF
+10-Jan-2019,,WPUF field re-factor testing,2,Manual Testing,WPUF
+10-Jan-2019,,how to write User Stories and Acceptance Criteria,1,learning,Study
+10-Jan-2019,,Runnnig features are completing or not also Dokan release testing,1,discussion,"All project,Dokan"
+10-Jan-2019,,Hubspot testing from support requirements,1,Manual Testing,ERP
+10-Jan-2019,,WP ERP Jan 2019 feature task lists tasks are formatting ,1,planning,ERP
+11-Jan-2019,,Weekly Meeting,4,Meeting,All Products
+14-Jan-2019,,Dokan release testing,2,Manual Testing,Dokan
+14-Jan-2019,,WP ERP accounting testing,1,Manual Testing,ERP
+14-Jan-2019,,ZAP integragration with PM,1,testing,PM
+14-Jan-2019,,"Discuss with content team for release calendar, how we follow the release change-log",0.5,Discussion,All Products
+14-Jan-2019,,WPUF field re-factor testing,2,Manual Testing,WPUF
+14-Jan-2019,,Dokan Elementor Support meeting,0.5,Meeting,Dokan
+14-Jan-2019,,PWA meeting,0.5,Meeting,Learning
+15-Jan-2019,,weForms free & pro will test also discuss with dev team,4,Discussion & Testing,weForms
+15-Jan-2019,,WP ERP HUbspot Integration testing,0.5,discussion,ERP
+15-Jan-2019,,How to process Digital Assurance,0.5,learning,Study
+16-Jan-2019,,weForms free & pro will test also discuss with dev team,3,Testing,weForms
+16-Jan-2019,,"Analysis plugin feasture & assign also Discuss with Saimon about Dokan Stripe payment, Discuss with WPUF team release purpose",1,Discussion & Understand,All Products
+16-Jan-2019,,Growth hacking meeting,1,Meeting,Growth Hacking
+16-Jan-2019,,Dicuss with SK & Sadek bhai for dev management,1,Discussion,All Products
+17-Jan-2019,,"Dokan pro 2.9.4 testing (RMA, Store Category & Whole sales)",5,Manual & Automation Testing,Dokan
+17-Jan-2019,,Writting WPUF payment testcase also organize scenario & Also fixed release date,1,Automation Testing,WPUF
+18-Jan-2019,,"Dokan pro 2.9.4 testing (RMA, Store Category & Whole sales)",3,Manual & Automation Testing,Dokan
+18-Jan-2019,,PM query optimization testing,1,Manual testing,PM
+18-Jan-2019,,WPUF field re-factor testing,1,Manual testing,WPUF
+18-Jan-2019,,Weekly Meeting,2,Meeting,All Products
+21-Jan-2019,,"PM query optimization testing & also PM (trello, asana importer will test)",4,Testing & discussion,PM
+21-Jan-2019,,Dokan Overall testing,3,Manual & Automation Testing,Dokan
+21-Jan-2019,,Dokan APP & Dokan Module meeting,1,Meeting,Dokan
+22-Jan-2019,,Discuss with WPUF team for task analysis & also discuss about goal,1,Discussion,WPUF
+22-Jan-2019,,"PM query optimization testing & also PM (trello, asana importer will test)",2,Manual Testing,PM
+22-Jan-2019,,"Discussion with SAM & SK about all products, what the problems and how to solve the problems",3,Discussion,All Products
+23-Jan-2019,,WPUF field re-factor testing for pro version following test case,2,Manual Testing,WPUF
+23-Jan-2019,,All project release management & creating task,4,Discussion & Meeting,All Products
+23-Jan-2019,,"Discuss & Create a formate for release task, also fixed product release version date",1,Discussion & Meeting,All Products
+24-Jan-2019,,Version wise task assign & rearrange all task in the lounge,6,Discussion,All Products
+25-Jan-2019,,Weekly Meeting,2,Meeting,All Products
+25-Jan-2019,,WPUF field re-factor testing for pro version following test case,3,Manual Testing,WPUF
+28-Jan-2019,,PM Query Optimization,2,Manual Testing,PM
+28-Jan-2019,,Dokan free-2.9.9 testing for release purpose,2,Manual Testing,Dokan
+28-Jan-2019,,WPUF field re-factor testing for free& pro version following test case,2,Automation & Manual TEsting,WPUF
+29-Jan-2019,,PM Query Optimization,3,Manual Testing,PM
+29-Jan-2019,,WPUF field re-factor testing for free& pro version following test case,3,Manual Testing,WPUF
+30-Jan-2019,,WPUF field re-factor testing for free& pro version following test case,3,Manual Testing,WPUF
+30-Jan-2019,,PM Query Optimization,4,Manual Testing,PM
+31-Jan-2019,,WPUF field re-factor testing for free& pro version following test case,7,Manual Testing,WPUF

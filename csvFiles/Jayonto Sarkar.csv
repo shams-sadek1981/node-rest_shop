@@ -1,18 +1,23 @@
 Date,Task / Feature,Sub Task,Hour,Type,Project
-01-Mar-2019,"Implement storing ip address, location & timezone while opened email",,7,New Feature,weMail
-06-Mar-2019,"Implement Maxmind for gettting location, city timezone & implement refresh token for JWT",,7,New Feature,weMail
-07-Mar-2019,Fix some bugs & issues from Sentry.,,6,Bug Fix,weMail
-08-Mar-2019,Upgrade bounce handling system by using queue to avoid errors & data loss,,7.5,New Feature,weMail
-11-Mar-2019,Setup for Elastic email integration,,7,New Feature,weMail
-12-Mar-2019,Send emails & manage sending quota using elastic email,,7,New Feature,weMail
-13-Mar-2019,Setup bounce handler for Elastic email,,6.5,New Feature,weMail
-14-Mar-2019,Roles & Permissions for Admin Panel User Management,,7,New Feature,weMail
-15-Mar-2019,Migration & Seeder for Admin Roles & Permissions,,6,New Feature,weMail
-19-Mar-2019,Middleware & implementation for Admin Roles & Permissions,,5,New Feature,weMail
-20-Mar-2019,Stats of WeMail Admin Panel,,7,New Feature,weMail
-21-Mar-2019,Stats of WeMail Admin Panel (Continue),,7,New Feature,weMail
-22-Mar-2019,Api endpoints of Display overview of Sites graph,,7,New Feature,weMail
-25-Mar-2019,API endpoints of details of the campaigns and lists,,7,New Feature,weMail
-27-Mar-2019,Research on calculating email sending rate,,7,New Feature,weMail
-28-Mar-2019,Testing broadcasting integration using laravel-websockets,,6,Others,Others
-29-Mar-2019,Calculating Mail sending rate (in minutes) for wemail Admin Panel,,6,New Feature,weMail
+01-Jan-2019,Handle bounce for Mailgun,,6,New Feature,weMail
+02-Jan-2019,Handle bounce for Mailgun,,5,New Feature,weMail
+03-Jan-2019,Handle Boune for Sparkpost,,6,New Feature,weMail
+04-Jan-2019,Handle Bounce & Setup Bounce Handler for Sparkpost,,5,New Feature,weMail
+07-Jan-2019,Setup settings for SendGrid,,6,New Feature,weMail
+08-Jan-2019,Setup Bounce handler for SendGrid,,6,New Feature,weMail
+09-Jan-2019,Handle sending mail to Postmark,,7,New Feature,weMail
+10-Jan-2019,Handle Bounce mail to PostMark,,6,New Feature,weMail
+11-Jan-2019,Research on importing from Sendy,,5,New Feature,weMail
+15-Jan-2019,Coding backend for applying multiple import from mailchimp,,5,Bug Fix,weMail
+16-Jan-2019,Queue mailchimp lists with paginated members while importing ,,6,Bug Fix,weMail
+17-Jan-2019,DB operations while job triggers in mailchimp multiple list import,,5,Bug Fix,weMail
+18-Jan-2019,UI Update in CDN project for multiple list import from mailchimp,,4,Bug Fix,weMail
+21-Jan-2019,Test full feature & resolved some github conflict issues,,5,Bug Fix,weMail
+22-Jan-2019,Upgrade Wemail api from laravel 5.5 to 5.7,,5,Bug Fix,weMail
+23-Jan-2019,Pricing plan & Subscribe option for wemail clients research,,5,New Feature,weMail
+24-Jan-2019,Codebase update for Pricing plan & Subscribe option task,,6,New Feature,weMail
+25-Jan-2019,Setup Stripe to interact with wemail project,,4,Others,weMail
+28-Jan-2019,Authentication using WP Access token & validate token ,,5,New Feature,weMail
+29-Jan-2019,Setup for Subscription & payment related issues,,6,New Feature,weMail
+30-Jan-2019,Setup JWT Token based authentication for WeMaill App client,,6,New Feature,weMail
+31-Jan-2019,Payment subscription using laravel cachier,,5,New Feature,weMail

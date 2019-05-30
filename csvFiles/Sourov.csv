@@ -1,23 +1,33 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project
-01-Mar-2019,"Create mockup for stats, Users, Sites",,5,New Feature,Appsero
-04-Mar-2019,Fix new email digest logo not found issue,,2,Bux Fix,Appsero
-04-Mar-2019,Fix activations graph issue,Release new version : 2.0.3,4,New Feature,Appsero
-04-Mar-2019,Meeting with tareq vai,,1,Others,Appsero
-05-Mar-2019,Research on feature tracking,,6,New Feature,Appsero
-05-Mar-2019,Meeting with tareq vai,,1,Others,Appsero
-06-Mar-2019,Study on Subscription,,6,New Feature,Appsero
-07-Mar-2019,WooComerce Subscription API,Add subscription data with orders,8,New Feature,Appsero
-11-Mar-2019,Subscription API with EDD data,,9,New Feature,Appsero
-12-Mar-2019,Refector Subscription codes,,5,New Feature,Appsero
-13-Mar-2019,Study on Active Install count,,5,New Feature,Appsero
-14-Mar-2019,Add new design login page and layout,Study on ant design,9,New Feature,Appsero
-15-Mar-2019,Dynamic Password reset page,,5,New Feature,Appsero
-19-Mar-2019,Signup form dynamic,Fixed sidebar layout,8,New Feature,Appsero
-20-Mar-2019,Implement new design,"Overview page, Plugin list page",8,New Feature,Appsero
-21-Mar-2019,Project pagination and sidebar menu issue,,5,New Feature,Appsero
-21-Mar-2019,Project overview page,,3,New Feature,Appsero
-22-Mar-2019,Project overview page,"Doughnut charts, Sidebar menu items",8,New Feature,Appsero
-25-Mar-2019,Project sites page,,8,New Feature,Appsero
-27-Mar-2019,Site details page and Users list,,8,New Feature,Appsero
-28-Mar-2019,User details page and Deactivation list,,8,New Feature,Appsero
-29-Mar-2019,Deactivation chart ,,6,New Feature,Appsero
+Date,Task / Feature,Sub Task,Hour,Type,Project,Version,,,Upcoming Task
+01-Jan-2019,AppSero Helper,Request to Server from EDD to Add and Disable license,8,New Feature,Appsero,,,,
+02-Jan-2019,AppSero Client License active page,,8,New Feature,Appsero,,,,
+03-Jan-2019,AppSero helper - Woo API,Show products API,7,New Feature,Appsero,,,,
+04-Jan-2019,AppSero helper - Woo API,API for show licenses and activations,7,New Feature,Appsero,,,,
+04-Jan-2019,AppSero helper - Woo API,Change license id to license key on routes,1,Bux Fix,Appsero,,,,
+07-Jan-2019,AppSero helper - Woo API,Activation APIs,9,,Appsero,,,,
+08-Jan-2019,AppSero helper,Woo SA Activation APIs,8,,Appsero,,,,
+09-Jan-2019,Release functionality for multiple variation ,,9,New Feature,Appsero,,,,
+10-Jan-2019,Release functionality for multiple variation ,Test release feature,7,New Feature,Appsero,,,,
+11-Jan-2019,Test License and Release feature,,3,,Appsero,,,,
+11-Jan-2019,Show project Add and Edit validation error,,2,New Feature,Appsero,,,,
+14-Jan-2019,Fix database migration issue,,4,,Appsero,,,,
+14-Jan-2019,Meeting with tareq vai,,1,,Appsero,,,,
+15-Jan-2019,Research on team feature,,1,,Appsero,,,,
+15-Jan-2019,Header service feedback,,7,,Appsero,,,,
+16-Jan-2019,Email digest timezone issue ,Send digest according to user time,8,,Appsero,,,,
+17-Jan-2019,Download traking for version release,,5,New Feature,Appsero,,,,
+17-Jan-2019,Project store select from create project,,3,,Appsero,,,,
+18-Jan-2019,Change UI of project create form,,7,,Appsero,,,,
+21-Jan-2019,Create Theme and Plugin Settigs Step,,7,,Appsero,,,,
+22-Jan-2019,Settings tab add new Hosted UI,,8,,Appsero,,,,
+23-Jan-2019,Test AppSero full process,,3,,Appsero,,,,
+23-Jan-2019,Appsero Helper," Settings page, Write readme.txt",4,,Appsero,,,,
+24-Jan-2019,Appsero Helper,"Redirect after active, API auth issue fixed",4,,Appsero,,,,
+24-Jan-2019,Release ZIP URL support functionality added,,3,,Appsero,,,,
+25-Jan-2019,AppSero client version info cache to transient,Help text for variable product release,2,,Appsero,,,,
+25-Jan-2019,AppSero developer documentation,,3,,Appsero,,,,
+28-Jan-2019,Project edit tab validation issue fixed,,2,,Appsero,,,,
+28-Jan-2019,AppSero developer documentation,Change vuepress folder structure,4,,Appsero,,,,
+29-Jan-2019,Appsero Client and Dashboard UI issue fixed,,7,,Appsero,,,,
+30-Jan-2019,Fix API connection issue of Appsero Helper,,7,Plugin Issue,Appsero,,,,
+31-Jan-2019,Fix Appsero Client and Settings bug,,8,,Appsero,,,,

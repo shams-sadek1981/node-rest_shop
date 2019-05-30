@@ -5,14 +5,68 @@ const UpcomingTask = require('../../models/upcomingTask');
 const { queryBuilder, singleUserEst, totalEst, totalTask } = require('./helperFunctions')
 
 
+createBulkTask = (id) => {
+    return UpcomingTask.findById(id)
+        .then(data => {
+
+            const spittedTasks = data.description.split(/\r\n|\n|\r/);
+
+            if ( spittedTasks.length > 0 ) {
+
+                const bulkTasks = spittedTasks.map( task => {
+                    return {
+                        taskName: task,
+                        description: task,
+                        taskType: data.taskType,
+                        projectName: data.projectName,
+                        assignedBy: data.assignedBy    
+                    }
+                })
+                
+                //-- Insert Many
+                return UpcomingTask.insertMany(bulkTasks)
+                .then( result => result )
+                .catch( err => err )
+            } else {
+                return false
+            }
+        })
+        .catch( err => err )
+
+    // const id = req.body.id
+    // UpcomingTask.findById(id)
+    //     .then(data => {
+
+    //         const spittedTasks = data.description.split(/\r\n|\n|\r/);
+
+    //         const bulkTasks = spittedTasks.map( task => {
+    //             return {
+    //                 taskName: task,
+    //                 description: task,
+    //                 taskType: data.taskType,
+    //                 projectName: data.projectName,
+    //                 assignedBy: data.assignedBy    
+    //             }
+    //         })
+
+    //         //-- Insert Many
+    //         UpcomingTask.insertMany(bulkTasks)
+    //             .then( result => {
+    //                 res.json(result)
+    //             })
+    //             .catch( err => res.json( err ))
+    //     })
+    //     .catch( err => res.json({
+    //         message: 'Not a valid ID',
+    //         err
+    //     }))
+}
 /**
  * ------------------------------------------------------------------------------------
  * Search Task
  * ------------------------------------------------------------------------------------
  */
 exports.taskSearch = async (req, res) => {
-
-
 
     const userName = await req.query.name
     const projectName = await req.query.project
@@ -220,6 +274,11 @@ exports.updateTask = (req, res) => {
     UpcomingTask.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
         .exec()
         .then(doc => {
+
+            if (req.body.bulkInsert) {
+                createBulkTask(req.params.id)
+            }
+            
             res.status(200).json(doc)
         })
         .catch(err => {

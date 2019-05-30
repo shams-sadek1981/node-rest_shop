@@ -1,27 +1,37 @@
-Date,Task/Feature,Subtask,Hours,Type,Project,,,,,,,,,,,,,,,Meeting
-01-Mar-2019,Report,Reports API and dummy data,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,Tax API
-04-Mar-2019,Report,Ledger report,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,Tax Mockup
-05-Mar-2019,Tax,Tax agency details,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,Weekly Meeting
-05-Mar-2019,Invoice Tax,Include tax on invoice create with agency details and ledger,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,ERP Main Site
-06-Mar-2019,Trial balance,Trail balance with new tax and date range,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,Testing
-06-Mar-2019,Meeting,With sadek bhai,1,Meeting,ERP Accounting,,,,,,,,,,,,,,,Added Journal APIs
-06-Mar-2019,Report,Sales Tax report,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-07-Mar-2019,Bank accounts,Bank accounts and trial balance,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-07-Mar-2019,Initial Data,Class install and seeder updated,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-07-Mar-2019,Migration,Understand migration system and setup previous version with dummy data,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-08-Mar-2019,Meeting,Meeting with sadek bhai,2,Meeting,ERP Accounting,,,,,,,,,,,,,,,
-08-Mar-2019,Migration,Tax migration start,6,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-12-Mar-2019,Tax,Refactor tax rate and zone ui,9,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-13-Mar-2019,Test & bugfix,Various component test and bug fix,8,Bug Fix,ERP Accounting,,,,,,,,,,,,,,,
-14-Mar-2019,Accounting module first setup,class install and seeder and ledger updates,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-15-Mar-2019,Migration,Transaction mirgartion setup,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-19-Mar-2019,Pagination,Various component pagination frontend and backend,9,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,Bank List,Bank list under trial balance,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,Data validation and input,Do some data validation with input,3,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,Meeting,Meeting with Sadek vai,1,Meeting,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,Ledger Update,Create owner's virtual ledgers,1,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-21-Mar-2019,UI update,Update ui / ux,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-22-Mar-2019,Test and fix,Bug fix accounting,6,Bug Fix,ERP Accounting,,,,,,,,,,,,,,,
-22-Mar-2019,Meeting,Accounting presentation,2,Meeting,ERP Accounting,,,,,,,,,,,,,,,
-28-Mar-2019,Hooks and chart,implement js hooks and chart,6,New Feature,ERP Attendance,,,,,,,,,,,,,,,
-28-Apr-2019,Opening Balance,Meeting with sadek bhai,2,Meeting,ERP Accounting,,,,,,,,,,,,,,,
+Date,Task / Feature,Sub Task,Hour,Type,Project,Version
+01-Jan-2019,Email notification,New task assigned email template update,1,Bug Fix,ERP CRM,1.4.1
+01-Jan-2019,Accounting report,Invoice modal report,6,New Feature,ERP Accounting,new
+02-Jan-2019,Accounting print,Print-preview of sales transactions,2,New Feature,ERP Accounting,new
+02-Jan-2019,Report overview,Understanding chart of accounts and ledger api query update,3,New Feature,ERP Accounting,new
+02-Jan-2019,Accounting Report,Trial balance start,2,New Feature,ERP Accounting,new
+03-Jan-2019,Hubspot,Hubspot API test and update endpoints,1,Plugin Issue,ERP,
+03-Jan-2019,Accounting Report,Trial balance query,5,New Feature,ERP Accounting,new
+03-Jan-2019,Multiselect,Update multiselect to improve UX,1,New Feature,ERP Accounting,new
+04-Jan-2019,Meeting,,5,Meeting,ERP Accounting,
+04-Jan-2019,Expense list,Start working on expenses tranactions,1,Bug Fix,ERP Accounting,
+07-Jan-2019,Meeting,,1,Meeting,ERP Accounting,
+07-Jan-2019,Sales Invoice,Invoice with product price & tax calculation,4,New Feature,ERP Accounting,new
+07-Jan-2019,Sales Invoice,Customer search improved & combo button,3,New Feature,ERP Accounting,new
+08-Jan-2019,Sales Invoice,Combo buttons,1,New Feature,ERP Accounting,new
+08-Jan-2019,Leave,Can't take leave,3,Bug Fix,ERP,
+08-Jan-2019,Sales Overview,Sales transactions overview page and query,4,New Feature,ERP Accounting,new
+09-Jan-2019,Chart of Acc,Chart of account main list table and view,7,New Feature,ERP Accounting,new
+10-Jan-2019,Chart of Acc,API and query and display,7,New Feature,ERP Accounting,new
+11-Jan-2019,Chart of Acc,Finish chart of account and categories,6,New Feature,ERP Accounting,
+11-Jan-2019,Meeting,,1,Meeting,ERP Accounting,
+14-Jan-2019,Sales Overview,List display with proper data and query,8,New Feature,ERP Accounting,new
+15-Jan-2019,Sales Overview,API update and add filters,8,New Feature,ERP Accounting,new
+16-Jan-2019,Sales Overview,Chart Add and API query,7,New Feature,ERP Accounting,new
+17-Jan-2019,Trial Balance,Start working / understanding trial balance,7,New Feature,ERP Accounting,new
+18-Jan-2019,Invoice calculation,Update previously written invoice calculation API,7,New Feature,ERP Accounting,new
+21-Jan-2019,Sales Query,Sales overview query update with customer ,8,New Feature,ERP Accounting,new
+22-Jan-2019,Ledger and trial balance,Update API and UI for ledger and trial balance,8,New Feature,ERP Accounting,new
+23-Jan-2019,Sales Overview,Working on transactions API,7,New Feature,ERP Accounting,new
+23-Jan-2019,Task email,Client issue with crm task email,1,Bug Fix,ERP CRM,
+24-Jan-2019,Invoice single,Data fetch and API update,8,New Feature,ERP Accounting,new
+25-Jan-2019,Sales,Receive paymnet data insert update and some components update,7,New Feature,ERP Accounting,new
+28-Jan-2019,Invoice / Payment single page,Single page query and view,7,New Feature,ERP Accounting,new
+29-Jan-2019,Bill / Paybill single page,Bill and paybill single page and view,7,New Feature,ERP Accounting,new
+30-Jan-2019,Invoice Tax and selectbox,"Tax and multiselect fix, add vuex",7,New Feature,ERP Accounting,new
+31-Jan-2019,Purcahse single,Purchase single page,6,New Feature,ERP Accounting,new
+31-Jan-2019,vuex,Update vuex code,1,New Feature,ERP Accounting,new

@@ -1,21 +1,31 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project
-04-Mar-2019,power-blocks,,8,New Feature,power blocks
-05-Mar-2019,vue-ant-design admin template,,8,New Feature,Others
-06-Mar-2019,vue-ant-design admin template,,8,New Feature,Others
-07-Mar-2019,vue-ant-design admin template,,5,New Feature,Others
-07-Mar-2019,weforms,,3,New Feature,weForms
-08-Mar-2019,weforms,,8,New Feature,weForms
-12-Mar-2019,weforms rest api,,8,New Feature,weForms
-13-Mar-2019,weforms rest api,,7,New Feature,weForms
-14-Mar-2019,weforms rest api,,8,New Feature,weForms
-15-Mar-2019,weforms rest api,,7,New Feature,weForms
-18-Mar-2019,weforms rest api,,8,New Feature,weForms
-19-Mar-2019,weforms rest api,,8,New Feature,weForms
-20-Mar-2019,weforms rest api,,8,New Feature,weForms
-21-Mar-2019,weforms rest api,,8,New Feature,weForms
-22-Mar-2019,weforms rest api,,,New Feature,weForms
-27-Mar-2019,"Fix: Repeat field with more than one column does not render data, #116",,3,New Feature,WPUF
-27-Mar-2019,weforms rest api,,4,New Feature,weForms
-28-Mar-2019,fix: In radio and checkbox field use conditional logic that value does not save in database,,4,New Feature,WPUF
-28-Mar-2019,"Fix: Text Input field for Taxonomies not working, #647",,4,New Feature,WPUF
-29-Mar-2019,"Fix: The item in ajax taxonomy field is not selected, weDevsOfficial#644 ",,8,New Feature,WPUF
+Date,Task / Feature,Sub Task,Hour,Type,Project,,,,
+01-Jan-2019,wp user frontend form fields testing ,,8,refactoring,WPUF,,,Upcoming task,
+02-Jan-2019,wp user frontend form fields testing,,8,refactoring,WPUF,,,1,Post form Integration
+03-Jan-2019,wp user frontend form fields testing,,7,refactoring,WPUF,,,2,Phone number field with validation
+06-Jan-2019,wp user frontend form fields testing,,8,refactoring,WPUF,,,3,Conditional logic with hidden field
+07-Jan-2019,wp user frontend form fields testing & issue,,8,refactoring,WPUF,,,4,Sorting option in the User Listing page
+08-Jan-2019,wp user frontend form fields testing & issue,,8,refactoring,WPUF,,,5,Adding option to hide the admin user from the user listing
+09-Jan-2019,wp user frontend form fields testing & issue,,7,refactoring,WPUF,,,6,myCRED integration
+10-Jan-2019,wp user frontend form fields testing & issue,,4,refactoring,WPUF,,,6,myCRED integration
+10-Jan-2019,power block ,,4,Others,power block,,,6,myCRED integration
+11-Jan-2019,"Edit post from WPUF frontend dashboard, does not keep the first post revision",,8,Bug Fixed,WPUF,,,6,myCRED integration
+14-Jan-2019,WPUF unable to send new user registration email,,3,Bug Fixed,WPUF,,,6,myCRED integration
+14-Jan-2019,registration email validation problem and already exist email problem field_refactor,,3,refactoring,WPUF,,,6,myCRED integration
+14-Jan-2019,User logged in without activation. trying,,3,Bug Fixed,WPUF,,,6,myCRED integration
+15-Jan-2019,User logged in without activation. trying,,3,Bug Fixed,WPUF,,,6,myCRED integration
+16-Jan-2019,User logged in without activation. trying,,3,Bug Fixed,WPUF,,,6,myCRED integration
+16-Jan-2019,"Showing toolbar option form core WordPress, is unable to impact when WPUF is active.",,1,Bug Fixed,WPUF,,,6,myCRED integration
+16-Jan-2019,Google Map doesn't appear on the website after submitting a post,,3,Bug Fixed,WPUF,,,6,myCRED integration
+17-Jan-2019,"WPUF ""Dokan Vendor Registration Form"" some fields are not mapped correctly in vendor store page",,5,Bug Fixed,WPUF,,,6,myCRED integration
+17-Jan-2019,power block ,,3,Bug Fixed,WPUF,,,6,myCRED integration
+18-Jan-2019,power block ,,8,Others,power-block,,,6,myCRED integration
+21-Jan-2019,power block ,,9,Others,power-block,,,6,myCRED integration
+22-Jan-2019,fix indentation & test,,5,,WPUF,,,6,myCRED integration
+22-Jan-2019,power block ,,4,,power-block,,,6,myCRED integration
+23-Jan-2019,power block ,,8,,power-block,,,,
+24-Jan-2019,power block team block css,,6,,power-block,,,,
+25-Jan-2019," power block team block inspector setting,",,8,,power-block,,,,
+28-Jan-2019,"power block team section, button section",,8,,power-block,,,,
+29-Jan-2019,"power block team section,",,,,Power  Block,,,,
+30-Jan-2019,"power block team section,",,,,Power Block,,,,
+31-Jan-2019,"power block team section,",,,,Power  Block,,,,
