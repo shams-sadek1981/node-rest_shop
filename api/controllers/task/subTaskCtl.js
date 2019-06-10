@@ -54,10 +54,35 @@ exports.userReport = (req, res) => {
                 }
             }
         },
-        { $sort: { "_id.completedAt": 1, "_id.taskName": 1 } }
+        { $sort: { "subTasks.completedAt": 1, "_id.taskName": 1 } }
 
     ]).then(data => {
-        res.json(data)
+
+        let result = []
+        let totalEst = 0
+        data.forEach( task => {
+
+            task.subTasks.forEach( subTask => {
+                totalEst += parseInt(subTask.estHour)
+
+                result.push({
+                    taskId: task._id._id,
+                    taskName: task._id.taskName,
+                    projectName: task._id.projectName,
+                    taskType: task._id.taskType,
+                    subTaskId: subTask._id,
+                    subTask: subTask.name,
+                    assignedUser: subTask.assignedUser,
+                    estHour: subTask.estHour,
+                    completedAt: moment(subTask.completedAt).format('DD-MMM-YYYY')
+                })
+            })
+        })
+
+        res.json({
+            totalEst,
+            result
+        })
     }).catch(err => res.json(err))
 
 
