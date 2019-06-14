@@ -1,49 +1,32 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,,Upcoming task,
-01-Jan-2019,,wpuf wordpress.org landing page,1,Content,WPUF,,,
-01-Jan-2019,Release,Released WPUF & WPUF Pro v3.0.2,7,,WPUF,,,WP User Frontend
-02-Jan-2019,Payment Gateway,Causing a fatal error when WC Marketplace is active.,3,Client Issue,WPUF,,,
-02-Jan-2019,Meeting,Growth Hack Meeting,1,,,,,Conditional logic with hidden field
-02-Jan-2019,Meeting,Meeting with Tareq bhai regarding new features,2,Meeting,WPUF & weForms,,,WPUF options in single meta box (edit post screen)
-03-Jan-2019,Single Entry,Country short-name showing on the entries view,2,Bug,weForms,,,Repeat Field
-03-Jan-2019,Meeting,Meeting with Rokib & Farazi bhai regarding WPUF test case,2,Meeting,WPUF,,,Column field
-03-Jan-2019,,Add Block for gutenberg support,0.5,,,,,"Promotional notice (based on time, posts)"
-04-Jan-2019,,Fixed builder submit button CSS,0.5,,,,,Design update required notice of WPUF & set proper version to compare
-07-Jan-2019,Post Form,PHP error showing on top of the WPUF Post forms,2,Client Issue,WPUF,,,Keep all page/post metaboxes in a single metabox
-07-Jan-2019,Delete Entry,Deleting form entries doesn't delete the media/file from the media library,3,Bug,weForms,,,Design metaboxes for gutenberg block according to ACF
-08-Jan-2019,Integration,Gutenberg block (WPUF & weForms),1,Feature,WPUF & weForms,,,
-08-Jan-2019,,"Meeting with Farazi, Rokib, Sadik bhai regarding WPUF testcase",2,,,,,weForms - Release Day - Wednesday [Test Day-Monday]
-08-Jan-2019,,Stripe payment not processing,3,Client Issue,WPUF,,,
-09-Jan-2019,,Add Block for gutenberg support,5,Feature,weForms,,,Upgrade to pro on settings page
-11-Jan-2019,Form Listing,New column (Status) on form listing table,6,Feature,weForms,,,Need redesign premium page - contact with designer
-14-Jan-2019,Form Listing,New column on form listing table - Created by with Avatar & name & date,5,Feature,weForms,,,Redesign individual form integrations tab
-15-Jan-2019,Meeting,"Meeting with Farazi, Tarun & Suza bhai regarding weForms release",1,Meeting,weForms,,,Use Switch button where single box available
-15-Jan-2019,Form Submission,Submit Button spins for the unlimited time.,2,Client Issue,weForms,,,Update weForms content for WordPress.org
-16-Jan-2019,reCaptcha,include reCaptcha library if not found,2,Bug,weForms,,,Minify styles/scripts into a single file for production http://tareq.in/DuNzhl
-16-Jan-2019,Account Page,Loging Out Automatically (every anonymous first login),3,Client Issue,WPUF,,,Repeat Field
-16-Jan-2019,Release,Released weFroms & weForms Pro ,6,Release,weForms,,,Column Field
-17-Jan-2019,Conflict,plugin update have broken the slider of the website,3,Client Issue,WPUF,,,Upgrade to pro on settings page
-18-Jan-2019,Conflict,plugin update have broken the slider of the website,5,Client Issue,WPUF,,,Need redesign premium page - contact with designer
-21-Jan-2019,Gutenberg Block,Gutenberg block compatibility issue with latest WordPress version,2,Bug,WPUF,,,Redesign individual form integrations tab
-21-Jan-2019,Shortcode,"Gutenberg compatibility, page not update when [wpuf_dashboard] shortcode available on the page",3,Bug,WPUF,,,Use Switch button where single box available
-22-Jan-2019,New Post/Edit Post,"When created a new course with LearnPress and go to edit it, the course settings module vanishes while WPUF is activated.",7,Client Issue,WPUF,,,Update weForms content for WordPress.org
-22-Jan-2019,,"Meeting with Sadik bhai, Shaikat bhai & Farazi bhai regarding next release",1,,,,,Design metaboxes for gutenberg block according to ACF
-23-Jan-2019,,"If a user applies multiple conditions in a single field, the field is unable to show the data on the frontend.",,Bug,WPUF Pro,,,
-24-Jan-2019,User Directory Module,User listing profile view is not working properly(first profile header template) and Members Activity not displaying information unless admin but the menu ( Activity ) is available for all user.,2,Client Issue,WPUF Pro,,,
-24-Jan-2019,User Activity Module,User details not showing on the frontend when user activity module is active,4,Bug,WPUF Pro,,,
-24-Jan-2019,Conditional Logic,"If a user applies multiple conditions in a single field, the field is unable to show the data on the frontend.",6,Bug,WPUF Pro,,,
-25-Jan-2019,Conditional Logic,"If a user applies multiple conditions in a single field, the field is unable to show the data on the frontend.",3,Bug,WPUF Pro,,,
-25-Jan-2019,Post Count,Post submit from the frontend is not counted in the admin -> user section. ( Post Type is custom post: created with CPT UI ),2,,,,,
-28-Jan-2019,Post Edit Lock,Fatal error: Can’t use method return value in write context in wp-user-frontend/class/frontend-form-post.php on line 194,1,Bug,WPUF,,,
-28-Jan-2019,Edit page from admin panel,"Can not actually edit the page, it automatically just goes to the Subscription page, although the override is disable.",3,Client Issue,WPUF Pro,,,
-28-Jan-2019,Edit page from admin panel,Cannot edit page from admin panel where registration form shortcode exists,,Bug,WPUF Pro,,,
-28-Jan-2019,WooCommerce Product Form,WPUF WooCommerce post form unable to show the single gallery image,1,,,,,
-28-Jan-2019,WooCommerce Product Form,Design update for minimum required version notice of WPUF Pro,,Enhancement,WPUF ,,,
-29-Jan-2019,WooCommerce Product Form,WooCommerce post form unable to show the single gallery image,1,,,,,
-29-Jan-2019,Meeting,Release Meeting 3.1.0,1,Meeting,WPUF & WPUF Pro,,,
-29-Jan-2019,,display `edit your password and profile` link on frontend account page conditionally,,Bug,WPUF Pro,,,
-29-Jan-2019,,Added promotional notice for review,1,Enhancement,WPUF ,,,
-30-Jan-2019,Entries,"When user fill in a form and submit the form, no data is shown in the Entries.",2,Client Issue,weForms,,,
-30-Jan-2019,,PayPal recurring payment not showing on transaction table,3,Testing,WPUF,,,
-30-Jan-2019,,Add content for what's new page ,1,Content,WPUF & WPUF Pro,,,
-31-Jan-2019,Testing ,Testing ,3,Testing,WPUF & WPUF Pro,,,
-31-Jan-2019,,Released free & pro version 3.1.0,4,Release,WPUF & WPUF Pro,,,
+Start Date,Task,Hour,Project Name,Type
+06-May-2019, Post settings are disappeared when the WPUF is active. ( Newspaper Theme ),1,WPUF,Client Issue
+06-May-2019,Twenty Nineteen theme Theme issue,4,WPUF,Client Issue
+06-May-2019,HTML Block conditional logic is not working.,11,WPUF,Client Issue
+07-May-2019,Alumni Site - https://cserualumni.org,4,WPUF,Custom Project
+08-May-2019,Meeting with Hasinur regarding WPUF,1,WPUF,Meeting
+09-May-2019,Subscription Reminder email being sent at a wrong time,2,WPUF,Bug Fix
+10-May-2019,Meeting with Arifa Juthi regarding analytics module & WooCommerce image gallery field,0.5,WPUF,Meeting
+11-May-2019,Facebook login is working but not registration on site,2.5,WPUF,Client Issue
+13-May-2019,"If the website url field is left bank while updating the profile, the change is not saved",2.5,WPUF,Client Issue
+14-May-2019,Import Users from laravel sql for RU alumni site,4.5,WPUF,Custom Project
+14-May-2019,Remove WPUF setup Link,1,WPUF,Bug Fix
+17-May-2019,Can't Edit Custom Post Type From Front End,2,WPUF,Client Issue
+20-May-2019,Label text before Label value does not display in User Listing when the field is Checkbox,4,WPUF,Bug Fix
+20-May-2019,Custom taxonomy field data saving issue,2,WPUF,Bug Fix
+22-May-2019,Add active class to account page menu items,2,WPUF,New Feature
+23-May-2019,Mp3 data from file upload disappears while editing,1.5,WPUF,Bug Fix
+23-May-2019,Release WPUF Free 3.1.6 & WPUF Pro 3.1.5,4.5,WPUF,Testing
+24-May-2019,Bank Payment: Pay per post is not respecting the payment procedure.,1.5,WPUF,Bug Fix
+25-May-2019,Extra from Elegant Themes Extra Mega Menu feature is conflicting the WPUF Menu restriction.,3.5,WPUF,Client Issue
+26-May-2019,Error: Illegal string offset ‘submit_text’ ,0.5,WPUF,Bug Fix
+27-May-2019,Conflicts with the BuddyPress,5,WPUF,Client Issue
+27-May-2019,"Need hide the first Country choice and put a ""Please Select""",2,WPUF,New Feature
+28-May-2019,WP User Frontend triggers some PHP Error ( PHP Warning ) on Debug log,0.5,WPUF,Bug Fix
+28-May-2019,Website URL field in the multi-step form is not validating form data before progressing,0.5,WPUF,Client Issue
+30-May-2019,Issue with billing address,5,WPUF,Bug Fix
+09-May-2019,WeForms v1.3.9 & weForms Pro v1.3.6 release meeting,0.5,weForms,Meeting
+10-May-2019,Conditional Logic on Submit Button,1,weForms,New Feature
+07-May-2019,Validation message for each fields,8,weForms,Analysis
+10-May-2019, Release WeForms v1.3.9 & weForms Pro v1.3.6 release meeting,1,weForms,Testing
+21-May-2019,Create GDPR Export and Delete Requests Form,8,weForms,New Feature
+21-May-2019,weForms integration with WPERP is not working ,1,weForms,Client Issue

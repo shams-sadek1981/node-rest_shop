@@ -1,34 +1,8 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,Version
-01-Jan-2019,UI and Build,"Tabbar Icon, Banner Images modification and APK upload wih Tedhut's API",8,Others,Dokan App,1.0.0
-02-Jan-2019,API,"Find Issues with Woocommerce api V2 and V3, Dokan API's pagination",8,R&D,Dokan App,1.0.0
-,Meeting,Meeting with Tareq bhai about these,,Meeting,Dokan App,
-03-Jan-2019,API,Issues with Coupon code and Discount calculation,8,R&D,Dokan App,1.0.0
-,UI,Started working on Product Sharing and Deep Linking,,New Feature,Dokan App,
-04-Jan-2019,Build,Problem with ios build after installing react-native-share library,8,Bug Fix,Dokan App,1.0.0
-,Meeting,Weekly Meeting,,Meeting,Dokan App,
-07-Jan-2019,API integration,Making Product Details Screen woocommerce API version agonstic,8,New Feature,Dokan App,1.0.0
-08-Jan-2019,UI,Store information from API in Product Details Screen,8,New Feature,Dokan App,1.0.0
-,API integration,Making Product Details Screen woocommerce API version agonstic,,New Feature,Dokan App,
-,Meeting,Growth Hacking meeting,,Meeting,Dokan App,
-09-Jan-2019,Pagination,Pagination for All vendors and All products screen,8,New Feature,Dokan App,1.0.0
-10-Jan-2019,Pagination,"Problem in redux implementation while paginating for featured, top rated and best selling products",8,R&D,Dokan App,1.0.0
-11-Jan-2019,Pagination,Solved pagination problem,8,New Feature,Dokan App,1.0.0
-,Meeting,Weekly Meeting,,Meeting,Dokan App,
-14-Jan-2019,ios Distribution,ios Build modification to run the app on ios devices,8,R&D,Dokan App,1.0.0
-16-Jan-2019,UI,UI Modification for ios devices,8,Bug Fix,Dokan App,1.0.0
-17-Jan-2019,ios Distribution,Working on to distribute the app on test flight,8,R&D,Dokan App,1.0.0
-18-Jan-2019,UI,Worked with keyboard avoiding view and other UI adjustments for both ios and android device,8,Bug Fix,Dokan App,1.0.0
-,Meeting,Weekly Meeting,,Meeting,Dokan App,
-21-Jan-2019,App Distribution,Uploaded Dokan App to test flight,10,Others,Dokan App,1.0.0
-,,Issues with mismatched SHA1 when uploading to Google Play store,,R&D,Dokan App,
-2019-01-22,App Distribution,Uploaded Dokan app to google playstore Beta testing,8,Others,Dokan App,1.0.0
-,,Studied about google playsotre app-signin and Opted in for Dokan app,,R&D,Dokan App,
-2019-01-23,Meeting,Meeting with Ashraf Bhai about design feedback,8,Meeting,Dokan App,1.0.0
-,UI,Started working on Design team's feedback,,Others,Dokan App,
-2019-01-24,UI,Worked on Design Team's Feedback,8,Others,Dokan App,1.0.0
-,Meeting,Weekly Meeting,,Meeting,Dokan App,
-2019-01-25,UI,Worked on design Team's Feedback,8,Others,Dokan App,1.0.0
-2019-01-28,Refactoring,Set up the code base with ESLint and Prettier for better code formatting,8,R&D,Dokan App,1.0.0
-,UI,Worked on design Team's Feedback,,Others,Dokan App,
-2019-01-29,Refactoring,Formating the code base with eslint and removed redundant codes,8,Others,Dokan App,1.0.0
-2019-01-31,UI,Worked on design modifications,8,Others,Dokan App,1.0.0
+Completed Date,Task Name,Total Hour,Project,Type
+5/14/2019,Adjust Font Size,4,Dokan App,Bug Fix
+5/17/2019,Integrate Paypal payment via braintree and Modify payment UI,57,Dokan App,New Feature
+5/21/2019,Fix Test Issues,9,Dokan App,Bug Fix
+5/22/2019,Meeting with Content Team,1,Dokan App,Meeting
+5/23/2019,Implement UI for no internet connection,10,Dokan App,New Feature
+5/29/2019,Improve UI and Bug fixes,30,Dokan App,Bug Fix
+5/30/2019,Requirement Analysis for Dokan App Builder,6,Dokan App,R&D

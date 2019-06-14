@@ -1,30 +1,31 @@
-Date,Task / Feature,Sub Task,Hours,Type,Project,,,,
-01-Jan-2019,Done Wholesale and finish all issues in wholesale,,8,Others,Others,,,,
-02-Jan-2019,Meeting with All dokan team and analysis pos,,7,Others,Others,,Upcoming task,,
-03-Jan-2019,Working on forntend and boilerplate styles,,6,Others,Others,,1,networking mode dokan plugin (client issue),
-04-Jan-2019,POS start and review all things ( Design ),,7,Others,Others,,2,code refactoring,"product, cupon, withdrawn"
-07-Jan-2019,POS ,,8,Others,Others,,3,Vendor BIO,
-08-Jan-2019,POS ,,6,Others,Others,,4,Dokan Wholesale Product,
-09-Jan-2019,POS ,,8,Others,Others,,5,Bulk assign multiple products to a single vendor,
-10-Jan-2019,POS ,,7,Others,Others,,6,RMA,
-10-Jan-2019,Review dokan lite pull requests and merged,,1,Others,Others,,7,Re-design Vendor store settings page (Add each section with toggle),
-11-Jan-2019,POS ,,7,Others,Others,,,,
-11-Jan-2019,Merge dokan lite pull request and test and check all request,,1,Others,Others,,,,
-14-Jan-2019,Release Dokan Lite ,,1,Others,Others,,,,
-14-Jan-2019,POS,,6,Others,Others,,,,
-15-Jan-2019,POS,,6,Others,Others,,,,
-16-Jan-2019,POS,,6,Others,Others,,,,
-17-Jan-2019,POS,,6,Others,Others,,,,
-18-Jan-2019,POS,,6,Others,Others,,,,
-21-Jan-2019,POS,,8,Others,Others,,,,
-22-Jan-2019,POS,,8,Others,Others,,,,
-23-Jan-2019,Dokan Pro Release,,1,Others,Others,,,,
-23-Jan-2019,POS,,9,Others,Others,,,,
-24-Jan-2019,POS,,9,Others,Others,,,,
-25-Jan-2019,POS,,9,Others,Others,,,,
-28-Jan-2019,POS,,8,Others,Others,,,,
-29-Jan-2019,POS,,8,Others,Others,,,,
-29-Jan-2019,Dokan Lite Release,,1,Others,Others,,,,
-30-Jan-2019,POS,,8,Others,Others,,,,
-31-Jan-2019,Dokan Lite pull request check,,1,Others,Others,,,,
-31-Jan-2019,POS,,7,Others,Others,,,,
+Date,Task / Feature,Hours,Project,Feature
+2019-05-03,Counter manage done,5,wePOS,New Feature
+2019-05-06,Cashier management with role permissions,6,wePOS,New Feature
+2019-05-06,Change code in wepos free and added hooks and filters,1,wePOS,Tweaks
+2019-05-07,Working on outlets and counters,5,Dokan,New Feature
+2019-05-08,Release Dokan Lite plugin ,1,Dokan,Release
+2019-05-08,Working on session handling for cashier,4,wePOS,New Feature
+2019-05-09,Fixing issue on wepos free,2,wePOS,Bug Fix
+2019-05-09,Fixing issue on wepos free,1,wePOS,Bug Fix
+2019-05-09,Fixing issue on wepos free,1,wePOS,Bug Fix
+2019-05-10,Fix issue for backorder products,3,wePOS,Bug Fix
+2019-05-10,Fix wepos free issues,1,wePOS,Bug Fix
+2019-05-13,Customer search related issues,5,wePOS,Bug Fix
+2019-05-14,Working on wepos pro,5,wePOS,New Feature
+2019-05-15,Stock related issue in pos free,6,wePOS,New Feature
+2019-05-16,order stock manage during checkout,3,wePOS,Enhancement
+2019-05-16,Working on dokan pull request,2,Dokan,Tweaks
+2019-05-17,Tax not displaying when exclusive tax applied,3,wePOS,Bug Fix
+2019-05-17,js error during priting receipts,2,wePOS,Bug Fix
+2019-05-17,Release wepos lite ,1,wePOS,Release
+2019-05-20,Working on wepos pro frontend counter and login,5,wePOS,New Feature
+2019-05-21,Handle login api and session,6,wePOS,New Feature
+2019-05-22,Changes some api like counter and cashier for better rendering,4,wePOS,Enhancement
+2019-05-23,Working on js part for login cashier,6,wePOS,New Feature
+2019-05-24,Change wepos free codes for extending pro features,2,wePOS,Tweaks
+2019-05-24,Login handler done and start working on receipts builder,4,wePOS,New Feature
+2019-05-27,Working on card gateway ,9,wePOS,New Feature
+2019-05-28,Working on receipts builder,10,wePOS,New Feature
+2019-05-29,Working on receipts builder,8,wePOS,New Feature
+2019-05-30,Finish Receipts builder and change some card gateways finished,7,wePOS,New Feature
+2019-05-31,Merge some pull request on dokan and fix Changes some wepos free,4,wePOS,Tweaks

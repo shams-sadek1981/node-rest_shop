@@ -1,67 +1,26 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,Version,,,Upcoming Task
-01-Jan-2019,Updating withdrawal system,,2,Others,bnimoy,alpha,,,1
-01-Jan-2019,Testing withdrawal system,,2,Others,bnimoy,alpha,,,1
-01-Jan-2019,Added order acknowledgement,,4,New Feature,bnimoy,alpha,,,1
-02-Jan-2019,Added transaction history api in backend,,4,New Feature,bnimoy,alpha,,,1
-02-Jan-2019,Added transaction history in frontend,,4,New Feature,bnimoy,alpha,,,1
-03-Jan-2019,Order acknowledgement feature added in frontend,,4,New Feature,bnimoy,alpha,,,1
-03-Jan-2019,Validation improved for received order,,4,New Feature,bnimoy,alpha,,,1
-04-Jan-2019,Testing all features in frontend,,4,Others,bnimoy,alpha,,,1
-04-Jan-2019,Fixing issues in frontend,Added collapsibility of navbar. Updated balance position,4,Bug Fix,bnimoy,alpha,,,1
-07-Jan-2019,Replaced the broken calendar with working on,,2,Bug Fix,bnimoy,alpha,,,1
-07-Jan-2019,Replaced delivery charge with delivery charge by and fixed the valid till issue,,3,Bug Fix,bnimoy,alpha,,,1
-07-Jan-2019,Fixed detection of sandbox,,3,Bug Fix,bnimoy,alpha,,,1
-08-Jan-2019,Updated contract revision api,,2,Others,bnimoy,alpha,,,1
-08-Jan-2019,Fixed contract issues in frontend,,3,Bug Fix,bnimoy,alpha,,,1
-08-Jan-2019,Formatted contract code,,2,Others,bnimoy,alpha,,,1
-08-Jan-2019,White listed staging url,,1,Others,bnimoy,alpha,,,1
-09-Jan-2019,Contract revision updated,,2,Others,bnimoy,alpha,,,1
-09-Jan-2019,"Revision requesting api added, timezone fixed",,3,Others,bnimoy,alpha,,,1
-09-Jan-2019,Updated timestamp to datetime wherever possible,,3,Others,bnimoy,alpha,,,1
-10-Jan-2019,Added auto refund when a contract is ignored,,3,New Feature,bnimoy,alpha,,,1
-10-Jan-2019,Added scheduler for auto refund,,3,New Feature,bnimoy,alpha,,,1
-10-Jan-2019,Added api resources for contracts and orders,,2,New Feature,bnimoy,alpha,,,1
-11-Jan-2019,Fixed UI and Added widget in dashboard,,3,New Feature,bnimoy,alpha,,,1
-11-Jan-2019,Displayed debit credit,,3,New Feature,bnimoy,alpha,,,1
-11-Jan-2019,Fix responsiveness,,2,New Feature,bnimoy,alpha,,,1
-14-Jan-2019,Added revision transaction details api,,2,New Feature,bnimoy,alpha,,,1
-14-Jan-2019,Supplied additional informations in contract resource,,2,New Feature,bnimoy,alpha,,,1
-14-Jan-2019,Testing transaction endpoints,,4,New Feature,bnimoy,alpha,,,1
-15-Jan-2019,Working on revision endpoints,,4,New Feature,bnimoy,alpha,,,1
-15-Jan-2019,Enabled revisioning routes,,4,New Feature,bnimoy,alpha,,,1
-16-Jan-2019,Added the feedback feature in both frontend and backend,,4,New Feature,bnimoy,alpha,,,1
-16-Jan-2019,Added protection against incomplete revision submission,,4,New Feature,bnimoy,alpha,,,1
-17-Jan-2019,Contract editing without revision request has been disabled,,2,New Feature,bnimoy,alpha,,,
-17-Jan-2019,Added contract revision timeline,,6,New Feature,bnimoy,alpha,,,
-18-Jan-2019,Updated withdrawal method,,2,Others,bnimoy,alpha,,,
-18-Jan-2019,Fixed contract sending issue from beneficiary's end,,6,Bug Fix,bnimoy,alpha,,,
-21-Jan-2019,Added permission for contract participants,,3,Bug Fix,bnimoy,alpha,,,
-21-Jan-2019,Fixed multiple minor issues in backend,,3,Bug Fix,bnimoy,alpha,,,
-21-Jan-2019,Fixed contract communication from both buyer and sellers end,,2,Bug Fix,bnimoy,alpha,,,
-22-Jan-2019,Fixed contract communication from both buyer and sellers end,,2,Bug Fix,bnimoy,alpha,,,
-22-Jan-2019,Added pay button for seller-to-buyer contract,,2,New Feature,bnimoy,alpha,,,
-22-Jan-2019,Fixed a minor issue in contracts url resolution,,2,New Feature,bnimoy,alpha,,,
-22-Jan-2019,Added predis. Added queue worker on laravel forge and updated queue connection from database to redis,,2,New Feature,bnimoy,alpha,,,
-23-Jan-2019,Refcatored and updated docblocks,,2,New Feature,bnimoy,alpha,,,
-23-Jan-2019,Fixed otp related issue,,2,Bug Fix,bnimoy,alpha,,,
-23-Jan-2019,Fixed contract related issue,,4,Bug Fix,bnimoy,alpha,,,
-24-Jan-2019,"Additional information for withdrawal sent, manager specific withdrawals are being sent",,3,Bug Fix,bnimoy,alpha,,,
-24-Jan-2019,"Added macro, removed rudundant actions (claim, pay) etc, fixed tests, refactored",,5,Bug Fix,bnimoy,alpha,,,
-25-Jan-2019,Working on shipment api,,4,New Feature,bnimoy,alpha,,,
-25-Jan-2019,Made withdrawal undoable,,2,New Feature,bnimoy,alpha,,,
-25-Jan-2019,Updated api resource to include withdrawal undone and shipment status,,2,New Feature,bnimoy,alpha,,,
-28-Jan-2019,Added document upload apis,,5,New Feature,bnimoy,alpha,,,
-28-Jan-2019,"Added validation, secured files with secured routes",,3,New Feature,bnimoy,alpha,,,
-29-Jan-2019,Added document download apis,,3,New Feature,bnimoy,alpha,,,
-29-Jan-2019,Fixing authorization for contracts,,2,New Feature,bnimoy,alpha,,,
-29-Jan-2019,Added file deletion api,,2,New Feature,bnimoy,alpha,,,
-29-Jan-2019,Test documents api,,1,New Feature,bnimoy,alpha,,,
-30-Jan-2019,Fixing file download (backend),,1,Bug Fix,bnimoy,alpha,,,
-30-Jan-2019,Fixing file download (frontend),,1,Bug Fix,bnimoy,alpha,,,
-30-Jan-2019,"Exposed content-disposition header, revision authorization fixed",,4,Bug Fix,bnimoy,alpha,,,
-30-Jan-2019,Added shipping address to frontend,,2,Bug Fix,bnimoy,alpha,,,
-31-Jan-2019,"Added action confirmations on accept, cancel etc",,3,Bug Fix,bnimoy,alpha,,,
-31-Jan-2019,Added mark as shipped feature for seller (frontend),,1,Bug Fix,bnimoy,alpha,,,
-31-Jan-2019,Added mark as shipped feature for seller (backend),,1,Bug Fix,bnimoy,alpha,,,
-31-Jan-2019,Meeting with Tedfo Tareq vai and Debasish vai about new features,,2,Bug Fix,bnimoy,alpha,,,
-31-Jan-2019,Meeting with Tareq vai,,1,Bug Fix,bnimoy,alpha,,,
+Date,Task,Hour,Project,Type
+2019-05-02,Add payment actions for admin - api,5,Bnimoy,New Feature
+2019-05-03,Add payment actions for admin - frontend,5,Bnimoy,New Feature
+2019-05-06,Create prototype for admin panel,6,Bnimoy,New Feature
+2019-05-07,Fix pdf footer and other minor issues,7,Bnimoy,Bug Fix
+2019-05-09,Research on other payment gateways,12,Bnimoy,R&D
+2019-05-10,Test the frontend features,5,Bnimoy,New Feature
+2019-05-13,"Create database schema, migration for acl",7,Bnimoy,New Feature
+2019-05-14,Add ACL apis,7,Bnimoy,New Feature
+2019-05-15,Update billing schema,6,Bnimoy,Bug Fix
+2019-05-16,Add fake gateway for test suites and update tests accordingly,7,Bnimoy,New Feature
+2019-05-17,Add filtering APIs,8,Bnimoy,New Feature
+2019-05-20,Test filtering APIs,7,Bnimoy,New Feature
+2019-05-21,Add filtering UI in frontend,8,Bnimoy,New Feature
+2019-05-22,Fix service charge calculation,1,Bnimoy,Bug Fix
+2019-05-22,Fix wallet update broadcast listener,4,Bnimoy,Bug Fix
+2019-05-23,Add welcome tour,4,Bnimoy,New Feature
+2019-05-23,"Fix lint errors, hide inactive bills",4,Bnimoy,Bug Fix
+2019-05-24,Add Bill timeline,6,Bnimoy,New Feature
+2019-05-27,Add bill filter by day number,4,Bnimoy,New Feature
+2019-05-27,Test billing APIs,4,Bnimoy,New Feature
+2019-05-28,Update transaction log api,4,Bnimoy,New Feature
+2019-05-29,Redesigned payments page,8,Bnimoy,New Feature
+2019-05-30,Fixed bill and payment order,4,Bnimoy,Bug Fix
+2019-05-30,Added filter for recurring non-recurring bills,4,Bnimoy,New Feature
+2019-05-31,Isolated payments in tabs in frontend,8,Bnimoy,New Feature

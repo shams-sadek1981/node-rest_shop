@@ -1,28 +1,9 @@
-Date,Task / Feature,Hour,Type,Project,Version
-01-Jan-2019,"Merge develop with trello, discuss with sadik vi and mehedi",6,New Feature,PM Free,
-02-Jan-2019,"Make decission about list query optimizing, 
-remove html tag from email content,
-Invoice empty field showing object at edit time.",7,Fix,PM Pro,
-03-Jan-2019,Multipul request preventing in task-list page,7,Fix,PM Free,
-04-Jan-2019,attend meeting and create work flow for task tag,5,Fix,PM Free,
-07-Jan-2019,Fix client issue,2,Fix,PM Free,
-07-Jan-2019,Task label,4,New Feature,PM Free,
-08-Jan-2019,Task label,7,New Feature,PM Free,
-09-Jan-2019,Task label,7,New Feature,PM Free,
-10-Jan-2019,Query optimize,7,New Feature,PM Free,
-11-Jan-2019,Migration,6,New Feature,PM Free,
-14-Jan-2019,Query optimize,6,Update,PM Free,
-15-Jan-2019,Query optimize,7,Update,PM Free,
-16-Jan-2019,Query optimize,5,Update,PM Free,
-16-Jan-2019,Client issue,1,Fix,PM Free,
-17-Jan-2019,Query optimize,6,Update,PM Free,
-18-Jan-2019,Query optimize,7,Update,PM Pro,
-21-Jan-2019,Query optimize,7,New Feature,PM Pro,
-22-Jan-2019,Query optimize,7,New Feature,PM Pro,
-23-Jan-2019,Reports,7,Fix,PM Pro,
-24-Jan-2019,Pagination make compitable with new query,7,Fix,PM Pro,
-25-Jan-2019,kanboard make compitable with new query,7,Bug,PM Free,
-28-Jan-2019,List view navigation with kanboar and archive,7,Bug,PM Free,
-29-Jan-2019,Client issue and fix query bug,7,Bug,PM Free,
-30-Jan-2019,Reports,7,New Feature,PM Free,
-31-Jan-2019,Zapier and welcom page,6,New Feature,PM Free,
+Completed Date,Task,Hour,Project Name,Type
+2019-05-01,Summery reports mockup,10,Project Manager,Mockup
+2019-05-02,Client issue,20,Project Manager,Client Issue
+2019-05-03,Summery reports form design,12,Project Manager,New Feature
+2019-05-22,Summery reports execute (All functionality),60,Project Manager,New Feature
+2019-05-22,Release issue,6,Project Manager,Release
+2019-05-28,Helping Sadik vi for export csv file,8,Project Manager,New Feature
+2019-05-30,Helping New team member,5,Project Manager,New Feature
+2019-05-31,Advanced report csv export,8,Project Manager,Bug Fix

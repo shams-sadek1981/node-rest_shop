@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const TaskLog = require('../models/taskLog');
 const TaskEstHour = require('../models/taskEstHour');
 const UserTask = require('../models/userTask');
+const UpcomingTask = require('../models/upcomingTask');
+
 const checkAuth = require('../middleware/check-auth');
 
 const fs = require('fs');
@@ -21,8 +23,52 @@ let nameAndHours = [['SL', 'Name', 'WorkingHours', 'Est Hours']];
 const { employees, replaceTypes, replaceProjects } = require('../changeString')
 
 String.prototype.toProperCase = function () {
-    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 };
+
+
+//-- For May-2019
+exports.writeTaskMayEst = (req, res, next) => {
+
+    //-- Delete All docs
+    UpcomingTask.deleteMany({}, result => { })
+
+    const readDir = 'csvFiles/';
+    result = [];
+    fs.readdirSync(readDir).forEach(mainFile => {
+        fn.readCsvFile(readDir + mainFile).then(readData => {
+
+            readData.shift()//-- Remove Header
+            const rawObject = readData.map(log => {
+
+                const taskName = log[1]
+
+                return {
+                    projectName: log[3],
+                    taskName: taskName.trim().toProperCase(),
+                    taskType: log[4],
+                    subTasks: [{
+                        assignedUser: mainFile.split('.')[0],
+                        name: "Develop",
+                        estHour: log[2],
+                        completedAt: log[0],
+                    }]
+                }
+            })
+
+            // console.log(rawObject)
+
+            UpcomingTask.insertMany(rawObject)
+        })
+    })
+
+    // estTaskHour()//-- generate Estimation Hour by Project
+
+    res.status(200).json({
+        message: 'Success'
+    })
+}//-- end writeTaskLog
+
 
 exports.writeTaskLog = (req, res, next) => {
 
@@ -38,9 +84,9 @@ exports.writeTaskLog = (req, res, next) => {
             readData.shift()//-- Remove Header
             const rawObject = readData.map(log => {
 
-            const taskName = log[1] || 'Others'
-            const taskType = log[4] || 'Others'
-            taskType
+                const taskName = log[1] || 'Others'
+                const taskType = log[4] || 'Others'
+                taskType
 
                 return {
                     userName: mainFile.split('.')[0],
@@ -66,7 +112,7 @@ exports.writeTaskLog = (req, res, next) => {
 
 //-- est hour save
 const estTaskHour = () => {
-    
+
     //-- Delete All docs
     TaskEstHour.deleteMany({}, result => { })
 
@@ -110,8 +156,8 @@ exports.writeTaskEst = async (req, res, next) => {
                 $group: {
                     _id: { taskName: "$taskName", userName: "$userName" },
                     workingHour: { $sum: "$workingHour" },
-                    projectName: { $max: "$projectName"},
-                    taskType: { $max: "$taskType"},
+                    projectName: { $max: "$projectName" },
+                    taskType: { $max: "$taskType" },
                 }
             }
         ]).then(data => resolve(data))
@@ -121,7 +167,7 @@ exports.writeTaskEst = async (req, res, next) => {
 
         const getTaskEstHour = taskEstHourResult.find(data => data.taskName == item._id.taskName)
 
-        const findEmp = employees.find( emp => emp.name == item._id.userName)
+        const findEmp = employees.find(emp => emp.name == item._id.userName)
 
         //-- set value for percent calculation
         let valuePercent = .10
@@ -131,29 +177,29 @@ exports.writeTaskEst = async (req, res, next) => {
 
         //-- Process AI for Est Hour
         let aiEstHour = item.workingHour
-        if(aiEstHour > 2 ) { //-- After Two Hours
+        if (aiEstHour > 2) { //-- After Two Hours
             aiEstHour = Math.floor(item.workingHour - (item.workingHour * valuePercent))
         }
 
         //-- set Task Type String
         let taskType = item.taskType
-        let findTaskType = replaceTypes.find( item => item.searchString == taskType )
+        let findTaskType = replaceTypes.find(item => item.searchString == taskType)
         if (findTaskType) {
             taskType = findTaskType.replaceString
         }
-        
+
 
         //-- set Project String
         let projectName = item.projectName
-        let findProject = replaceProjects.find( item => item.searchString == projectName )
+        let findProject = replaceProjects.find(item => item.searchString == projectName)
         if (findProject) {
             projectName = findProject.replaceString
         }
-        
+
 
         let estHour = aiEstHour
-        
-        
+
+
         if (getTaskEstHour) {
             estHour = getTaskEstHour.estHour
             taskType = getTaskEstHour.taskType || item.taskType
@@ -188,11 +234,11 @@ exports.writeTaskEst = async (req, res, next) => {
  */
 exports.generateCsv = async (req, res, next) => {
 
-    const allProjects = await new Promise( (resolve, reject) => {
+    const allProjects = await new Promise((resolve, reject) => {
         UserTask.aggregate([
             {
                 $group: {
-                    _id: { projectName: "$projectName"},
+                    _id: { projectName: "$projectName" },
                     workingHour: { $sum: "$workingHour" },
                     estHour: { $sum: "$estHour" }
                 }
@@ -201,12 +247,12 @@ exports.generateCsv = async (req, res, next) => {
             resolve(data)
         })
     })
-    
-    const allTaskType = await new Promise( (resolve, reject) => {
+
+    const allTaskType = await new Promise((resolve, reject) => {
         UserTask.aggregate([
             {
                 $group: {
-                    _id: { taskType: "$taskType"},
+                    _id: { taskType: "$taskType" },
                     workingHour: { $sum: "$workingHour" },
                     estHour: { $sum: "$estHour" }
                 }
@@ -278,7 +324,7 @@ exports.generateCsv = async (req, res, next) => {
 
     //-- get Individual user
     let result = []
-    
+
     //--All Project
     result.push(...generateAllProject(allProjects))
 
@@ -315,27 +361,27 @@ exports.generateCsv = async (req, res, next) => {
 //-- generate All Task Type
 const generateAllTaskType = (allTaskType) => {
     let result = [
-        ['', '', '',''],
-        ['SL','Task Type', 'Working Hour', 'Est Hour']
+        ['', '', '', ''],
+        ['SL', 'Task Type', 'Working Hour', 'Est Hour']
     ]
 
-    let sl=0;
+    let sl = 0;
     let totalWorkingHour = 0;
     let totalEstHour = 0;
     for (item of allTaskType) {
         sl++;
         result.push([
-            sl,item._id.taskType, item.workingHour, item.estHour 
+            sl, item._id.taskType, item.workingHour, item.estHour
         ])
 
         totalWorkingHour += parseFloat(item.workingHour)
         totalEstHour += parseFloat(item.estHour)
     }
 
-    result.push(['','Total =', totalWorkingHour, totalEstHour])
-    result.push(['', '', '',''])
-    result.push(['', '', '',''])
-    result.push(['', '', '',''])
+    result.push(['', 'Total =', totalWorkingHour, totalEstHour])
+    result.push(['', '', '', ''])
+    result.push(['', '', '', ''])
+    result.push(['', '', '', ''])
 
     return result;
 
@@ -345,27 +391,27 @@ const generateAllTaskType = (allTaskType) => {
 //-- generate All Project
 const generateAllProject = (allProjects) => {
     let result = [
-        ['', '', '',''],
-        ['SL','Project Name', 'Working Hour', 'Est Hour']
+        ['', '', '', ''],
+        ['SL', 'Project Name', 'Working Hour', 'Est Hour']
     ]
 
-    let sl=0;
+    let sl = 0;
     let totalWorkingHour = 0;
     let totalEstHour = 0;
     for (item of allProjects) {
         sl++;
         result.push([
-            sl,item._id.projectName, item.workingHour, item.estHour 
+            sl, item._id.projectName, item.workingHour, item.estHour
         ])
 
         totalWorkingHour += parseFloat(item.workingHour)
         totalEstHour += parseFloat(item.estHour)
     }
 
-    result.push(['','Total =', totalWorkingHour, totalEstHour])
-    result.push(['', '', '',''])
-    result.push(['', '', '',''])
-    result.push(['', '', '',''])
+    result.push(['', 'Total =', totalWorkingHour, totalEstHour])
+    result.push(['', '', '', ''])
+    result.push(['', '', '', ''])
+    result.push(['', '', '', ''])
 
     return result;
 
@@ -380,14 +426,14 @@ const generateAllUser = (allUsers) => {
     ]
 
     const officeHours = parseFloat(process.env.WORKING_DAYS) * parseFloat(process.env.OFFICE_HOURS)
-    let sl=0;
+    let sl = 0;
     let totalOfficeHour = 0;
     let totalWorkingHour = 0;
     let totalEstHour = 0;
     for (user of allUsers) {
         sl++;
         result.push([
-            sl,user._id.userName, officeHours, user.workingHour, user.estHour 
+            sl, user._id.userName, officeHours, user.workingHour, user.estHour
         ])
 
         totalOfficeHour += parseFloat(officeHours)

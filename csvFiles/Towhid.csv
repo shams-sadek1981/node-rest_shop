@@ -1,54 +1,10 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,,,,,,,,,,,,,,,Meeting
-01-Mar-2019,updated transfer and bank account api and ui,updated transfer and bank account api and ui,4,Update,ERP Accounting,,,,,,,,,,,,,,,Tax API
-01-Mar-2019,updated select-account behaviour on change,updated select-account behaviour on change,3,Update,ERP Accounting,,,,,,,,,,,,,,,Tax Mockup
-01-Mar-2019,accounting meeting with sadik bhai,accounting meeting with sadik bhai,1,Meeting,ERP Accounting,,,,,,,,,,,,,,,Weekly Meeting
-01-Mar-2019,"added missing particulars field in invoice,purchase","added missing particulars field in invoice,purchase",1,New Feature,ERP Accounting,,,,,,,,,,,,,,,ERP Main Site
-04-Mar-2019,introduce people_details table for transactions,introduce people_details table for transactions,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,Testing
-04-Mar-2019,"transaction report for customer, vendor","transaction report for customer, vendor",4,New Feature,ERP Accounting,,,,,,,,,,,,,,,Added Journal APIs
-05-Mar-2019,income statement report api + frontend,income statement report api + frontend,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-06-Mar-2019,balance sheet report api + frontend,balance sheet report api + frontend,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-07-Mar-2019,fix issues and update api + frontend,fix issues and update api + frontend,4,Update,ERP Accounting,,,,,,,,,,,,,,,
-07-Mar-2019,started working on people details chart,started working on people details chart,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-08-Mar-2019,weekly meeting,weekly meeting,1,Meeting,ERP Accounting,,,,,,,,,,,,,,,
-08-Mar-2019,people details chart + employee details chart,people details chart + employee details chart,7,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-11-Mar-2019,rename tax rate name to tax zone in api and frontend,rename tax rate name to tax zone in api and frontend,1,Update,ERP Accounting,,,,,,,,,,,,,,,
-11-Mar-2019,show default tax in tax rate list,show default tax in tax rate list,1,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-11-Mar-2019,estimate frontend + backend functionality,estimate frontend + backend functionality,3,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-11-Mar-2019,show balance in selected account with relation to payment type,show balance in selected account with relation to payment type,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-11-Mar-2019,add balance in chart of accounts,add balance in chart of accounts,1,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-11-Mar-2019,add transaction count in chart of accounts,add transaction count in chart of accounts,1,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-11-Mar-2019,added ledger single view,added ledger single view,1,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-12-Mar-2019,purchase order frontend + backend functionality,purchase order frontend + backend functionality,3,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-12-Mar-2019,started working on integrating activity logger,started working on integrating activity logger,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-12-Mar-2019,automation testing session ,automation testing session ,1,Meeting,ERP Accounting,,,,,,,,,,,,,,,
-12-Mar-2019,fix issues and update api + frontend,fix issues and update api + frontend,2,Update,ERP Accounting,,,,,,,,,,,,,,,
-13-Mar-2019,fix various api + frontend issues,fix various api + frontend issues,8,Update,ERP Accounting,,,,,,,,,,,,,,,
-14-Mar-2019,added full featured dashboard bank accounts section,added full featured dashboard bank accounts section,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-15-Mar-2019,added draft feature in all transactions,added draft feature in all transactions,8,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-19-Apr-2019,accounting meeting with sadik bhai and sofi vai,accounting meeting with sadik bhai and sofi vai,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-19-Mar-2019,"update reports, overviews for newly introduced estimate, purchase order and draft status transactions","update reports, overviews for newly introduced estimate, purchase order and draft status transactions",4,Update,ERP Accounting,,,,,,,,,,,,,,,
-19-Mar-2019,update dashboard accounts section,update dashboard accounts section,2,Update,ERP Accounting,,,,,,,,,,,,,,,
-19-Mar-2019,fixed wrong journal entry count issue,fixed wrong journal entry count issue,1,Update,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,fixed dashboard income-expense chart,fixed dashboard income-expense chart,1,Update,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,"fixed journal list voucher_no issue, add ref in journal","fixed journal list voucher_no issue, add ref in journal",1,Update,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,update journal single view with account name,update journal single view with account name,1,Update,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,Fixed issues in rec_payment single view,Fixed issues in rec_payment single view,1,Update,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,fixed status related issues in transaction lists,fixed status related issues in transaction lists,2,Update,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,"account for draft,estimate & po when calculate due","account for draft,estimate & po when calculate due",2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,fixed ledger details report frontend,fixed ledger details report frontend,1,Update,ERP Accounting,,,,,,,,,,,,,,,
-20-Mar-2019,improve dashboard account section,improve dashboard account section,2,Update,ERP Accounting,,,,,,,,,,,,,,,
-21-Mar-2019,balance sheet refactor,balance sheet refactor,4,Update,ERP Accounting,,,,,,,,,,,,,,,
-21-Mar-2019,income statement refactor,income statement refactor,3,Update,ERP Accounting,,,,,,,,,,,,,,,
-21-Mar-2019,fixed some issues in people api,fixed some issues in people api,1,Update,ERP Accounting,,,,,,,,,,,,,,,
-22-Mar-2019,fixed tax menu,fixed tax menu,1,Update,ERP Accounting,,,,,,,,,,,,,,,
-22-Mar-2019,added tax payment single page,added tax payment single page,2,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-22-Mar-2019,redesign dashboard bank,redesign dashboard bank,3,Update,ERP Accounting,,,,,,,,,,,,,,,
-22-Mar-2019,fixed employees not showing in list,fixed employees not showing in list,1,Update,ERP Accounting,,,,,,,,,,,,,,,
-22-Mar-2019,weekly meeting,weekly meeting,2,Meeting,ERP Accounting,,,,,,,,,,,,,,,
-25-Mar-2019,issue fix and enhancements in accounting after friday meeting,issue fix and enhancements in accounting after friday meeting,8,Update,ERP Accounting,,,,,,,,,,,,,,,
-27-Mar-2019,issue fix and enhancements in accounting after friday meeting,issue fix and enhancements in accounting after friday meeting,8,Update,ERP Accounting,,,,,,,,,,,,,,,
-28-Mar-2019,issue fix and enhancements in accounting after friday meeting,issue fix and enhancements in accounting after friday meeting,5,Update,ERP Accounting,,,,,,,,,,,,,,,
-28-Mar-2019,opening balance related meeting with sadik bhai,opening balance related meeting with sadik bhai,2,Meeting,ERP Accounting,,,,,,,,,,,,,,,
-29-Mar-2019,setting erp questions ,setting erp questions ,1,Others,ERP Accounting,,,,,,,,,,,,,,,
-29-Mar-2019,opening balance frontend related r&d,opening balance frontend related r&d,3,New Feature,ERP Accounting,,,,,,,,,,,,,,,
-29-Mar-2019,started working on openning balance frontend,started working on openning balance frontend,4,New Feature,ERP Accounting,,,,,,,,,,,,,,,
+Date,Task / Feature,Hour,Project,Type
+2019-05-31,fix accounting ui issues,12,WP ERP,Enhancement
+2019-05-31,fix accounting api issues,18,WP ERP,Enhancement
+2019-05-10,redesign tax pages r&d + development,6,WP ERP,New Feature
+2019-05-09,show cash with opening balance,3,WP ERP,Enhancement
+2019-05-12,added frontend checking of financial year overlapping,3,WP ERP,New Feature
+2019-05-31,various accounting related meetings with sofi vai and sadik bhai,45,WP ERP,Meeting
+2019-05-31,complete people transaction extension w/o reporting,32,WP ERP,New Feature
+2019-05-24,configure accounting extensions boilerplate,10,WP ERP,New Feature
+2019-05-17,configure accounting to support extensions,6,WP ERP,New Feature

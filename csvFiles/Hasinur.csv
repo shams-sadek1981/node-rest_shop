@@ -1,45 +1,19 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,Version
-01-Jan-2019,Fix filter employee by type,,1,Plugin issue,ERP-HR-Frontend,
-01-Jan-2019,ERP menu isn't showing Add new question,,3,Plugin issue,ERP-Recruitment,
-01-Jan-2019,Add new page not working,,1,Plugin issue,ERP Workflow,
-02-Jan-2019,Customer and vendor single page,,10,,ERP,
-03-Jan-2019,Release erp-hr-forntend v2.0.3,,3,,ERP-HR-Frontend,
-03-Jan-2019,Release erp-recruitment v1.2.1,,3,,,
-03-Jan-2019,Release erp-reimbursement v1.1.1,,3,,,
-07-Jan-2019,Fix Hubspot contanct list sync,,5,Plugin issue,ERP-Hubspot,
-07-Jan-2019,Fix leave entitlement ,,1,Client Issue,ERP,
-07-Jan-2019,Can't create customer activities,,4,Client Issue,ERP,
-07-Jan-2019,Can't create customer document,,4,Client Issue,ERP-Document,
-08-Jan-2019,Vendor Details page,,10,New Feature ,ERP,
-09-Jan-2019,Can't check in and checkout ,,1,Client Issue,ERP-Frontend,
-09-Jan-2019,Can't create customer activities,,2,client Issue,ERP,
-09-Jan-2019,Customer details page,,8,New Feature ,ERP,
-10-Jan-2019,HR Frontend Checking Checkout not working for admin,,3,Client Issue,ERP HR Frontend,
-10-Jan-2019,ERP Employee permission not working,,1,Client Issue,ERP HR Frontend,
-15-Jan-2019,Can't transfer money properly,,4,Client Issue,ERP,
-15-Jan-2019,Due payment shows zero instead of the actual amoutn,,3,client Issue,ERP,
-16-Jan-2019,Fixed the invalid license key issue,,4,Client Issue,ERP Helpscout,
-16-Jan-2019,Helpscout ticket lists,,1,Plugin issue,ERP Helpscout,
-16-Jan-2019,helpscout conversion,,7,Feature,ERP Helpscout,
-17-Jan-2019,Fix mailbox list,,5,Feature,ERP Helpscout,
-17-Jan-2019,Change js version,,6,Plugin issue,ERP HElpscout,
-17-Jan-2019,Fix authentication,,1,Plugin issue,ERP HElpscout,
-18-Jan-2019,The manager did not receive the email to approve the leave request when an employee submit a leave request.,,4,Client Issue,ERP-HR-Frontend,
-21-Jan-2019,Fix helpscout conversion,,4,Plugin issue,ERP Helpscout,
-21-Jan-2019,Fix mailbox list,,5,Plugin issue,ERP HElpscout,
-21-Jan-2019,Helpscout ticket lists,,3,Plugin issue,ERP HElpscout,
-22-Jan-2019,Change conversation status,,1,Plugin issue,ERP Helpscout,
-22-Jan-2019,Fix contact list and mailbox,,2,Plugin issue,ERP Helpscout,
-22-Jan-2019,Fix create conversation,,7,Plugin issue,ERP Helpscout,
-22-Jan-2019,Fix mailbox user list,,1,Plugin issue,ERP Helpscout,
-23-Jan-2019,Can't show employee exam details,,3,Client Issue,ERP Recruitment,
-23-Jan-2019,Can't hire employee,,4,Client Issue,ERP Recruitment,
-24-Jan-2019,Update employee profile,,6,Plugin issue,ERP,
-24-Jan-2019,Fix employee salary and leave reports,,7,Plugin issue,ERP,
-25-Jan-2019,Fix employee gender report,,3,Plugin issue,ERP,
-25-Jan-2019,Fix employee age profile report,,4,Plugin issue,ERP,
-28-Jan-2019,1 cent is missing on the total amount of the payment,,1,Client Issue,ERP,
-28-Jan-2019,Recruitment required field and the hiring issue,,7,Client Issue,ERP-Recruitment,
-29-Jan-2019,Tab like permission on employ profile is missing.,,1,Client Issue,ERP,
-29-Jan-2019,Could not delete an employee from the HR section,,2,Client Issue,ERP,
-30-Jan-2019,Fix get employee by type on employee api,,3,Plugin issue,ERP,
+Date,Task Name,Hour,Project,Type
+02-May-2019,Release wc-conversion-tracking-pro,2,WCCT,Release
+07-May-2019,Review wp-user-frontend,6,WPUF,R&D
+08-May-2019,Review wp-user-frontend,6,WPUF,R&D
+09-May-2019,Review wp-user-frontend code based,6,WPUF,R&D
+10-May-2019,Review wp-user-frontend code based,6,WPUF,R&D
+13-May-2019,Review wp-user-frontend extension,7,WPUF,R&D
+14-May-2019,Review weForms,5,weForms,R&D
+16-May-2019,Review weForms,5,weForms,R&D
+17-May-2019,Review weForms extension,6,weForms,R&D
+20-May-2019, Separate post types with a bottom separator,3,bedIQ,New Feature
+21-May-2019,Cleanup WP dashboard widgets,4,bedIQ,New Feature
+22-May-2019,Convert CMB to ACF,5,bedIQ,New Feature
+23-May-2019,Convert CMB to ACF,5,bedIQ,New Feature
+24-May-2019,Client Restriction,5,bedIQ,New Feature
+27-May-2019,Client Restriction,6,bedIQ,New Feature
+28-May-2019,Client Restriction,5,bedIQ,New Feature
+29-May-2019,Client Restriction(Limitation for upload media),4,bedIQ,New Feature
+30-May-2019,Client Restriction(Limitation for page creation),5,bedIQ,New Feature

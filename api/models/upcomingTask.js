@@ -29,7 +29,13 @@ const upcomingTaskSchema = mongoose.Schema({
             createdAt : { type : Date, default: Date.now },
             startDate: Date,
             completedAt: Date,
-            dueDate: Date
+            dueDate: Date,
+            timeLog: [
+                {
+                    workingDate: Date,
+                    hour: Number
+                }
+            ]
         }
     ],
     createdAt : { type : Date, default: Date.now },

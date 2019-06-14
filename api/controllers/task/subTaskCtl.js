@@ -223,7 +223,7 @@ exports.userReport = (req, res) => {
                 "includeArrayIndex": "arrayIndex"
             }
         },
-        { $sort: { "subTasks.completedAt": 1, "subTasks.name": 1 } },
+        // { $sort: { "subTasks.completedAt": 1, "subTasks.name": 1 } },
         {
             $match: queryObj
         },
@@ -234,7 +234,10 @@ exports.userReport = (req, res) => {
                     taskName: "$taskName",
                     projectName: "$projectName",
                     taskType: "$taskType",
-                    completedAt: "$completedAt",
+                    completedAt: "$subTasks.completedAt",
+                    // month: { $month: "$completedAt" },
+                    // day: { $dayOfYear: "$completedAt" },
+                    // year: { $year: "$completedAt" },
                 },
                 subTasks: { $push: "$subTasks" },
                 estHour: {
@@ -243,8 +246,15 @@ exports.userReport = (req, res) => {
             }
         },
         { $sort: { "_id.completedAt": 1, "_id.taskName": 1 } }
+        // { $sort: {
+        //     '_id.year': 1,
+        //     '_id.month': 1,
+        //     '_id.day': 1
+        // }}
 
     ]).then(data => {
+
+        // return res.json(data)
 
         let result = []
         let totalEst = 0
@@ -347,7 +357,7 @@ exports.userReportSummary = (req, res) => {
             result.push({
                 userName: item._id.userName,
                 estHour: item.estHour,
-                officeHour: 171,
+                officeHour: 150,
                 timeLog: 140
             })
         })

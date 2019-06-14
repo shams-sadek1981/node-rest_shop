@@ -1,63 +1,9 @@
-Date,Task / Feature,Subtask,Hour,Type,Project
-01-Jan-2019,Updated Database migration,,2,New Feature,Appsero
-,Updated add license api,,4,New Feature,Appsero
-02-Jan-2019,Updated Database,,1,New Feature,Appsero
-,Update Connect with store,,2,New Feature,Appsero
-,Added disconnect option,,2,New Feature,Appsero
-,Updated Update connection frontend,,3,New Feature,Appsero
-03-Jan-2019,Update sotre when activate or deactivate site,,6,New Feature,Appsero
-,Added activation delete option,,1,New Feature,Appsero
-04-Jan-2019,"Added actvate, inactivate, disable request to update appsero helper",,2,New Feature,Appsero
-,Adding Envato purchase key verifiaction,,6,New Feature,Appsero
-07-Jan-2019,Verify envato purchase key,,1,New Feature,Appsero
-,Update API endpoint,,1,New Feature,Appsero
-,Fixed the problem of integration,,1,Bug Fix,Appsero
-,Remove source_identifier form license table,,1,Others,Appsero
-,Marge license branch,,2,New Feature,Appsero
-,Update Design,,3,New Feature,Appsero
-08-Jan-2019,Marge release branch with develop,,3,New Feature,Appsero
-,Updated Settings,,3,New Feature,Appsero
-,Updated Dashboard,,2,New Feature,Appsero
-09-Jan-2019,Update Project Settings,,5,New Feature,Appsero
-,Update Integrations,,3,New Feature,Appsero
-10-Jan-2019,Updated Project Settings,,5,Bug Fix,Appsero
-,Test Licenseing and release system,,2,Others,Appsero
-11-Jan-2019,Check licensing system,,2,Others,Appsero
-,Check database migrations,,1,Others,Appsero
-,Check release system,,2,Others,Appsero
-14-Jan-2019,Updated database to marge with master,,4,Bug Fix,Appsero
-,Fiexed the problem of Envato purchase key varification,,2,Bug Fix,Appsero
-,meeting with tareq vai,,1,Others,Appsero
-15-Jan-2019,Updated dashboard,,5,Bug Fix,Appsero
-,Meeting with tareq vai,,1,Others,Appsero
-16-Jan-2019,Updated API Key page,,2,Bug Fix,Appsero
-,Updated Plugins page,,2,New Feature,Appsero
-,Update plugin api,,2,Bug Fix,Appsero
-,Meeting for growth hacking,,1,Bug Fix,Appsero
-17-Jan-2019,"Updated integrations, Deactivations, License, API Key",,4,Bug Fix,Appsero
-,"Updated theme, plugin, Settings page",,4,Bug Fix,Appsero
-18-Jan-2019,Added paginations for themes and plugins page,,6,Bug Fix,Appsero
-,Added cupy button and updated desing,,2,Bug Fix,Appsero
-21-Jan-2019,Added tab on settings page,,4,New Feature,Appsero
-,Update text of various pages,,4,Bug Fix,Appsero
-22-Jan-2019,Updated Database migration,,4,Bug Fix,Appsero
-,Updated Deactivations Auto Response ,,2,Bug Fix,Appsero
-,Mage Feature branch with develop and resolved conflict,,2,New Feature,Appsero
-23-Jan-2019,Tested All functionalities of appsero,,4,New Feature,Appsero
-,Writting docs for appsero users,,4,New Feature,Appsero
-24-Jan-2019,Update Alert Messages,,1,Bug Fix,Appsero
-,Writting docs for appsero users,,4,New Feature,Appsero
-,Creating doc site using vue press,,3,New Feature,Appsero
-25-Jan-2019,Document for Add a plugin,,3,New Feature,Appsero
-,Document for Add a theme,,2,New Feature,Appsero
-,Sync licensing document,,2,New Feature,Appsero
-,Licensing for Envato deocuments,,2,New Feature,Appsero
-28-Jan-2019,"Added documentations for Email Digest, Release, Forword Deactivations",,9,New Feature,Appsero
-29-Jan-2019,Updated doucments,,4,New Feature,Appsero
-,Created some videos,,4,New Feature,Appsero
-30-Jan-2019,Fixing bus,,4,New Feature,Appsero
-,updated docs,,4,New Feature,Appsero
-,Appsero Presentation,,1,New Feature,Appsero
-31-Jan-2019,Updated Database MIgrations,,2,Bug Fix,Appsero
-,Fixed the problem of Users page,,4,Bug Fix,Appsero
-,Fixed the problem of License expire dates,,3,Bug Fix,Appsero
+Date,Task,Hour,Project,Type
+2019-05-03,ERD Diagram Design,12,Appsero,New Feature
+2019-05-08,Muck up Design,15,Appsero,New Feature
+2019-05-10,Design UI of team,12,Appsero,New Feature
+2019-05-16,"Show Team list and create, update team",24,Appsero,New Feature
+2019-05-20,List permission and assign these to role,12,Appsero,New Feature
+2019-05-22,Hide Frontend menu and other links based on role,10,Appsero,New Feature
+2019-05-28,Team Switch Option,24,Appsero,New Feature
+2019-05-31,Filter Plugin and Theme based on current team,12,Appsero,New Feature

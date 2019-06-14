@@ -1,37 +1,26 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project,Version
-01-Jan-2019,Email notification,New task assigned email template update,1,Bug Fix,ERP CRM,1.4.1
-01-Jan-2019,Accounting report,Invoice modal report,6,New Feature,ERP Accounting,new
-02-Jan-2019,Accounting print,Print-preview of sales transactions,2,New Feature,ERP Accounting,new
-02-Jan-2019,Report overview,Understanding chart of accounts and ledger api query update,3,New Feature,ERP Accounting,new
-02-Jan-2019,Accounting Report,Trial balance start,2,New Feature,ERP Accounting,new
-03-Jan-2019,Hubspot,Hubspot API test and update endpoints,1,Plugin Issue,ERP,
-03-Jan-2019,Accounting Report,Trial balance query,5,New Feature,ERP Accounting,new
-03-Jan-2019,Multiselect,Update multiselect to improve UX,1,New Feature,ERP Accounting,new
-04-Jan-2019,Meeting,,5,Meeting,ERP Accounting,
-04-Jan-2019,Expense list,Start working on expenses tranactions,1,Bug Fix,ERP Accounting,
-07-Jan-2019,Meeting,,1,Meeting,ERP Accounting,
-07-Jan-2019,Sales Invoice,Invoice with product price & tax calculation,4,New Feature,ERP Accounting,new
-07-Jan-2019,Sales Invoice,Customer search improved & combo button,3,New Feature,ERP Accounting,new
-08-Jan-2019,Sales Invoice,Combo buttons,1,New Feature,ERP Accounting,new
-08-Jan-2019,Leave,Can't take leave,3,Bug Fix,ERP,
-08-Jan-2019,Sales Overview,Sales transactions overview page and query,4,New Feature,ERP Accounting,new
-09-Jan-2019,Chart of Acc,Chart of account main list table and view,7,New Feature,ERP Accounting,new
-10-Jan-2019,Chart of Acc,API and query and display,7,New Feature,ERP Accounting,new
-11-Jan-2019,Chart of Acc,Finish chart of account and categories,6,New Feature,ERP Accounting,
-11-Jan-2019,Meeting,,1,Meeting,ERP Accounting,
-14-Jan-2019,Sales Overview,List display with proper data and query,8,New Feature,ERP Accounting,new
-15-Jan-2019,Sales Overview,API update and add filters,8,New Feature,ERP Accounting,new
-16-Jan-2019,Sales Overview,Chart Add and API query,7,New Feature,ERP Accounting,new
-17-Jan-2019,Trial Balance,Start working / understanding trial balance,7,New Feature,ERP Accounting,new
-18-Jan-2019,Invoice calculation,Update previously written invoice calculation API,7,New Feature,ERP Accounting,new
-21-Jan-2019,Sales Query,Sales overview query update with customer ,8,New Feature,ERP Accounting,new
-22-Jan-2019,Ledger and trial balance,Update API and UI for ledger and trial balance,8,New Feature,ERP Accounting,new
-23-Jan-2019,Sales Overview,Working on transactions API,7,New Feature,ERP Accounting,new
-23-Jan-2019,Task email,Client issue with crm task email,1,Bug Fix,ERP CRM,
-24-Jan-2019,Invoice single,Data fetch and API update,8,New Feature,ERP Accounting,new
-25-Jan-2019,Sales,Receive paymnet data insert update and some components update,7,New Feature,ERP Accounting,new
-28-Jan-2019,Invoice / Payment single page,Single page query and view,7,New Feature,ERP Accounting,new
-29-Jan-2019,Bill / Paybill single page,Bill and paybill single page and view,7,New Feature,ERP Accounting,new
-30-Jan-2019,Invoice Tax and selectbox,"Tax and multiselect fix, add vuex",7,New Feature,ERP Accounting,new
-31-Jan-2019,Purcahse single,Purchase single page,6,New Feature,ERP Accounting,new
-31-Jan-2019,vuex,Update vuex code,1,New Feature,ERP Accounting,new
+Date,Task,Hour,Project,Type
+2019-05-02,Remove ledger delete option and various tweak,1,WP ERP,Bug Fix
+2019-05-03,Add validation after closing balance,2,WP ERP,New Feature
+2019-05-07,Add debug mode on accounting and jQuery datepicker to financial year field in settings,2,WP ERP,New Feature
+2019-05-03,Fix tax pay voucher type calculation and owners_equity issue,4,WP ERP,Bug Fix
+2019-05-06,Improve closing balance and balance sheet,5,WP ERP,Bug Fix
+2019-05-04,Fix closing balance issue with account R/P,6,WP ERP,Bug Fix
+2019-05-07,Limit trial balance tax query to financial year,4,WP ERP,New Feature
+2019-05-07,Update opening balance date select with report date range,3,WP ERP,New Feature
+2019-05-08,Fix tax buttons label and improve input UI in several places,3,WP ERP,Bug Fix
+2019-05-08,Fix previous financial year transactions issue with trial balance,4,WP ERP,Bug Fix
+2019-05-08,Update reports overview UI,5,WP ERP,New Feature
+2019-05-09,Fix people_id issue in invoice and Update inventory to purchase ,2,WP ERP,Bug Fix
+2019-05-10,Fix ledger opening calculation,2,WP ERP,Bug Fix
+2019-05-13,Implement js hooks for component,4,WP ERP,New Feature
+2019-05-13,Update chart js file,2,WP ERP,New Feature
+2019-05-14,Invoice edit complete with contra entry and new entry,8,WP ERP,New Feature
+2019-05-16,Limit Balance Sheet balance to decimal and style entries,1,WP ERP,Bug Fix
+2019-05-20,Exclude account_details from closing balance,1,WP ERP,Bug Fix
+2019-05-21,Account details balance in opening balance and debug mode trial blnc,2,WP ERP,New Feature
+2019-05-27,Bill contra entry complete,6,WP ERP,New Feature
+2019-05-28,Fix opening balance issue ledger report,3,WP ERP,Bug Fix
+2019-05-28,Fix print UI issues,4,WP ERP,Bug Fix
+2019-05-24,Update date range for income statement report,2,WP ERP,Bug Fix
+2019-05-30,fix bank balance issue in trial balance,2,WP ERP,Bug Fix
+2019-05-23,Purchase edit with contra,6,WP ERP,New Feature

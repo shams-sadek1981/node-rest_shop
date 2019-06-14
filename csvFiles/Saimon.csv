@@ -1,65 +1,74 @@
-Date,Task / Feature,Sub Task,Hour,Type,Project
-01-Jan-2019,Product status is not changing while editing via quick edit,,1,Bug Fixed,Dokan Pro
-01-Jan-2019,Vendor product description is not saving correctly,,1,Bug Fixed,Dokan Free
-01-Jan-2019,"While saving product from popup, a slug is automatically add with the product title ",,1,Bug Fixed,Dokan Free
-01-Jan-2019,Error if vendor store page is not found,,1,Bug Fixed,Dokan Free
-01-Jan-2019,Child category is not showing hierarchically,,1,Bug Fixed,Dokan Pro
-01-Jan-2019,Seller setup override,,,Client Issue,Dokan Free
-01-Jan-2019,Unlimited products for vendor subscription packs is not working,,1,Bug Fixed,Dokan Pro
-02-Jan-2019,fix: show seller is not enable warning message in quick edit,,1,Bug Fixed,Dokan Pro
-02-Jan-2019,Worked on subscription cancelled email for admin,,3,New Feature,Dokan Pro
-03-Jan-2019,Finish subscirption cancelled email for venodr,,2,New Feature,Dokan Pro
-03-Jan-2019,add dokan_get_vendor_by_product function,,,New Feature,Dokan Free
-03-Jan-2019,add get_products method in vendor class,,,New Feature,Dokan Free
-03-Jan-2019,add pagination options in vendor product api,,1,New Feature,Dokan Pro
-07-Jan-2019,"Banner is not getting saved in vendor dashboard, variation is name is adding - and vendor shipping zone related issue (not fixed yet)",,6,Client Issue,Dokan Free
-07-Jan-2019,check if woocommerce order creates sub order with api,,1,,Testing
-07-Jan-2019,Help kays vai to set latest product pagination,,1,,Other
-08-Jan-2019,"Error in admin order page, old order created without dokan shows warning",,1,Bug Fixed,Dokan Free
-08-Jan-2019,add dokan_get_permalink function to retrieve dokan pages ur,,1,New Feature,Dokan Free
-08-Jan-2019,feat: add dokan_is_store_listing function,,,New Feature,Dokan Free
-08-Jan-2019,Nonce verification issue during checkout,,1,Bug Fixed,Dokan Free
-08-Jan-2019,Email issue when multiple order is created via rest api,,3,Bug Fixed,Dokan Free
-08-Jan-2019,refactor: create_default_pages funciton,,1,Bug Fixed,Dokan Pro
-08-Jan-2019,fix: color customiser is not working for the visit store button on store listing page,,1,Bug Fixed,Dokan Pro
-08-Jan-2019,refactor: get store_listing_page using native function,,1,Bug Fixed,Dokan Pro
-09-Jan-2019,feat: add links to admin dashboard at a glance report,,1,New Feature,Dokan Free
-09-Jan-2019,"fix: cannot modify header information, headers already sent warning in admin pages",,1,Bug Fixed,Dokan Free
-09-Jan-2019,fix: check if query_vars is not empty in follow store module,,1,Bug Fixed,Dokan Pro
-09-Jan-2019,Multiple email issue if order is placed via API,,5,Bug Fixed,Dokan Free
-11-Jan-2019,Automatic refund for stripe,,6,New Feature,Dokan Pro
-11-Jan-2019,Admin withdraw section is not loading,,1,Client Issue,Dokan Free
-14-Jan-2019,Work on automatic stripe refund( done) but have some old issue ( need to talk sadeek & shoikot vai),,7,Bug Fixed,Dokan Pro
-15-Jan-2019,The uppercases at the beginning of a word is not taken into account in the name of the attributes in the case of a variable product,,1,Bug Fixed,Dokan Free
-15-Jan-2019,Color customizer is not working on my-account page,,1,Bug Fixed,Dokan Pro
-15-Jan-2019,Auto refund and report refactor,,10,Bug Fixed,Dokan Pro
-16-Jan-2019,Vendor name is not showing on the cart page,,1,Client Issue,Dokan Free
-16-Jan-2019,PayPal checkout is throwing error while checkout using the vendor's coupon,,1,Client Issue,Dokan Pro
-16-Jan-2019,Working on subscription module,,7,New Feature,Dokan Pro
-16-Jan-2019,Dokan Pro 2.9.4 release note,,1,,Dokan Pro
-17-Jan-2019,Store support button appears even after disabling it from vendor dashboard,,1,Bug Fixed,Dokan Pro
-17-Jan-2019,RMA date issue,,1,Bug Fixed,Dokan Pro
-17-Jan-2019,Store seo date issue,,1,Bug Fixed,Dokan Pro
-17-Jan-2019,Subscripton Rewrite,,7,Refactoring,Dokan Pro
-20-Jan-2019,Paypal mass payment is not generating,,2,Bug Fixed,Dokan Free
-21-Jan-2019,fix: refund calculation process in rma module,,1,Bug Fixed,Dokan Pro
-21-Jan-2019,Refactor dokan subscription module,,8,Refactoring,Dokan Pro
-22-Jan-2019,Refactor dokan subscription module,,8,Refactoring,Dokan Pro
-23-Jan-2019,Add trail option in subscription module,,8,New Feature,Dokan Pro
-24-Jan-2019,Store seo date formatting issue,,1,Bug Fixed,Dokan Pro
-24-Jan-2019,Page redirect issue in vendor edit account,,1,Bug Fixed,Dokan Free
-24-Jan-2019,dokan_get_customer_orders_by_seller function,,1,Bug Fixed,Dokan Free
-24-Jan-2019,Add image it redirects to the same page,,1,Client Issue,Dokan Free
-24-Jan-2019,Trial subscripton support in moip,,5,New Feature,Dokan Pro
-25-Jan-2019,Fix: Product status changes even the vendor has the ability to publish product directly,,1,Bug Fixed,Dokan Pro
-25-Jan-2019,Stripe is showing error on the checkout page,,1,Client Issue,Dokan Pro
-25-Jan-2019,Subscription refactor,,5,,
-28-Jan-2019,Dokan lite changelog,,,Other,Dokan Free
-28-Jan-2019,Trial subscription support for paypal + some refactor,,8,New Feature,Dokan Pro
-29-Jan-2019,Dokan product earning suggestion is not populating ,,1,Client Issue,Dokan Free
-29-Jan-2019,Dokan vendor profile progressbar refactor,,,Bug Fixed,Dokan Pro
-29-Jan-2019,Vendor earning is not showing,,1,Client Issue,Dokan Free
-29-Jan-2019,"Vendor shipping zone issue (When you activate the ""limit your zone location"" in the Vendor shipping settings it is working for all shipping for all vendors which is wrong.)",,1,Bug Fixed,Dokan Pro
-29-Jan-2019,Create an update method in vendor class to update metadata,,1,New Feature,Dokan Free
-30-Jan-2019,Vendor editing ,,8,New Feature,Dokan Pro
-31-Jan-2019,Vendor editing ,,8,New Feature,Dokan Pro
+Date,Task Name,Hours,Project,Feature Type
+02-May-2019,WMPL Issue,1,Dokan,Client Issue
+02-May-2019,Seller setup wizard not letting to dashboard,1,Dokan,Plugin Issue
+02-May-2019,Dokan theme on mobile view,1,Dokan,Client Issue
+02-May-2019,Vendor add & edit refactor.,5,Dokan,New Feature
+02-May-2019,verification issue with Facebook and Linkedin,1,Dokan,Plugin Issue
+03-May-2019,Twitter verification issue,1,Dokan,Client Issue
+03-May-2019,"When customer adds multiple vendor's product, then only one vendor receives the order notification email",6,Dokan,Plugin Issue
+06-May-2019,dokan vendor shipping refactor,2,Dokan,Plugin Issue
+06-May-2019,String missing in the .pot file,1,Dokan,Plugin Issue
+06-May-2019,Image upload issue in vendor settings page,1,Dokan,Client Issue
+12-May-2019,"Unable to set up Product Catagory wise Commision,",1,Dokan,Client Issue
+07-May-2019,Admin unable to cancel refund request,1,Dokan,Client Issue
+07-May-2019,Booking order issue,3,Dokan,Plugin Issue
+07-May-2019,Allow to skip nonce checking while registering new user .,1,Dokan,Plugin Issue
+08-May-2019,Untranslated strings even after 100% translate completion,3,Dokan,Client Issue
+08-May-2019,"Register vendor and as a customer is not working,",2,Dokan,Client Issue
+08-May-2019,Calculate commission for item by quantity,1,Dokan,Plugin Issue
+09-May-2019,Withdraw and whole sale issue,1,Dokan,Client Issue
+09-May-2019,Dokan Pro v2.9.9 report abuse thumbnail & description.,1,Dokan,Plugin Issue
+09-May-2019,Seller vacation issue,2,Dokan,Client Issue
+09-May-2019,Facebook verification is showing error,2,Dokan,Client Issue
+10-May-2019,Make dokan plugin responsive,3,Dokan,Plugin Issue
+13-May-2019,Banner issue on child theme,1,Dokan,Client Issue
+13-May-2019,WPML store category translate issue,1,Dokan,Client Issue
+13-May-2019,MOIP payment gateway enhancement,2,Dokan,Plugin Issue
+13-May-2019,404 while visiting order page ( wpml ),1,Dokan,Client Issue
+13-May-2019,Import CSV not working,1,Dokan,Client Issue
+14-May-2019,Translation string missing,1,Dokan,Plugin Issue
+14-May-2019,Subscription product uploading issue,3,Dokan,Plugin Issue
+15-May-2019,refactor: add hook after creating and updating object via REST API.,1,Dokan,Plugin Issue
+15-May-2019,Vendor can duplicate product more than the subscription limit.,1,Dokan,Plugin Issue
+15-May-2019,Dokan Pro 2.9.9 release related task.,1,Dokan,Plugin Issue
+15-May-2019,Linkedin App verification issue,1,Dokan,Plugin Issue
+15-May-2019,Paypal adaptive error,2,Dokan,Client Issue
+15-May-2019,Dokan ensure vendor coupon restriction.,1,Dokan,Plugin Issue
+15-May-2019,Make string translatable,1,Dokan,Plugin Issue
+16-May-2019,Product category hidden is creating issue on the store page pagination.,4,Dokan,Plugin Issue
+16-May-2019,Banner image issue,1,Dokan,Client Issue
+19-May-2019,Dashboard order page pagination issue.,1,Dokan,Client Issue
+19-May-2019,Flatsome theme issue,1,Dokan,Client Issue
+19-May-2019,Dashbord order page not found,1,Dokan,Client Issue
+20-May-2019,Add vendor biography tab in dokan pro,3,Dokan,New Feature
+20-May-2019,JS error in the console in admin backend,1,Dokan,New Feature
+20-May-2019,Add filter option on vendor report -> ALL LOG window,10,Dokan,New Feature
+21-May-2019,YITH stripe connect issue when Dokan lite is activated.,2,Dokan,Client Issue
+21-May-2019,Vendor can send refund request more than of his order.,4,Dokan,Plugin Issue
+21-May-2019,Some moip text is still there in the wirecard module.,1,Dokan,Plugin Issue
+21-May-2019,refactor: add updater class to fix banner issue.,5,Dokan,Plugin Issue
+22-May-2019,flatsome theme widget issue.,1,Dokan,Client Issue
+22-May-2019,Subscription issue with PayPal.,3,Dokan,Client Issue
+22-May-2019,Profile pic not showing on the store listing page,2,Dokan,Client Issue
+23-May-2019,WooCommerce PayPal Checkout issue,1,Dokan,Client Issue
+23-May-2019,Dokan backend settings and logs page active link issue,1,Dokan,Plugin Issue
+23-May-2019,Low stock and out of stock alerts for vendors.,10,Dokan,New Feature
+24-May-2019,YITH stripe and Dokan Concflict,2,Dokan,Client Issue
+24-May-2019,Recurring subscription getting cancelled on plugin update on client site.,4,Dokan,Client Issue
+27-May-2019,Best selling widget issue,1,Dokan,Plugin Issue
+27-May-2019,MAP not showing,1,Dokan,Client Issue
+27-May-2019,Order page and report calculation does not match,2,Dokan,Client Issue
+27-May-2019,"Woocommerce Multilingual fatal error,",2,Dokan,Client Issue
+27-May-2019,Cancel order email issue.,1,Dokan,Client Issue
+28-May-2019,Mangopay Pyament Gateway (Europe).,6,Dokan,New Feature
+28-May-2019,"A non-numeric value encountered warning in vendor product listing page, if product price is not given.",1,Dokan,Plugin Issue
+28-May-2019,Refactor dokan lite constants definition .,1,Dokan,New Feature
+28-May-2019,Duplicate function values returns from a function call.,1,Dokan,Plugin Issue
+28-May-2019,Map is not visible in mobile .,1,Dokan,Client Issue
+28-May-2019,Terms and Condition menu issue in wmpl site.,2,Dokan,Plugin Issue
+28-May-2019,"Category wise commission not showing,",1,Dokan,Client Issue
+29-May-2019,EMI in Wirecard payment gateway .,2,Dokan,New Feature
+29-May-2019,Refactor dokan installation process.,3,Dokan,Plugin Issue
+29-May-2019,"Dokan simple auction release task,",1,Dokan,Others
+31-May-2019,Order page returns 404 with wpml.,1,Dokan,Client Issue
+31-May-2019,Vendor is unable to upload banner and gravatar.,1,Dokan,Client Issue
