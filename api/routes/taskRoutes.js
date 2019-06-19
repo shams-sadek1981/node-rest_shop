@@ -24,6 +24,7 @@ const {
     userReport,
     userReportSummary,
     projectReportSummary,
+    subTaskReportSummary,
     taskTypeReportSummary
 } = require('../controllers/task/subTaskCtl')
 
@@ -37,6 +38,7 @@ router.get('/subtask/next-seq', checkJwt, nextSeq) // next-seq or custom task no
 router.get('/subtask/report-user', checkJwt, userReport ) // next-seq or custom task no
 router.get('/subtask/report-user-summary', checkJwt, userReportSummary ) // next-seq or custom task no
 router.get('/subtask/report-project-summary', checkJwt, projectReportSummary )
+router.get('/subtask/report-subtask-summary', checkJwt, subTaskReportSummary )
 router.get('/subtask/report-task-type-summary', checkJwt, taskTypeReportSummary )
 
 

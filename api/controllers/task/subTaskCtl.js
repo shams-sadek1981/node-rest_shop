@@ -371,7 +371,7 @@ exports.userReportSummary = (req, res) => {
 }
 
 
-//-- Report Project Report Summary
+//-- Report Project Summary
 exports.projectReportSummary = (req, res) => {
 
     const startDate = new Date(req.query.startDate)
@@ -417,6 +417,64 @@ exports.projectReportSummary = (req, res) => {
 
             result.push({
                 projectName: item._id.projectName,
+                estHour: item.estHour
+            })
+        })
+
+        res.json({
+            totalEst,
+            result
+        })
+    }).catch(err => res.json(err))
+}
+
+
+//-- Report SubTask Summary
+exports.subTaskReportSummary = (req, res) => {
+
+    const startDate = new Date(req.query.startDate)
+    const endDate = new Date(req.query.endDate)
+
+    const queryObj = {
+        "subTasks.completedAt": {
+            "$gte": startDate,
+            "$lte": endDate
+        }
+    }
+
+    UpcomingTask.aggregate([
+        {
+            "$unwind": {
+                'path': '$subTasks',
+                "preserveNullAndEmptyArrays": true,
+                "includeArrayIndex": "arrayIndex"
+            }
+        },
+        {
+            $match: queryObj
+        },
+        {
+            $group: {
+                _id: {
+                    "subTask": "$subTasks.name",
+                },
+                estHour: {
+                    $sum: "$subTasks.estHour"
+                }
+            }
+        },
+        { $sort: { "_id.subTask": 1 } }
+
+    ]).then(data => {
+
+        let result = []
+        let totalEst = 0
+        data.forEach(item => {
+
+            totalEst += parseInt(item.estHour)
+
+            result.push({
+                subTask: item._id.subTask,
                 estHour: item.estHour
             })
         })
