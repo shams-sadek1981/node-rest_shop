@@ -11,7 +11,9 @@ const {
     deleteTask,
     taskSearch,
     summaryUser,
-    summaryProject
+    summaryProject,
+    taskSearchRunning,
+    allTaskUpdate
 } = require('../controllers/task/taskCtl')
 
 const { 
@@ -38,11 +40,13 @@ router.get('/subtask/report-project-summary', checkJwt, projectReportSummary )
 router.get('/subtask/report-task-type-summary', checkJwt, taskTypeReportSummary )
 
 
+router.get('/all-task-update', checkJwt, allTaskUpdate)
 router.post('/create', checkJwt, createNewTask)
 router.put('/update/:id', checkJwt, updateTask)
 // router.get('/list', checkJwt, taskList)
 router.delete('/delete/:id', checkJwt, deleteTask)
-router.get('/search', checkJwt, taskSearch)
+// router.get('/search', checkJwt, taskSearch)
+router.get('/search-running', checkJwt, taskSearchRunning)
 router.get('/summary-user', checkJwt, summaryUser)
 router.get('/summary-project', checkJwt, summaryProject)
 

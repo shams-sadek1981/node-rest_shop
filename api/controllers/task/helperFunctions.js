@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const UpcomingTask = require('../../models/upcomingTask');
+const ObjectId = mongoose.Types.ObjectId;
 
 //-- Est. Hour Calculation from subtask
 const sumEstHourAndTotalSubTask = (queryObj = {}) => {
@@ -45,13 +46,13 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
     if (completedAt == null) {
         match.$and = [
             ...match.$and,
-            { completedAt:  { $eq: null }},
+            { completedAt: { $eq: null } },
             { running: running }
         ]
     } else {
         match.$and = [
             ...match.$and,
-            { completedAt:  { $ne: null }}
+            { completedAt: { $ne: null } }
         ]
     }
 
@@ -61,7 +62,7 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
             ...match.$and,
             // { "subTasks.status": status },
             { "subTasks.assignedUser": userName }
-        ]
+        ]  
     }
 
     if (projectName != 'all') {
@@ -255,4 +256,92 @@ exports.totalTask = (queryObj) => {
             return 0
         }
     })
+}
+
+
+
+//-- SubTask Percent -------
+exports.updateSubTaskPercent = (id) => {
+
+    const totalEstHour = new Promise((resolve, reject) => {
+        UpcomingTask.aggregate([
+            {
+                "$unwind": {
+                    'path': '$subTasks',
+                    "preserveNullAndEmptyArrays": true,
+                    "includeArrayIndex": "arrayIndex"
+                }
+            },
+            {
+                $match: {
+                    _id: ObjectId(id)
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    estHour: {
+                        $sum: "$subTasks.estHour"
+                    }
+                }
+            }
+        ])
+            .then(data => {
+                resolve(data[0].estHour)
+            })
+            .catch( err => {
+                resolve(0)
+            })
+    })
+
+    const totalCompletedHour = new Promise((resolve, reject) => {
+        UpcomingTask.aggregate([
+            {
+                "$unwind": {
+                    'path': '$subTasks',
+                    "preserveNullAndEmptyArrays": true,
+                    "includeArrayIndex": "arrayIndex"
+                }
+            },
+            {
+                $match: {
+                    _id: ObjectId(id),
+                    "subTasks.completedAt": { $ne: null }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    estHour: {
+                        $sum: "$subTasks.estHour"
+                    }
+                }
+            }
+        ])
+            .then(data => {
+                resolve(data[0].estHour)
+            })
+            .catch( err => {
+                resolve(0)
+            })
+    })
+
+
+    Promise.all([totalEstHour, totalCompletedHour]).then( values => {
+        
+        const estHour = values[0]
+        const completedHour = values[1]
+
+        const percent = Math.floor(completedHour * 100 / estHour)
+
+        UpcomingTask.findOneAndUpdate({ _id: id }, {
+            percent
+        }, { new: true })
+        .then( data => {
+            console.log(data)
+            return data
+        }).catch( err => err)
+        
+    });
+
 }

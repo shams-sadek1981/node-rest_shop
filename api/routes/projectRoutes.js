@@ -4,7 +4,8 @@ const { checkJwt } = require('../functions');
 
 const { 
     createNewProject,
-    getAll
+    getAll,
+    getTalha
 } = require('../controllers/project/projectCtl')
 
 

@@ -1,19 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const moment = require('moment');
+const ObjectId = mongoose.Types.ObjectId;
 const _ = require('lodash');
 
 const UpcomingTask = require('../../models/upcomingTask');
 // const TaskNo = require('../../models/taskNo');
 const TaskNo = require('../../models/taskNo');
-const { queryBuilder, singleUserEst, totalEst, totalTask } = require('./helperFunctions')
+const { queryBuilder, singleUserEst, totalEst, totalTask, updateSubTaskPercent } = require('./helperFunctions')
 
 
 //-- helper function project group by
 const projectGroupBy = (userName, startDate, endDate) => {
 
-    return new Promise( (resolve, reject) => {
-        
+    return new Promise((resolve, reject) => {
+
         const queryObj = {
             "subTasks.completedAt": {
                 "$gte": startDate,
@@ -46,26 +47,26 @@ const projectGroupBy = (userName, startDate, endDate) => {
                 }
             },
             { $sort: { "_id.projectName": 1 } }
-    
+
         ]).then(data => {
-    
+
             let result = []
             let totalEst = 0
             data.forEach(task => {
-    
+
                 totalEst += parseInt(task.estHour)
-    
+
                 result.push({
                     projectName: task._id.projectName,
                     estHour: task.estHour,
                 })
             })
-    
+
             resolve({
                 totalEst,
                 result
             })
-    
+
         }).catch(err => reject(err))
     })
 }
@@ -73,8 +74,8 @@ const projectGroupBy = (userName, startDate, endDate) => {
 //-- helper function task type group by
 const taskTypeGroupBy = (userName, startDate, endDate) => {
 
-    return new Promise( (resolve, reject) => {
-        
+    return new Promise((resolve, reject) => {
+
         const queryObj = {
             "subTasks.completedAt": {
                 "$gte": startDate,
@@ -107,26 +108,26 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
                 }
             },
             { $sort: { "_id.taskType": 1 } }
-    
+
         ]).then(data => {
-    
+
             let result = []
             let totalEst = 0
             data.forEach(task => {
-    
+
                 totalEst += parseInt(task.estHour)
-    
+
                 result.push({
                     taskType: task._id.taskType,
                     estHour: task.estHour,
                 })
             })
-    
+
             resolve({
                 totalEst,
                 result
             })
-    
+
         }).catch(err => reject(err))
     })
 }
@@ -134,8 +135,8 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
 //-- helper function subTaskGroupBy
 const subTaskGroupBy = (userName, startDate, endDate) => {
 
-    return new Promise( (resolve, reject) => {
-        
+    return new Promise((resolve, reject) => {
+
         const queryObj = {
             "subTasks.completedAt": {
                 "$gte": startDate,
@@ -168,26 +169,26 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
                 }
             },
             { $sort: { "_id.subTask": 1 } }
-    
+
         ]).then(data => {
-    
+
             let result = []
             let totalEst = 0
             data.forEach(task => {
-    
+
                 totalEst += parseInt(task.estHour)
-    
+
                 result.push({
                     subTask: task._id.subTask,
                     estHour: task.estHour,
                 })
             })
-    
+
             resolve({
                 totalEst,
                 result
             })
-    
+
         }).catch(err => reject(err))
     })
 }
@@ -282,11 +283,11 @@ exports.userReport = (req, res) => {
         const taskTypeGroup = taskTypeGroupBy(userName, startDate, endDate)
         const subTaskGroup = subTaskGroupBy(userName, startDate, endDate)
 
-        projectGroup.then( projectData => {
-            
-            taskTypeGroup.then( taskTypeData => {
+        projectGroup.then(projectData => {
 
-                subTaskGroup.then( subTaskData => {
+            taskTypeGroup.then(taskTypeData => {
+
+                subTaskGroup.then(subTaskData => {
                     res.json({
                         totalEst,
                         result,
@@ -533,6 +534,10 @@ exports.createSubtask = (req, res) => {
         },
         { new: true }
     ).then(result => {
+
+        //-- update subtask percent
+        updateSubTaskPercent(req.params.id)
+
         res.status(200).json({
             result: result.subTasks.pop()
         })
@@ -561,6 +566,10 @@ exports.deleteSubTask = (req, res) => {
         },
         { new: true }
     ).then(result => {
+
+        //-- update subtask percent
+        updateSubTaskPercent(req.body.id)
+
         res.status(200).json({
             result
         })
@@ -570,6 +579,7 @@ exports.deleteSubTask = (req, res) => {
                 err
             })
         })
+
 }
 
 /**
@@ -602,7 +612,7 @@ exports.updateSubTask = (req, res) => {
             }
         },
         { new: true }
-    ).then(result => {
+    ).then( result => {
 
         const newResult = {
             _id: result._id,
@@ -615,6 +625,9 @@ exports.updateSubTask = (req, res) => {
             dueDate: result.dueDate,
             completedAt: result.completedAt
         }
+
+        //-- update subtask percent
+        updateSubTaskPercent(result._id)
 
         res.status(200).json({
             result: 'newResult'
