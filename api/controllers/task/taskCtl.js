@@ -127,6 +127,7 @@ exports.taskSearchRunning = async (req, res) => {
                     taskType: item.taskType,
                     projectName: item.projectName,
                     completedAt: item.completedAt,
+                    assignedBy: item.assignedBy,
                     estHour,
                     completedHour,
                     percent: item.percent || 0,

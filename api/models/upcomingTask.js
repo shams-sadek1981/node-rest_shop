@@ -30,6 +30,7 @@ const upcomingTaskSchema = mongoose.Schema({
             startDate: Date,
             completedAt: Date,
             dueDate: Date,
+            refLink: String,
             timeLog: [
                 {
                     workingDate: Date,

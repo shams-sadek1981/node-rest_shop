@@ -585,7 +585,8 @@ exports.createSubtask = (req, res) => {
                         status: req.body.status,
                         startDate: req.body.startDate,
                         dueDate: req.body.dueDate,
-                        completedAt: req.body.completedAt
+                        completedAt: req.body.completedAt,
+                        refLink: req.body.refLink
                     }]
                 }
             }
@@ -665,7 +666,8 @@ exports.updateSubTask = (req, res) => {
                     status: status,
                     startDate: req.body.startDate,
                     dueDate: req.body.dueDate,
-                    completedAt: req.body.completedAt
+                    completedAt: req.body.completedAt,
+                    refLink: req.body.refLink
                 }
             }
         },
@@ -681,7 +683,8 @@ exports.updateSubTask = (req, res) => {
             subTasks: result.subTasks,
             startDate: result.startDate,
             dueDate: result.dueDate,
-            completedAt: result.completedAt
+            completedAt: result.completedAt,
+            refLink: result.refLink
         }
 
         //-- update subtask percent
