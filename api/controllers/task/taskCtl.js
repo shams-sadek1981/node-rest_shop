@@ -73,7 +73,7 @@ exports.taskSearchRunning = async (req, res) => {
     //-- Set Query Object
     const queryObj = await queryBuilder(userName, projectName, searchText, running, completedAt)
 
-    return res.json(queryObj)
+    // return res.json(queryObj)
 
     //-- Count total tasks
     const totalTasks = await totalTask(queryObj)

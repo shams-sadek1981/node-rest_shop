@@ -72,28 +72,80 @@ exports.getUserList = (req, res) => {
     const pageNo = JSON.parse(req.query.page)
     const skip = pageNo * pageSize - pageSize
 
-    User.find({
-        $or: [
-            {
-                name: {
-                    $regex: text,
-                    $options: "si"
-                }
-            },
-            {
-                department: {
-                    $regex: text,
-                    $options: "si"
-                }
-            },
-        ]
+    //-- count total records
+    const totalRecord = new Promise((resolve, reject) => {
+        User.find({
+            $or: [
+                {
+                    name: {
+                        $regex: text,
+                        $options: "si"
+                    }
+                },
+                {
+                    department: {
+                        $regex: text,
+                        $options: "si"
+                    }
+                },
+            ]
+        }).count()
+            .then(data => resolve(data))
+            .catch(err => reject(err))
     })
-        .sort({ name: 1 })
-        .skip(skip).limit(pageSize)
-        .exec()
-        .then(result => {
-            res.json({
-                result
-            })
+
+
+    //-- total result
+    const result = new Promise((resolve, reject) => {
+        User.find({
+            $or: [
+                {
+                    name: {
+                        $regex: text,
+                        $options: "si"
+                    }
+                },
+                {
+                    department: {
+                        $regex: text,
+                        $options: "si"
+                    }
+                },
+            ]
         })
+            .sort({ name: 1 })
+            .skip(skip).limit(pageSize)
+            .exec()
+            .then(result => resolve(result))
+            .catch(err => reject(err))
+    })
+
+
+    Promise.all([totalRecord, result]).then(values => {
+
+        const [totalRecord, result] = values
+
+        res.json({
+            pagination: {
+                total: totalRecord,
+                current: pageNo,
+                pageSize
+            },
+            result
+        })
+    }).catch(err => res.json(err))
+}
+
+
+//-- Get All User
+exports.getAllUser = (req, res) => {
+    User.find()
+        .sort({
+            name: 1
+        })
+        .exec()
+        .then(data => {
+            res.json(data)
+        })
+        .catch( err => res.status(403).json(err))
 }

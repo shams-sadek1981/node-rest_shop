@@ -5,13 +5,13 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { checkJwt } = require('../functions');
-const { deleteUser, getUserList, updateUser } = require('../controllers/userCtl')
+const { deleteUser, getUserList, updateUser, getAllUser } = require('../controllers/userCtl')
 
 //-- Delete user
 router.delete('/delete/:id', checkJwt, deleteUser)
 
 router.get('/list', checkJwt, getUserList)
-// router.get('/list', getUserList)
+router.get('/all-user', checkJwt, getAllUser)
 
 router.put('/update/:id', checkJwt, updateUser)
 
