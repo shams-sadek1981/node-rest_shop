@@ -13,7 +13,7 @@ const {
     summaryUser,
     summaryProject,
     taskSearchRunning,
-    allTaskUpdate
+    allTaskUpdate,
 } = require('../controllers/task/taskCtl')
 
 const { 

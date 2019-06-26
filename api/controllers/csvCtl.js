@@ -27,6 +27,118 @@ String.prototype.toProperCase = function () {
 };
 
 
+//-- Import upcoming task
+exports.importUpcomingTask = (req, res) => {
+
+    const readDir = 'csvFiles/';
+    result = [];
+    fn.readCsvFile(readDir + 'upcomingTask.csv').then(readData => {
+
+        readData.shift()//-- Remove Header
+
+        //-- create raw object
+        const rawObject = readData.map(log => {
+
+            const taskName = log[3]
+
+            return {
+                projectName: log[0],
+                taskType: log[1],
+                assignedBy: log[2],
+                taskName: taskName.trim().toProperCase(),
+                subTask: log[4],
+                estHour: log[5],
+                startDate: log[6],
+                endDate: log[7],
+                completedAt: log[8],
+                assignedUser: log[9]
+            }
+        })
+
+        //-- sort by taskName
+        rawObject.sort((a, b) => {
+            return a.taskName > b.taskName
+        })
+
+
+        //-- group by taskName
+        let taskName = ''
+        let newArrayObject = []
+        let newObject = {
+            subTasks: []
+        }
+        rawObject.forEach(item => {
+
+            if (taskName == item.taskName) {
+                newObject.subTasks.push({
+                    name: item.subTask,
+                    estHour: item.estHour,
+                    startDate: item.startDate,
+                    endDate: item.endDate,
+                    completedAt: item.completedAt,
+                    assignedUser: item.assignedUser
+                })
+            } else {
+                newObject = {
+                    projectName: item.projectName,
+                    taskType: item.taskType,
+                    assignedBy: item.assignedBy,
+                    taskName: item.taskName,
+                    subTasks: [{
+                        name: item.subTask,
+                        estHour: item.estHour,
+                        startDate: item.startDate,
+                        endDate: item.endDate,
+                        completedAt: item.completedAt,
+                        assignedUser: item.assignedUser
+                    }]
+                }
+
+                newArrayObject.push(newObject)
+            }
+
+            taskName = item.taskName
+        })
+
+        //-- set percent
+        const result = newArrayObject.map(item => {
+            let totalEstHour = 0
+            let completedHour = 0
+
+            item.subTasks.forEach(subTask => {
+                totalEstHour += subTask.estHour
+
+                if (subTask.completedAt != null) {
+                    completedHour += subTask.estHour
+                }
+            })
+
+            return {
+                projectName: item.projectName,
+                taskType: item.taskType,
+                assignedBy: item.assignedBy,
+                taskName: item.taskName,
+                percent: Math.floor(completedHour * 100 / totalEstHour),
+                subTasks: item.subTasks
+            }
+        })
+
+
+        //-- Insert All
+        UpcomingTask.insertMany(result)
+        // console.log(result)
+
+    })
+
+    // estTaskHour()//-- generate Estimation Hour by Project
+
+    return res.status(200).json({
+        message: 'Success'
+    })
+
+}
+
+
 //-- For May-2019
 exports.writeTaskMayEst = (req, res, next) => {
 

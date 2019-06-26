@@ -17,7 +17,8 @@ exports.updateUser = (req, res) => {
                 email: req.body.email,
                 password: hash,
                 name: req.body.name,
-                mobile: req.body.mobile
+                mobile: req.body.mobile,
+                department: req.body.department
             })
 
             User.findOneAndUpdate({ _id: req.params.id }, user, { new: true })
@@ -62,8 +63,33 @@ exports.deleteUser = (req, res, next) => {
 }
 
 //-- Get User List
-exports.getUserList = (req, res, next) => {
-    User.find({})
+exports.getUserList = (req, res) => {
+
+    const text = req.query.text
+    const pageSize = JSON.parse(req.query.pageSize)
+
+    //-- Pagination settings
+    const pageNo = JSON.parse(req.query.page)
+    const skip = pageNo * pageSize - pageSize
+
+    User.find({
+        $or: [
+            {
+                name: {
+                    $regex: text,
+                    $options: "si"
+                }
+            },
+            {
+                department: {
+                    $regex: text,
+                    $options: "si"
+                }
+            },
+        ]
+    })
+        .sort({ name: 1 })
+        .skip(skip).limit(pageSize)
         .exec()
         .then(result => {
             res.json({

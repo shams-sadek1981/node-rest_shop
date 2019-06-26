@@ -149,8 +149,11 @@ exports.readCsvFile = (filePath) => {
     //-- Est Hour Generate
     if (!fs.existsSync(filePath)) {
         console.log('File does not exists')
-        return res.status(404).json({
-            message: 'File is not exists.'
+
+        return new Promise( (resolve, reject) => {
+            reject({
+                message: 'File is not exists.'
+            })
         })
     }
 

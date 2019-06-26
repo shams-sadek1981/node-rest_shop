@@ -5,7 +5,6 @@ const { _ } = require('lodash')
 
 const { queryBuilder, singleUserEst, totalEst, totalTask } = require('./helperFunctions')
 
-
 //-- This script or function use only for bulk update upcoming task. -----
 exports.allTaskUpdate = (req, res) => {
 
@@ -13,7 +12,7 @@ exports.allTaskUpdate = (req, res) => {
         .exec()
         .then(doc => {
 
-            doc.forEach( task => {
+            doc.forEach(task => {
 
                 let totalEstHour = 0
                 let completedHour = 0
@@ -29,8 +28,8 @@ exports.allTaskUpdate = (req, res) => {
 
                 const percent = Math.floor(completedHour * 100 / totalEstHour)
 
-                UpcomingTask.update({ _id: task._id}, { percent })
-                    .then( data => {
+                UpcomingTask.update({ _id: task._id }, { percent })
+                    .then(data => {
                         console.log(data)
                     })
             })
@@ -74,7 +73,7 @@ exports.taskSearchRunning = async (req, res) => {
     //-- Set Query Object
     const queryObj = await queryBuilder(userName, projectName, searchText, running, completedAt)
 
-    // return res.json(queryObj)
+    return res.json(queryObj)
 
     //-- Count total tasks
     const totalTasks = await totalTask(queryObj)

@@ -20,6 +20,9 @@ router.get('/write-task-est', csvCtl.writeTaskEst)
 // Step-3 Insert data in Database from .csv file
 router.get('/generate-csv', csvCtl.generateCsv)
 
+//-- Import upcoming task data from .csv file
+router.get('/import-upcoming-task', csvCtl.importUpcomingTask)
+
 // May-2019 temp
 router.get('/write-task-may-est', csvCtl.writeTaskMayEst)
 

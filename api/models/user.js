@@ -18,6 +18,7 @@ const userSchema = mongoose.Schema({
     mobile: {
         type: String
     },
+    department: String
 })
 
 
