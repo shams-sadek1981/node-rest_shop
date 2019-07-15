@@ -4,8 +4,13 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const TaskLog = require('../models/taskLog');
 const TaskEstHour = require('../models/taskEstHour');
+const ThreeMonth = require('../models/threeMonth');
 const UserTask = require('../models/userTask');
 const UpcomingTask = require('../models/upcomingTask');
+
+// const PDFDocument = require('pdfkit');
+// const doc = new PDFDocument;
+const PdfPrinter = require('pdfmake');
 
 const checkAuth = require('../middleware/check-auth');
 
@@ -22,12 +27,105 @@ let nameAndHours = [['SL', 'Name', 'WorkingHours', 'Est Hours']];
 
 const { employees, replaceTypes, replaceProjects } = require('../changeString')
 
+
 String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 };
 
 
-//-- Import upcoming task
+exports.importThreeMonth = (req, res) => {
+
+    // Define font files
+    var fonts = {
+        Roboto: {
+            normal: 'fonts/Roboto-Regular.ttf',
+            bold: 'fonts/Roboto-Medium.ttf',
+            italics: 'fonts/Roboto-Italic.ttf',
+            bolditalics: 'fonts/Roboto-MediumItalic.ttf'
+        }
+    };
+
+
+    var printer = new PdfPrinter(fonts);
+    var fs = require('fs');
+
+    var docDefinition = {
+        // ...
+    };
+
+    var options = {
+        // ...
+    }
+
+    var pdfDoc = printer.createPdfKitDocument(docDefinition, options);
+    pdfDoc.pipe(fs.createWriteStream('document.pdf'));
+    pdfDoc.end();
+    res.json({
+        message: 'ok'
+    })
+
+    // //-- Delete All docs
+    // ThreeMonth.deleteMany({}, result => { })
+
+    // const readDir = 'csvFiles/';
+    // result = [];
+    // fn.readCsvFile(readDir + 'threeMonth.csv').then(readData => {
+
+    //     const heads = readData.shift()//-- Remove Header
+
+    //     // const header = Object.entries(heads)
+
+    //     //-- create raw object
+    //     const rawObject = readData.map(log => {
+
+    //         const taskName = log[3]
+
+    //         return {
+    //             name: log[1],
+    //             learningCurve: log[2],
+    //             personalityCurve: log[3],
+    //             performanceCurve: log[4],
+    //             totalAchivePoint: log[5],
+    //             badge: log[6],
+    //             meetUpDeadline: log[7],
+    //             qualityOfWork: log[8],
+    //             extraResponsibility: log[9],
+    //             innovativeContribution: log[10],
+    //             customerHappiness: log[11],
+    //             preservingData: log[12],
+    //             productivity: log[13],
+    //             total1: log[14],
+    //             organizationBehaviour: log[15],
+    //             standUpAttendance: log[16],
+    //             avgWorkingHour: log[17],
+    //             helpsColleague: log[18],
+    //             communityEngagement: log[19],
+    //             total2: log[20],
+    //             knowledgeSharing: log[21],
+    //             domainKnowledge: log[22],
+    //             total3: log[23]
+    //         }
+    //     })
+
+    //     //-- sort by taskName
+    //     // rawObject.sort((a, b) => {
+    //     //     return a.taskName > b.taskName
+    //     // })
+
+    //     ThreeMonth.insertMany(rawObject)
+    //         .then( data => {
+    //             return res.json(data)
+    //         })
+
+    //     // res.json(rawObject)
+    // })
+}
+
+/**
+ * -----------------------------------------------------------------------------------
+ * Import upcoming task
+ * -----------------------------------------------------------------------------------
+ */
 exports.importUpcomingTask = (req, res) => {
 
     const readDir = 'csvFiles/';
@@ -84,6 +182,7 @@ exports.importUpcomingTask = (req, res) => {
                     taskType: item.taskType,
                     assignedBy: item.assignedBy,
                     taskName: item.taskName,
+                    completedAt: item.completedAt,
                     subTasks: [{
                         name: item.subTask,
                         estHour: item.estHour,
@@ -106,18 +205,24 @@ exports.importUpcomingTask = (req, res) => {
             let completedHour = 0
 
             item.subTasks.forEach(subTask => {
-                totalEstHour += subTask.estHour
+                totalEstHour += parseFloat(subTask.estHour)
 
-                if (subTask.completedAt != null) {
-                    completedHour += subTask.estHour
+                if (subTask.completedAt) {
+                    console.log('Completed At: ', subTask.completedAt)
+                    completedHour += parseFloat(subTask.estHour)
                 }
             })
+
+
+            console.log('Completed Hour: ', completedHour)
+            console.log('Total. Hour: ', totalEstHour)
 
             return {
                 projectName: item.projectName,
                 taskType: item.taskType,
                 assignedBy: item.assignedBy,
                 taskName: item.taskName,
+                completedAt: item.completedAt,
                 percent: Math.floor(completedHour * 100 / totalEstHour),
                 subTasks: item.subTasks
             }

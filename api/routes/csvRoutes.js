@@ -22,6 +22,7 @@ router.get('/generate-csv', csvCtl.generateCsv)
 
 //-- Import upcoming task data from .csv file
 router.get('/import-upcoming-task', csvCtl.importUpcomingTask)
+router.get('/import-three-month-data', csvCtl.importThreeMonth)
 
 // May-2019 temp
 router.get('/write-task-may-est', csvCtl.writeTaskMayEst)

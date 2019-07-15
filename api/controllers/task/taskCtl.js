@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const moment = require('moment');
 const UpcomingTask = require('../../models/upcomingTask');
 const { _ } = require('lodash')
 
@@ -97,6 +98,8 @@ exports.taskSearchRunning = async (req, res) => {
 
                 let estHour = 0
                 let completedHour = 0
+                let maxCompletedAt = null
+                let startAt = null
                 // let percent = 0
 
                 if (item.subTasks.length > 0) {
@@ -105,7 +108,38 @@ exports.taskSearchRunning = async (req, res) => {
                         //-- calculation of completed hour
                         if (subTask.completedAt != null) {
                             completedHour += subTask.estHour
+
+
+                            /**
+                             * ------------------------------
+                             * set subTask maxCompletedAt
+                             * ------------------------------
+                             */
+                            if (subTask.completedAt) {
+                                if (maxCompletedAt == null) {
+                                    maxCompletedAt = subTask.completedAt
+                                } else {
+                                    if (subTask.completedAt > maxCompletedAt) {
+                                        maxCompletedAt = subTask.completedAt
+                                    }
+                                }
+                            }
                         }
+
+                            /**
+                             * ---------------------------
+                             * Set startAt
+                             * ---------------------------
+                             */
+                            if (subTask.startDate) {
+                                if (startAt == null) {
+                                    startAt = subTask.startDate
+                                } else {
+                                    if (subTask.startDate < startAt) {
+                                        startAt = subTask.startDate
+                                    }
+                                }
+                            }
 
                         // totalEstHour += subTask.estHour
                         estHour += subTask.estHour
@@ -126,6 +160,8 @@ exports.taskSearchRunning = async (req, res) => {
                     taskType: item.taskType,
                     projectName: item.projectName,
                     completedAt: item.completedAt,
+                    maxCompletedAt: maxCompletedAt,
+                    startAt,
                     assignedBy: item.assignedBy,
                     estHour,
                     completedHour,
