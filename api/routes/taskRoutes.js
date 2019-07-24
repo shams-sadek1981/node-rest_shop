@@ -14,6 +14,7 @@ const {
     summaryProject,
     taskSearchRunning,
     allTaskUpdate,
+    reportTaskStatus
 } = require('../controllers/task/taskCtl')
 
 const { 
@@ -51,6 +52,7 @@ router.delete('/delete/:id', checkJwt, deleteTask)
 router.get('/search-running', checkJwt, taskSearchRunning)
 router.get('/summary-user', checkJwt, summaryUser)
 router.get('/summary-project', checkJwt, summaryProject)
+router.get('/task/report-task-status', checkJwt, reportTaskStatus)
 
 //-- Delete user
 

@@ -6,6 +6,96 @@ const { _ } = require('lodash')
 
 const { queryBuilder, singleUserEst, totalEst, totalTask } = require('./helperFunctions')
 
+
+/**
+ * -----------------------------------------------------------------------------
+ * Report Task By Project
+ * -----------------------------------------------------------------------------
+ */
+exports.reportTaskStatus = (req, res) => {
+
+    const startDate = new Date(req.query.startDate)
+    const endDate = new Date(req.query.endDate)
+    const project = req.query.project
+
+    const queryObj = {
+        "completedAt": {
+            "$gte": startDate,
+            "$lte": endDate
+        },
+        projectName: project
+    }
+
+    UpcomingTask.aggregate([
+        {
+            "$unwind": {
+                'path': '$subTasks',
+                "preserveNullAndEmptyArrays": true,
+                "includeArrayIndex": "arrayIndex"
+            }
+        },
+        // { $sort: { "subTasks.assignedUser": 1 } },
+        {
+            $match: queryObj
+        },
+        {
+            $group: {
+                _id: {
+                    taskName: "$taskName",
+                    completedAt: "$completedAt",
+                },
+                estHour: {
+                    $sum: "$subTasks.estHour"
+                },
+                startDate: {
+                    $min: "$subTasks.completedAt"
+                },
+                endDate: {
+                    $max: "$subTasks.completedAt"
+                },
+                subTasks: {
+                    $addToSet: {
+                        user: "$subTasks.assignedUser",
+                        estHour: "$subTasks.estHour",
+                        subTask: "$subTasks.name",
+                    }
+                }
+            }
+        },
+        
+        { $sort: { "estHour": -1 } }
+
+    ]).then(data => {
+
+        // return res.json({
+        //     data: data
+        // })
+
+        let result = []
+        let totalEst = 0
+        data.forEach(item => {
+
+            totalEst += parseInt(item.estHour)
+
+            result.push({
+                taskName: item._id.taskName,
+                completedAt: item._id.completedAt,
+                estHour: item.estHour,
+                startDate: item.startDate,
+                endDate: item.endDate,
+                subTasks: item.subTasks,
+            })
+        })
+
+        res.json({
+            totalTask: data.length,
+            totalEst,
+            result
+        })
+    }).catch(err => res.json(err))
+
+}
+
 //-- This script or function use only for bulk update upcoming task. -----
 exports.allTaskUpdate = (req, res) => {
 
