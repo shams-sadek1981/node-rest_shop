@@ -78,12 +78,17 @@ exports.reportTaskStatus = (req, res) => {
 
             totalEst += parseFloat(item.estHour)
 
+            let startDate = moment(item.startDate).format("DD-MMM-YYYY")
+            if( startDate == 'Invalid date'){
+                startDate = "---"
+            }
+
             result.push({
                 taskName: item._id.taskName,
                 completedAt: moment(item._id.completedAt).format("DD-MMM-YYYY"),
                 taskType: item._id.taskType,
                 estHour: item.estHour,
-                startDate: moment(item.startDate).format("DD-MMM-YYYY"),
+                startDate,
                 endDate: moment(item.endDate).format("DD-MMM-YYYY"),
                 subTasks: item.subTasks,
             })

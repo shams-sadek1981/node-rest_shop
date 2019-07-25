@@ -1,13 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const moment = require('moment');
+require('moment-weekday-calc');
 const ObjectId = mongoose.Types.ObjectId;
 const _ = require('lodash');
 
 const UpcomingTask = require('../../models/upcomingTask');
 // const TaskNo = require('../../models/taskNo');
 const TaskNo = require('../../models/taskNo');
-const { queryBuilder, singleUserEst, totalEst, totalTask, updateSubTaskPercent } = require('./helperFunctions')
+const { queryBuilder, singleUserEst, totalEst, totalTask, updateSubTaskPercent, getPublicHolidays } = require('./helperFunctions')
 
 
 //-- helper function project group by
@@ -316,10 +317,16 @@ exports.userReport = (req, res) => {
  * Report User Report Summary
  * -----------------------------------------------------------------------------------------
  */
-exports.userReportSummary = (req, res) => {
+exports.userReportSummary = async (req, res) => {
 
     const startDate = new Date(req.query.startDate)
     const endDate = new Date(req.query.endDate)
+
+    const publicHolidays = await getPublicHolidays(startDate, endDate)
+
+    // return res.json({
+    //     publicHolidays
+    // })
 
     const queryObj = {
         "subTasks.completedAt": {
@@ -327,6 +334,19 @@ exports.userReportSummary = (req, res) => {
             "$lte": endDate
         }
     }
+
+    const totalWorkingDays = moment().weekdayCalc({
+        rangeStart: startDate,
+        rangeEnd: endDate,
+        weekdays: [1, 2, 3, 4, 5], //weekdays Mon to Fri
+        // exclusions: ['9 Jun 2019', '8 Jun 2019', '7 Jun 2019', '6 Jun 2019', '5 Jun 2019', '4 Jun 2019', '3 Jun 2019', '2 Jun 2019']  //public holidays
+        exclusions: publicHolidays  //public holidays
+    })
+
+    // return res.json({
+    //     totalWorkingDays
+    // })
+
 
     UpcomingTask.aggregate([
         {
@@ -363,7 +383,7 @@ exports.userReportSummary = (req, res) => {
             result.push({
                 userName: item._id.userName,
                 estHour: item.estHour,
-                officeHour: 150,
+                officeHour: totalWorkingDays * 8,
                 timeLog: 140
             })
         })
@@ -677,7 +697,7 @@ exports.updateSubTask = (req, res) => {
             }
         },
         { new: true }
-    ).then( result => {
+    ).then(result => {
 
         const newResult = {
             _id: result._id,

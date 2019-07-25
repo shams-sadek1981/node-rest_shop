@@ -1,7 +1,36 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const UpcomingTask = require('../../models/upcomingTask');
+const PublicHoliday = require('../../models/publicHoliday');
 const ObjectId = mongoose.Types.ObjectId;
+
+// get public holiday
+const getPublicHolidays = (startDate, endDate) => {
+
+    // const startDate = new Date(startDate);
+    // const endDate = new Date(endDate);
+
+    return PublicHoliday.find({
+        holiday: {
+            $gte: startDate,
+            $lte: endDate
+        }
+    })
+        .exec()
+        .then(doc => {
+
+            let result = []
+            doc.map(item => {
+                result.push(item.holiday)
+                // result.push( moment(item.holiday).format("D MMM YYYY"))
+            })
+
+            return result;
+        })
+        .catch(err => err);
+}
+exports.getPublicHolidays = getPublicHolidays
+
 
 //-- Est. Hour Calculation from subtask
 const sumEstHourAndTotalSubTask = (queryObj = {}) => {
@@ -62,7 +91,7 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
             ...match.$and,
             // { "subTasks.status": status },
             { "subTasks.assignedUser": userName }
-        ]  
+        ]
     }
 
     if (projectName != 'all') {
@@ -289,7 +318,7 @@ exports.updateSubTaskPercent = (id) => {
             .then(data => {
                 resolve(data[0].estHour)
             })
-            .catch( err => {
+            .catch(err => {
                 resolve(0)
             })
     })
@@ -321,14 +350,14 @@ exports.updateSubTaskPercent = (id) => {
             .then(data => {
                 resolve(data[0].estHour)
             })
-            .catch( err => {
+            .catch(err => {
                 resolve(0)
             })
     })
 
 
-    Promise.all([totalEstHour, totalCompletedHour]).then( values => {
-        
+    Promise.all([totalEstHour, totalCompletedHour]).then(values => {
+
         const estHour = values[0]
         const completedHour = values[1]
 
@@ -337,11 +366,11 @@ exports.updateSubTaskPercent = (id) => {
         UpcomingTask.findOneAndUpdate({ _id: id }, {
             percent
         }, { new: true })
-        .then( data => {
-            console.log(data)
-            return data
-        }).catch( err => err)
-        
+            .then(data => {
+                console.log(data)
+                return data
+            }).catch(err => err)
+
     });
 
 }
