@@ -9,7 +9,7 @@ const { queryBuilder, singleUserEst, totalEst, totalTask } = require('./helperFu
 
 /**
  * -----------------------------------------------------------------------------
- * Report Task By Project
+ * Report Task By Project (24-Jul-2019)
  * -----------------------------------------------------------------------------
  */
 exports.reportTaskStatus = (req, res) => {
@@ -43,12 +43,13 @@ exports.reportTaskStatus = (req, res) => {
                 _id: {
                     taskName: "$taskName",
                     completedAt: "$completedAt",
+                    taskType: "$taskType",
                 },
                 estHour: {
                     $sum: "$subTasks.estHour"
                 },
                 startDate: {
-                    $min: "$subTasks.completedAt"
+                    $min: "$subTasks.startDate"
                 },
                 endDate: {
                     $max: "$subTasks.completedAt"
@@ -75,21 +76,22 @@ exports.reportTaskStatus = (req, res) => {
         let totalEst = 0
         data.forEach(item => {
 
-            totalEst += parseInt(item.estHour)
+            totalEst += parseFloat(item.estHour)
 
             result.push({
                 taskName: item._id.taskName,
-                completedAt: item._id.completedAt,
+                completedAt: moment(item._id.completedAt).format("DD-MMM-YYYY"),
+                taskType: item._id.taskType,
                 estHour: item.estHour,
-                startDate: item.startDate,
-                endDate: item.endDate,
+                startDate: moment(item.startDate).format("DD-MMM-YYYY"),
+                endDate: moment(item.endDate).format("DD-MMM-YYYY"),
                 subTasks: item.subTasks,
             })
         })
 
         res.json({
             totalTask: data.length,
-            totalEst,
+            totalEst: totalEst.toFixed(2),
             result
         })
     }).catch(err => res.json(err))
