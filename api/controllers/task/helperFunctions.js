@@ -3,6 +3,127 @@ const mongoose = require('mongoose');
 const UpcomingTask = require('../../models/upcomingTask');
 const PublicHoliday = require('../../models/publicHoliday');
 const ObjectId = mongoose.Types.ObjectId;
+const fn = require('../../functions.js')
+
+/**
+ * 
+ * --------------------------------------------------------------------------------------
+ * Import CSV file for upcoming task
+ * --------------------------------------------------------------------------------------
+ */
+const importCsvFile = (filePath) => {
+    const readDir = 'uploads/';
+    result = [];
+    // fn.readCsvFile(readDir + 'upcomingTask.csv').then(readData => {
+    // fn.readCsvFile(readDir + fileName).then(readData => {
+    fn.readCsvFile(filePath).then(readData => {
+
+        readData.shift()//-- Remove Header
+
+        //-- create raw object
+        const rawObject = readData.map(log => {
+
+            const taskName = log[3]
+
+            return {
+                projectName: log[0],
+                taskType: log[1],
+                assignedBy: log[2],
+                taskName: taskName.trim().toProperCase(),
+                subTask: log[4],
+                estHour: log[5],
+                startDate: log[6],
+                endDate: log[7],
+                completedAt: log[8],
+                assignedUser: log[9]
+            }
+        })
+
+        //-- sort by taskName
+        rawObject.sort((a, b) => {
+            return a.taskName > b.taskName
+        })
+
+
+        //-- group by taskName
+        let taskName = ''
+        let newArrayObject = []
+        let newObject = {
+            subTasks: []
+        }
+        rawObject.forEach(item => {
+
+            if (taskName == item.taskName) {
+                newObject.subTasks.push({
+                    name: item.subTask,
+                    estHour: item.estHour,
+                    startDate: item.startDate,
+                    endDate: item.endDate,
+                    completedAt: item.completedAt,
+                    assignedUser: item.assignedUser
+                })
+            } else {
+                newObject = {
+                    projectName: item.projectName,
+                    taskType: item.taskType,
+                    assignedBy: item.assignedBy,
+                    taskName: item.taskName,
+                    completedAt: item.completedAt,
+                    subTasks: [{
+                        name: item.subTask,
+                        estHour: item.estHour,
+                        startDate: item.startDate,
+                        endDate: item.endDate,
+                        completedAt: item.completedAt,
+                        assignedUser: item.assignedUser
+                    }]
+                }
+
+                newArrayObject.push(newObject)
+            }
+
+            taskName = item.taskName
+        })
+
+        //-- set percent
+        const result = newArrayObject.map(item => {
+            let totalEstHour = 0
+            let completedHour = 0
+
+            item.subTasks.forEach(subTask => {
+                totalEstHour += parseFloat(subTask.estHour)
+
+                if (subTask.completedAt) {
+                    console.log('Completed At: ', subTask.completedAt)
+                    completedHour += parseFloat(subTask.estHour)
+                }
+            })
+
+
+            console.log('Completed Hour: ', completedHour)
+            console.log('Total. Hour: ', totalEstHour)
+
+            return {
+                projectName: item.projectName,
+                taskType: item.taskType,
+                assignedBy: item.assignedBy,
+                taskName: item.taskName,
+                completedAt: item.completedAt,
+                percent: Math.floor(completedHour * 100 / totalEstHour),
+                subTasks: item.subTasks
+            }
+        })
+
+
+        //-- Insert All
+        UpcomingTask.insertMany(result)
+        // console.log(result)
+
+    })
+}
+exports.importCsvFile = importCsvFile
+
+
 
 // get public holiday
 const getPublicHolidays = (startDate, endDate) => {

@@ -4,8 +4,19 @@ const moment = require('moment');
 const UpcomingTask = require('../../models/upcomingTask');
 const { _ } = require('lodash')
 
-const { queryBuilder, singleUserEst, totalEst, totalTask } = require('./helperFunctions')
+const { queryBuilder, singleUserEst, totalEst, totalTask, importCsvFile } = require('./helperFunctions')
 
+//-- import .csv file
+exports.uploadCsv = (req, res) => {
+
+    // console.log(req.file.path)
+
+    importCsvFile(req.file.path)
+
+    res.json({
+        message: 'Success'
+    })
+}
 
 /**
  * -----------------------------------------------------------------------------

@@ -8,6 +8,7 @@ const ThreeMonth = require('../models/threeMonth');
 const UserTask = require('../models/userTask');
 const UpcomingTask = require('../models/upcomingTask');
 
+const taskHelperFunction = require('../controllers/task/helperFunctions')
 // const PDFDocument = require('pdfkit');
 // const doc = new PDFDocument;
 const PdfPrinter = require('pdfmake');
@@ -128,112 +129,114 @@ exports.importThreeMonth = (req, res) => {
  */
 exports.importUpcomingTask = (req, res) => {
 
-    const readDir = 'csvFiles/';
-    result = [];
-    fn.readCsvFile(readDir + 'upcomingTask.csv').then(readData => {
 
-        readData.shift()//-- Remove Header
+    taskHelperFunction.importCsvFile('upcomingTask.csv')
+    // const readDir = 'csvFiles/';
+    // result = [];
+    // fn.readCsvFile(readDir + 'upcomingTask.csv').then(readData => {
 
-        //-- create raw object
-        const rawObject = readData.map(log => {
+    //     readData.shift()//-- Remove Header
 
-            const taskName = log[3]
+    //     //-- create raw object
+    //     const rawObject = readData.map(log => {
 
-            return {
-                projectName: log[0],
-                taskType: log[1],
-                assignedBy: log[2],
-                taskName: taskName.trim().toProperCase(),
-                subTask: log[4],
-                estHour: log[5],
-                startDate: log[6],
-                endDate: log[7],
-                completedAt: log[8],
-                assignedUser: log[9]
-            }
-        })
+    //         const taskName = log[3]
 
-        //-- sort by taskName
-        rawObject.sort((a, b) => {
-            return a.taskName > b.taskName
-        })
+    //         return {
+    //             projectName: log[0],
+    //             taskType: log[1],
+    //             assignedBy: log[2],
+    //             taskName: taskName.trim().toProperCase(),
+    //             subTask: log[4],
+    //             estHour: log[5],
+    //             startDate: log[6],
+    //             endDate: log[7],
+    //             completedAt: log[8],
+    //             assignedUser: log[9]
+    //         }
+    //     })
 
-
-        //-- group by taskName
-        let taskName = ''
-        let newArrayObject = []
-        let newObject = {
-            subTasks: []
-        }
-        rawObject.forEach(item => {
-
-            if (taskName == item.taskName) {
-                newObject.subTasks.push({
-                    name: item.subTask,
-                    estHour: item.estHour,
-                    startDate: item.startDate,
-                    endDate: item.endDate,
-                    completedAt: item.completedAt,
-                    assignedUser: item.assignedUser
-                })
-            } else {
-                newObject = {
-                    projectName: item.projectName,
-                    taskType: item.taskType,
-                    assignedBy: item.assignedBy,
-                    taskName: item.taskName,
-                    completedAt: item.completedAt,
-                    subTasks: [{
-                        name: item.subTask,
-                        estHour: item.estHour,
-                        startDate: item.startDate,
-                        endDate: item.endDate,
-                        completedAt: item.completedAt,
-                        assignedUser: item.assignedUser
-                    }]
-                }
-
-                newArrayObject.push(newObject)
-            }
-
-            taskName = item.taskName
-        })
-
-        //-- set percent
-        const result = newArrayObject.map(item => {
-            let totalEstHour = 0
-            let completedHour = 0
-
-            item.subTasks.forEach(subTask => {
-                totalEstHour += parseFloat(subTask.estHour)
-
-                if (subTask.completedAt) {
-                    console.log('Completed At: ', subTask.completedAt)
-                    completedHour += parseFloat(subTask.estHour)
-                }
-            })
+    //     //-- sort by taskName
+    //     rawObject.sort((a, b) => {
+    //         return a.taskName > b.taskName
+    //     })
 
 
-            console.log('Completed Hour: ', completedHour)
-            console.log('Total. Hour: ', totalEstHour)
+    //     //-- group by taskName
+    //     let taskName = ''
+    //     let newArrayObject = []
+    //     let newObject = {
+    //         subTasks: []
+    //     }
+    //     rawObject.forEach(item => {
 
-            return {
-                projectName: item.projectName,
-                taskType: item.taskType,
-                assignedBy: item.assignedBy,
-                taskName: item.taskName,
-                completedAt: item.completedAt,
-                percent: Math.floor(completedHour * 100 / totalEstHour),
-                subTasks: item.subTasks
-            }
-        })
+    //         if (taskName == item.taskName) {
+    //             newObject.subTasks.push({
+    //                 name: item.subTask,
+    //                 estHour: item.estHour,
+    //                 startDate: item.startDate,
+    //                 endDate: item.endDate,
+    //                 completedAt: item.completedAt,
+    //                 assignedUser: item.assignedUser
+    //             })
+    //         } else {
+    //             newObject = {
+    //                 projectName: item.projectName,
+    //                 taskType: item.taskType,
+    //                 assignedBy: item.assignedBy,
+    //                 taskName: item.taskName,
+    //                 completedAt: item.completedAt,
+    //                 subTasks: [{
+    //                     name: item.subTask,
+    //                     estHour: item.estHour,
+    //                     startDate: item.startDate,
+    //                     endDate: item.endDate,
+    //                     completedAt: item.completedAt,
+    //                     assignedUser: item.assignedUser
+    //                 }]
+    //             }
+
+    //             newArrayObject.push(newObject)
+    //         }
+
+    //         taskName = item.taskName
+    //     })
+
+    //     //-- set percent
+    //     const result = newArrayObject.map(item => {
+    //         let totalEstHour = 0
+    //         let completedHour = 0
+
+    //         item.subTasks.forEach(subTask => {
+    //             totalEstHour += parseFloat(subTask.estHour)
+
+    //             if (subTask.completedAt) {
+    //                 console.log('Completed At: ', subTask.completedAt)
+    //                 completedHour += parseFloat(subTask.estHour)
+    //             }
+    //         })
 
 
-        //-- Insert All
-        UpcomingTask.insertMany(result)
-        // console.log(result)
+    //         console.log('Completed Hour: ', completedHour)
+    //         console.log('Total. Hour: ', totalEstHour)
 
-    })
+    //         return {
+    //             projectName: item.projectName,
+    //             taskType: item.taskType,
+    //             assignedBy: item.assignedBy,
+    //             taskName: item.taskName,
+    //             completedAt: item.completedAt,
+    //             percent: Math.floor(completedHour * 100 / totalEstHour),
+    //             subTasks: item.subTasks
+    //         }
+    //     })
+
+
+    //     //-- Insert All
+    //     UpcomingTask.insertMany(result)
+    //     // console.log(result)
+
+    // })
 
     // estTaskHour()//-- generate Estimation Hour by Project
 
