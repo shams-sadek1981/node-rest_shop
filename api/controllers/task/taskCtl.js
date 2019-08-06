@@ -276,6 +276,7 @@ exports.taskSearchRunning = async (req, res) => {
                     percent: item.percent || 0,
                     dueHour,
                     subTasks: item.subTasks,
+                    release: item.release,
                 }
             })
 

@@ -230,6 +230,7 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
                     $or: [
                         { taskName: { $regex: searchText, $options: "si" } },
                         { assignedBy: { $regex: searchText, $options: "si" } },
+                        { release: { $regex: searchText, $options: "si" } },
                         {
                             $and: [
                                 { "subTasks.name": { $regex: searchText, $options: "si" } },

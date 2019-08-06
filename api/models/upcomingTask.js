@@ -57,7 +57,8 @@ const upcomingTaskSchema = mongoose.Schema({
     percent: {
         type: Number,
         default: 0
-    }
+    },
+    release: String
 })
 
 
