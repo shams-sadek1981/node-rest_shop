@@ -1,9 +1,33 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Release = require('../../models/release');
+const UpcomingTask = require('../../models/upcomingTask');
 const moment = require('moment')
 
 const { queryBuilder } = require('./helperFunctions')
+
+
+
+/**
+ * ------------------------------------------------------------------------------------
+ * Search upcoming task
+ * ------------------------------------------------------------------------------------
+ */
+exports.searchUpcomingTask = (req, res) => {
+
+    const version = req.query.version
+
+    UpcomingTask.find({ release: version})
+        .exec()
+        .then( data => {
+            res.json({
+                result: data
+            })
+        })
+        .catch( err => res.json(err))
+}
+
+
 
 /**
  * ------------------------------------------------------------------------------------
@@ -128,15 +152,29 @@ exports.releaseDelete = (req, res, next) => {
 
 /**
  * ------------------------------------------------------------------------------------------------
- *  Update
+ *  Update release
  * ------------------------------------------------------------------------------------------------
  */
 exports.releaseUpdate = (req, res) => {
 
-    Release.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+    Release.findOneAndUpdate({ _id: req.params.id }, req.body, { new: false })
         .exec()
         .then(doc => {
-            res.status(200).json(doc)
+            const { version: oldVersion } = doc
+            const { version: newVersion } = req.body
+
+            //-- bulk update also upcoming task `release`
+            UpcomingTask.updateMany(
+                { release: oldVersion, completedAt: { $eq: null}},
+                {$set: {release: newVersion}},
+                {multi: true}
+            ).then( data => {
+                // res.json(data)
+                res.status(200).json(data)
+            })
+            .catch( err => res.json(err))
+            
+            
         })
         .catch(err => {
 
@@ -145,7 +183,6 @@ exports.releaseUpdate = (req, res) => {
             if (err.code == 11000) {
                 message = 'Already exists'
             }
-
             res.status(403).json({
                 message,
                 err
