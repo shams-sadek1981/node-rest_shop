@@ -196,7 +196,7 @@ exports.taskSearchRunning = async (req, res) => {
     const { totalEstHour, totalSubTask } = await totalEst(queryObj)
 
     UpcomingTask.find(queryObj)
-        .sort({ completedAt: -1, percent: -1, rate: -1, "subTasks.name": 1 })
+        .sort({ release: -1, completedAt: -1, percent: -1, rate: -1, "subTasks.name": 1 })
         .skip(skip).limit(pageSize)
         // sort: { "_id.completedAt": -1, "_id.rate": -1, "_id.taskName": 1 } }
         .then(data => {
@@ -268,6 +268,7 @@ exports.taskSearchRunning = async (req, res) => {
                     taskType: item.taskType,
                     projectName: item.projectName,
                     completedAt: item.completedAt,
+                    createdAt: moment(item.createdAt).format('DD-MMM-YYYY'),
                     maxCompletedAt: maxCompletedAt,
                     startAt,
                     assignedBy: item.assignedBy,

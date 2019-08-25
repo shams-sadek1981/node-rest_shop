@@ -16,7 +16,10 @@ mongoose.connect(process.env.DATABASE, {
     // useMongoClient: true
     useNewUrlParser: true
     // promiseLibrary: global.Promise
-});
+}).then( data => {
+    console.log('Database Connection Success')
+}).catch( err => console.log(err))
+
 
 // app.use(fileUpload());
 app.use(morgan('dev'));
