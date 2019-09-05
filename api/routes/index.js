@@ -11,6 +11,8 @@ router.use('/release', require('./releaseRoutes'));
 router.use('/project', require('./projectRoutes'));
 router.use('/task-type', require('./taskTypeRoutes'));
 router.use('/public-holiday', require('./publicHolidayRoutes'));
+router.use('/user-role', require('./userRoleRoutes'));
+router.use('/user-permission', require('./userPermissionRoutes'));
 // router.use('/google-api', require('./googleApiRoutes'));
 
 module.exports = router;

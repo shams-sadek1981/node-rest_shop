@@ -5,13 +5,15 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { checkJwt } = require('../functions');
-const { deleteUser, getUserList, updateUser, getAllUser } = require('../controllers/userCtl')
+const { deleteUser, getUserList, updateUser, getAllUser, getUserPermissions } = require('../controllers/userCtl')
 
 //-- Delete user
 router.delete('/delete/:id', checkJwt, deleteUser)
 
 router.get('/list', checkJwt, getUserList)
 router.get('/all-user', checkJwt, getAllUser)
+router.get('/permissions', checkJwt, getUserPermissions)
+
 
 router.put('/update/:id', checkJwt, updateUser)
 
@@ -57,7 +59,11 @@ router.post('/signup', (req, res) => {
     })
 })
 
-//-- POST Login url
+/**
+ * ----------------------------------------------------------------------
+ * -- POST Login url --
+ * ----------------------------------------------------------------------
+ */
 router.post('/login', (req, res) => {
     User.find({ email: req.body.email })
         .exec()
@@ -92,7 +98,13 @@ router.post('/login', (req, res) => {
 
                     return res.status(200).json({
                         message: 'Auth Successful',
-                        token: token
+                        token: token,
+                        userInfo: {
+                            name: user[0].name,
+                            mobile: user[0].mobile,
+                            permissions: user[0].permissions,
+                            roles: user[0].roles
+                        }
                     })
                 }
 

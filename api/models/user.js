@@ -18,7 +18,19 @@ const userSchema = mongoose.Schema({
     mobile: {
         type: String
     },
-    department: String
+    department: String,
+    roles: [{
+        roleName: {
+            type: String,
+            required: true
+        },
+        permissions: [{
+            permissionName: {
+                type: String,
+                required: true
+            },
+        }]
+    }]
 })
 
 

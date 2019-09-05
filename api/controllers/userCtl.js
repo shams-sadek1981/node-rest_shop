@@ -2,7 +2,9 @@ const express = require('express');
 
 const mongoose = require('mongoose');
 const User = require('../models/user');
+const UserRole = require('../models/userRole');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 //-- Update user
 exports.updateUser = (req, res) => {
@@ -13,32 +15,80 @@ exports.updateUser = (req, res) => {
                 error: err
             })
         } else {
-            const user = new User({
-                email: req.body.email,
-                password: hash,
-                name: req.body.name,
-                mobile: req.body.mobile,
-                department: req.body.department
-            })
 
-            User.findOneAndUpdate({ _id: req.params.id }, user, { new: true })
-                .exec()
-                .then(doc => {
-                    res.status(200).json(doc)
+            //Find User Role
+            UserRole.find({
+                name: req.body.roles
+            }).then(data => {
+
+                // Role & Permission Setup
+                const roles = data.map(role => ({
+                    roleName: role.name,
+                    permissions: role.permissions
+                }))
+
+
+                const user = new User({
+                    email: req.body.email,
+                    password: hash,
+                    name: req.body.name,
+                    mobile: req.body.mobile,
+                    department: req.body.department,
+                    roles
                 })
-                .catch(err => {
 
-                    let message = 'Invalid user id'
+                User.findOneAndUpdate({ _id: req.params.id }, user, { new: true })
+                    .exec()
+                    .then(doc => {
 
-                    if (err.code == 11000) {
-                        message = 'Email already exists'
-                    }
 
-                    res.status(403).json({
-                        message,
-                        err
+                        // get unique permissions
+                        let permissionList = new Set()
+                        let roleList = new Set()
+                        doc.roles.forEach(item => {
+
+                            roleList.add( item.roleName )
+
+                            item.permissions.forEach(permission => {
+                                permissionList.add(permission.permissionName)
+                            })
+                        })
+
+                        // get unique permissions
+                        permissionList = [...new Set(permissionList)]; 
+                        roleList = [...new Set(roleList)]; 
+
+                        res.status(200).json({
+                            _id: doc._id,
+                            email: doc.email,
+                            name: doc.name,
+                            mobile: doc.mobile,
+                            department: doc.department,
+                            roles: doc.roles,
+                            roleList,
+                            permissionList
+                        })
                     })
-                })
+                    .catch(err => {
+
+                        let message = 'Invalid user id'
+
+                        if (err.code == 11000) {
+                            message = 'Email already exists'
+                        }
+
+                        res.status(403).json({
+                            message,
+                            err
+                        })
+                    })
+
+            })
+                .catch(err => res.json(err))
+
+
+
+
         }
     })
 
@@ -147,5 +197,55 @@ exports.getAllUser = (req, res) => {
         .then(data => {
             res.json(data)
         })
-        .catch( err => res.status(403).json(err))
+        .catch(err => res.status(403).json(err))
+}
+
+
+//-- get user permissions
+exports.getUserPermissions = (req, res) => {
+
+    const { authorization } = req.headers
+    // res.json({
+    //     sss: authorization
+    // })
+
+    jwt.verify(authorization, process.env.JWT_KEY, function (err, decoded) {
+
+        if (decoded) {
+            return User.findOne({ email: decoded.email })
+                .exec()
+                .then(data => {
+
+                    // return res.json(data)
+                    let permissions = new Set()
+
+                    data.roles.forEach( role => {
+                        role.permissions.forEach( permission => {
+                            permissions.add(permission.permissionName)
+                        })
+                    })
+
+                    permissions = [ ...new Set(permissions)]
+
+                    return res.json({
+                        userInfo: {
+                            name: data.name,
+                            email: data.email,
+                            mobile: data.mobile,
+                            department: data.department,
+                            roles: data.roles,
+                            permissions
+                        }
+                    })
+                })
+                .catch(err => res.json(err))
+
+        }
+
+        res.status(404).json({
+            message: 'No data found'
+        })
+
+
+    });
 }

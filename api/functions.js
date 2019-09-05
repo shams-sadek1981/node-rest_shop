@@ -13,6 +13,7 @@ exports.checkJwt = (req, res, next) => {
     jwt.verify(authorization, process.env.JWT_KEY, function (err, decoded) {
 
         if (decoded) {
+            console.log('decoded', decoded)
             next()
         } else {
 
