@@ -88,16 +88,34 @@ exports.roleCreate = (req, res) => {
  * ------------------------------------------------------------------------------------------------------
  */
 exports.roleDelete = (req, res) => {
+
     const id = req.params.roleId
 
-    UserRole.remove({ _id: id })
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            res.status(500).json({ error: err })
-        })
+    UserRole.findById(id)
+        .then(role => {
+
+            UserRole.remove({ _id: id })
+                .exec()
+                .then(result => {
+
+                    //-- update permission into the users
+                    User.updateMany({ "roles.roleName": role.name },
+                        {
+                            $pull: { "roles" : { roleName: role.name } } 
+                        },
+                        { multi: true })
+                        .then(data => res.json({
+                            message: 'Role Deleted Successfully',
+                            role
+                        })).catch(err => res.json(err))
+                })
+                .catch(err => {
+                    res.status(500).json({ error: err })
+                })
+
+        }).catch(err => console.log(err))
+
+
 }
 
 
@@ -122,11 +140,15 @@ exports.roleUpdate = (req, res) => {
             })
 
             //-- update permission into the users
-            User.updateMany({"roles.roleName": role.name},
-                { $set: { "roles.$": {
-                    roleName: role.name,
-                    permissions: role.permissions
-                } } },
+            User.updateMany({ "roles.roleName": role.name },
+                {
+                    $set: {
+                        "roles.$": {
+                            roleName: role.name,
+                            permissions: role.permissions
+                        }
+                    }
+                },
                 { multi: true })
                 .then(data => res.json(data)).catch(err => res.json(err))
 

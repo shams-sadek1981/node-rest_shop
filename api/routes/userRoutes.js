@@ -7,17 +7,41 @@ const jwt = require('jsonwebtoken');
 const { checkJwt } = require('../functions');
 const { deleteUser, getUserList, updateUser, getAllUser, getUserPermissions } = require('../controllers/userCtl')
 
-//-- Delete user
+/**
+ * ------------------------------------------------------------------------------------------------
+ * delete user
+ * ------------------------------------------------------------------------------------------------
+ * @params userId
+ */
 router.delete('/delete/:id', checkJwt, deleteUser)
 
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ * get user list
+ * ------------------------------------------------------------------------------------------------
+ */
 router.get('/list', checkJwt, getUserList)
 router.get('/all-user', checkJwt, getAllUser)
 router.get('/permissions', checkJwt, getUserPermissions)
 
 
+/**
+ * ------------------------------------------------------------------------------------------------
+ * user update by userId
+ * ------------------------------------------------------------------------------------------------
+ * @params userId
+ */
 router.put('/update/:id', checkJwt, updateUser)
 
 
+
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ * User registration
+ * ------------------------------------------------------------------------------------------------
+ */
 router.post('/signup', (req, res) => {
 
     User.find({ email: req.body.email })
@@ -59,13 +83,14 @@ router.post('/signup', (req, res) => {
     })
 })
 
+
 /**
  * ----------------------------------------------------------------------
- * -- POST Login url --
+ * POST Login url
  * ----------------------------------------------------------------------
  */
 router.post('/login', (req, res) => {
-    User.find({ email: req.body.email })
+    User.findOne({ email: req.body.email })
         .exec()
         .then(user => {
             if (user.length < 1) {
@@ -75,7 +100,7 @@ router.post('/login', (req, res) => {
             }
 
             //-- compare password
-            bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+            bcrypt.compare(req.body.password, user.password, (err, result) => {
                 if (err) {
                     return res.status(401).json({
                         message: 'Auth Failed 2'
@@ -83,16 +108,15 @@ router.post('/login', (req, res) => {
                 }
 
                 if (result) {
-
                     //-- generate token
                     const token = jwt.sign(
                         {
-                            email: user[0].email,
-                            userId: user[0]._id
+                            email: user.email,
+                            userId: user._id
                         },
                         process.env.JWT_KEY,
                         {
-                            expiresIn: "1h"
+                            expiresIn: "24h"
                         }
                     );
 
@@ -100,10 +124,10 @@ router.post('/login', (req, res) => {
                         message: 'Auth Successful',
                         token: token,
                         userInfo: {
-                            name: user[0].name,
-                            mobile: user[0].mobile,
-                            permissions: user[0].permissions,
-                            roles: user[0].roles
+                            name: user.name,
+                            mobile: user.mobile,
+                            permissions: user.permissions,
+                            roles: user.roles
                         }
                     })
                 }

@@ -5,7 +5,11 @@ const jwtRefresh = require('jsonwebtoken-refresh');
 
 
 
-//-- check JWT
+/**
+ * ------------------------------------------------------------------------------------------------
+ * check JWT
+ * ------------------------------------------------------------------------------------------------
+ */
 exports.checkJwt = (req, res, next) => {
 
     const { authorization } = req.headers
@@ -13,26 +17,30 @@ exports.checkJwt = (req, res, next) => {
     jwt.verify(authorization, process.env.JWT_KEY, function (err, decoded) {
 
         if (decoded) {
-            console.log('decoded', decoded)
+            // console.log('decoded', decoded)
             next()
         } else {
 
+            res.status(404).json({
+                message: 'Token mismatch',
+                err
+            })
             //-- check if expire
-            if (err.name == 'TokenExpiredError') {
-                let originalDecoded = jwt.decode(authorization, { complete: true });
-                let refreshed = jwtRefresh.refresh(originalDecoded, 3600, 'secret');
+            // if (err.name == 'TokenExpiredError') {
+            //     let originalDecoded = jwt.decode(authorization, { complete: true });
+            //     let refreshed = jwtRefresh.refresh(originalDecoded, 3600, 'secret');
 
-                //-- Set Refresh Token
-                if (refreshed) {
-                    res.set({ 'refreshToken': refreshed })
-                }
-                next()
-            } else {
-                res.status(404).json({
-                    message: 'Token mismatch',
-                    err
-                })
-            }
+            //     //-- Set Refresh Token
+            //     if (refreshed) {
+            //         res.set({ 'refreshToken': refreshed })
+            //     }
+            //     next()
+            // } else {
+            //     res.status(404).json({
+            //         message: 'Token mismatch',
+            //         err
+            //     })
+            // }
         }
     });
 }
@@ -151,7 +159,7 @@ exports.readCsvFile = (filePath) => {
     if (!fs.existsSync(filePath)) {
         console.log('File does not exists')
 
-        return new Promise( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             reject({
                 message: 'File is not exists.'
             })
