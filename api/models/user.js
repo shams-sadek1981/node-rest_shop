@@ -30,6 +30,9 @@ const userSchema = mongoose.Schema({
                 required: true
             },
         }]
+    }],
+    projects: [{
+        projectName: String
     }]
 })
 

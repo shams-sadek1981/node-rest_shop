@@ -216,9 +216,12 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
     }
 
     if (projectName != 'all') {
+        
+        if ( ! Array.isArray(projectName) ) projectName = [projectName]
+
         match.$and = [
             ...match.$and,
-            { projectName: projectName }
+            { projectName: { $in: projectName } }
         ]
     }
 

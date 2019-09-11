@@ -28,13 +28,18 @@ exports.updateUser = (req, res) => {
                 }))
 
 
+                const projects = req.body.projects.map(item => ({
+                    projectName: item
+                }))
+
                 const user = new User({
                     email: req.body.email,
                     password: hash,
                     name: req.body.name,
                     mobile: req.body.mobile,
                     department: req.body.department,
-                    roles
+                    roles,
+                    projects
                 })
 
                 User.findOneAndUpdate({ _id: req.params.id }, user, { new: true })
@@ -47,16 +52,22 @@ exports.updateUser = (req, res) => {
                         let roleList = new Set()
                         doc.roles.forEach(item => {
 
-                            roleList.add( item.roleName )
+                            roleList.add(item.roleName)
 
                             item.permissions.forEach(permission => {
                                 permissionList.add(permission.permissionName)
                             })
                         })
 
+                        //-- get projects
+                        const projectList = []
+                        doc.projects.forEach(item => {
+                            projectList.push(item.projectName)
+                        })
+
                         // get unique permissions
-                        permissionList = [...new Set(permissionList)]; 
-                        roleList = [...new Set(roleList)]; 
+                        permissionList = [...new Set(permissionList)];
+                        roleList = [...new Set(roleList)];
 
                         res.status(200).json({
                             _id: doc._id,
@@ -66,7 +77,9 @@ exports.updateUser = (req, res) => {
                             department: doc.department,
                             roles: doc.roles,
                             roleList,
-                            permissionList
+                            permissionList,
+                            projects: doc.projects,
+                            projectList
                         })
                     })
                     .catch(err => {
@@ -85,10 +98,6 @@ exports.updateUser = (req, res) => {
 
             })
                 .catch(err => res.json(err))
-
-
-
-
         }
     })
 
@@ -184,7 +193,8 @@ exports.getUserList = (req, res) => {
             result
         })
     }).catch(err => res.json(err))
-}
+
+}//-- end
 
 
 //-- Get All User
@@ -216,16 +226,14 @@ exports.getUserPermissions = (req, res) => {
                 .exec()
                 .then(data => {
 
-                    // return res.json(data)
                     let permissions = new Set()
-
-                    data.roles.forEach( role => {
-                        role.permissions.forEach( permission => {
+                    data.roles.forEach(role => {
+                        role.permissions.forEach(permission => {
                             permissions.add(permission.permissionName)
                         })
                     })
 
-                    permissions = [ ...new Set(permissions)]
+                    permissions = [...new Set(permissions)]
 
                     return res.json({
                         userInfo: {
@@ -233,6 +241,7 @@ exports.getUserPermissions = (req, res) => {
                             email: data.email,
                             mobile: data.mobile,
                             department: data.department,
+                            projects: data.projects,
                             roles: data.roles,
                             permissions
                         }

@@ -168,6 +168,11 @@ exports.allTaskUpdate = (req, res) => {
 
 exports.taskSearchRunning = async (req, res) => {
 
+    // return res.json({
+    //     message: 'sdffs',
+    //     project: req.query.project
+    // })
+
     const userName = await req.query.name
     const projectName = await req.query.project
     const searchText = await req.query.text
@@ -187,6 +192,9 @@ exports.taskSearchRunning = async (req, res) => {
     //-- Count total tasks
     const totalTasks = await totalTask(queryObj)
 
+    // return res.json({
+    //     totalTasks
+    // })
 
     //-- by user & project
     const { userEstHour, userTotalSubTask } = await singleUserEst(queryObj)
