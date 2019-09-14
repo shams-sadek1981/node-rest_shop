@@ -168,17 +168,13 @@ exports.allTaskUpdate = (req, res) => {
 
 exports.taskSearchRunning = async (req, res) => {
 
-    // return res.json({
-    //     message: 'sdffs',
-    //     project: req.query.project
-    // })
-
     const userName = await req.query.name
     const projectName = await req.query.project
     const searchText = await req.query.text
     const pageSize = await JSON.parse(req.query.pageSize)
     const running = await JSON.parse(req.query.running)
     const completedAt = await JSON.parse(req.query.completedAt)
+    const newlyAdded = await req.query.newlyAdded
 
     //-- Pagination settings
     const pageNo = await JSON.parse(req.query.page)
@@ -192,9 +188,6 @@ exports.taskSearchRunning = async (req, res) => {
     //-- Count total tasks
     const totalTasks = await totalTask(queryObj)
 
-    // return res.json({
-    //     totalTasks
-    // })
 
     //-- by user & project
     const { userEstHour, userTotalSubTask } = await singleUserEst(queryObj)
@@ -203,19 +196,33 @@ exports.taskSearchRunning = async (req, res) => {
     //-- all user
     const { totalEstHour, totalSubTask } = await totalEst(queryObj)
 
+    //-- set sort items
+    let sort = {
+        release: -1,
+        completedAt: -1,
+        percent: -1,
+        rate: -1,
+        "subTasks.name": 1
+    }
+
+    if ( newlyAdded ) {
+        sort = { createdAt: -1, ...sort }
+    }
+
     UpcomingTask.find(queryObj)
-        .sort({ release: -1, completedAt: -1, percent: -1, rate: -1, "subTasks.name": 1 })
+        .sort(sort)
         .skip(skip).limit(pageSize)
         // sort: { "_id.completedAt": -1, "_id.rate": -1, "_id.taskName": 1 } }
         .then(data => {
 
             //-- Transform Data
-            result = data.map(item => {
+            let result = data.map(item => {
 
                 let estHour = 0
                 let completedHour = 0
                 let maxCompletedAt = null
                 let startAt = null
+                let dueHour = 0
                 // let percent = 0
 
                 if (item.subTasks.length > 0) {
@@ -287,7 +294,8 @@ exports.taskSearchRunning = async (req, res) => {
                     subTasks: item.subTasks,
                     release: item.release,
                 }
-            })
+            })//-- end result
+
 
             //-- sort by percent
             // const newResult = _.orderBy(result, ['percent', 'rate', 'taskName'],['desc', 'desc', 'asc']); // Use Lodash to sort array by 'name'
@@ -305,6 +313,8 @@ exports.taskSearchRunning = async (req, res) => {
                 userTotalSubTask,
                 result
             })
+
+            
         }).catch(err => {
             res.status(404).json({
                 err
@@ -455,7 +465,8 @@ exports.createNewTask = (req, res) => {
         description: req.body.description,
         taskType: req.body.taskType,
         projectName: req.body.projectName,
-        assignedBy: req.body.assignedBy
+        assignedBy: req.body.assignedBy,
+        createdBy: req.body.createdBy
     })
 
     upcomingTask.save()
@@ -470,6 +481,7 @@ exports.createNewTask = (req, res) => {
                 taskType: result.taskType,
                 createdAt: result.createdAt,
                 assignedBy: result.assignedBy,
+                createdBy: result.createdBy,
             }
 
             res.status(200).json({
@@ -558,10 +570,13 @@ createBulkTask = (id) => {
 //-- Update user
 exports.updateTask = (req, res) => {
 
+    req.body.updatedAt = new Date()
+    
     UpcomingTask.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
         .exec()
         .then(doc => {
 
+            //-- bulkInsert from description field
             if (req.body.bulkInsert) {
                 createBulkTask(req.params.id)
             }

@@ -6,8 +6,106 @@ const UserRole = require('../models/userRole');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-//-- Update user
+/**
+ * ----------------------------------------------------------------------------------------
+ * Update user
+ * ----------------------------------------------------------------------------------------
+ */
 exports.updateUser = (req, res) => {
+
+    // return res.json({
+    //     message: 'sfsf'
+    // })
+
+    //Find User Role
+    UserRole.find({
+        name: req.body.roles
+    }).then(data => {
+
+        // Role & Permission Setup
+        const roles = data.map(role => ({
+            roleName: role.name,
+            permissions: role.permissions
+        }))
+
+        const projects = req.body.projects.map(item => ({
+            projectName: item
+        }))
+
+        const user = new User({
+            email: req.body.email,
+            name: req.body.name,
+            mobile: req.body.mobile,
+            department: req.body.department,
+            roles,
+            projects
+        })
+
+        User.findOneAndUpdate({ _id: req.params.id }, user, { new: true })
+            .exec()
+            .then(doc => {
+
+
+                // get unique permissions
+                let permissionList = new Set()
+                let roleList = new Set()
+                doc.roles.forEach(item => {
+
+                    roleList.add(item.roleName)
+
+                    item.permissions.forEach(permission => {
+                        permissionList.add(permission.permissionName)
+                    })
+                })
+
+                //-- get projects
+                const projectList = []
+                doc.projects.forEach(item => {
+                    projectList.push(item.projectName)
+                })
+
+                // get unique permissions
+                permissionList = [...new Set(permissionList)];
+                roleList = [...new Set(roleList)];
+
+                res.status(200).json({
+                    _id: doc._id,
+                    email: doc.email,
+                    name: doc.name,
+                    mobile: doc.mobile,
+                    department: doc.department,
+                    roles: doc.roles,
+                    roleList,
+                    permissionList,
+                    projects: doc.projects,
+                    projectList
+                })
+            })
+            .catch(err => {
+
+                let message = 'Invalid user id'
+
+                if (err.code == 11000) {
+                    message = 'Email already exists'
+                }
+
+                res.status(403).json({
+                    message,
+                    err
+                })
+            })
+
+    })
+        .catch(err => res.json(err))
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------
+ * Update user password
+ * ----------------------------------------------------------------------------------------
+ */
+exports.updateUserPassword = (req, res) => {
 
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         if (err) {
@@ -15,95 +113,19 @@ exports.updateUser = (req, res) => {
                 error: err
             })
         } else {
-
-            //Find User Role
-            UserRole.find({
-                name: req.body.roles
-            }).then(data => {
-
-                // Role & Permission Setup
-                const roles = data.map(role => ({
-                    roleName: role.name,
-                    permissions: role.permissions
-                }))
-
-
-                const projects = req.body.projects.map(item => ({
-                    projectName: item
-                }))
-
-                const user = new User({
-                    email: req.body.email,
-                    password: hash,
-                    name: req.body.name,
-                    mobile: req.body.mobile,
-                    department: req.body.department,
-                    roles,
-                    projects
-                })
-
-                User.findOneAndUpdate({ _id: req.params.id }, user, { new: true })
-                    .exec()
-                    .then(doc => {
-
-
-                        // get unique permissions
-                        let permissionList = new Set()
-                        let roleList = new Set()
-                        doc.roles.forEach(item => {
-
-                            roleList.add(item.roleName)
-
-                            item.permissions.forEach(permission => {
-                                permissionList.add(permission.permissionName)
-                            })
-                        })
-
-                        //-- get projects
-                        const projectList = []
-                        doc.projects.forEach(item => {
-                            projectList.push(item.projectName)
-                        })
-
-                        // get unique permissions
-                        permissionList = [...new Set(permissionList)];
-                        roleList = [...new Set(roleList)];
-
-                        res.status(200).json({
-                            _id: doc._id,
-                            email: doc.email,
-                            name: doc.name,
-                            mobile: doc.mobile,
-                            department: doc.department,
-                            roles: doc.roles,
-                            roleList,
-                            permissionList,
-                            projects: doc.projects,
-                            projectList
-                        })
-                    })
-                    .catch(err => {
-
-                        let message = 'Invalid user id'
-
-                        if (err.code == 11000) {
-                            message = 'Email already exists'
-                        }
-
-                        res.status(403).json({
-                            message,
-                            err
-                        })
-                    })
-
-            })
-                .catch(err => res.json(err))
+            User.update(
+                { _id: req.params.id },
+                {
+                    $set: { password: hash }
+                }
+            ).exec()
+            .then( doc => {
+                res.json(doc)
+            }).catch( err => res.json(err))
         }
     })
-
-
-
 }
+
 
 //-- Delete User by ID
 exports.deleteUser = (req, res, next) => {
