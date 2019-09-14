@@ -27,6 +27,9 @@ const upcomingTaskSchema = mongoose.Schema({
                 default: false
             },
             createdAt : { type : Date, default: Date.now },
+            createdBy: String,
+            updatedBy: String,
+            updatedAt : Date,
             startDate: Date,
             completedAt: Date,
             dueDate: Date,
@@ -42,6 +45,9 @@ const upcomingTaskSchema = mongoose.Schema({
     createdAt : { type : Date, default: Date.now },
     completedAt : Date,
     assignedBy: String,
+    createdBy: String,
+    updatedBy: String,
+    updatedAt : Date,
     status: {
         type: Boolean,
         default: false

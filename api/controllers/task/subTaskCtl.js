@@ -606,6 +606,7 @@ exports.createSubtask = (req, res) => {
                     $each: [{
                         name: req.body.name,
                         assignedUser: req.body.assignedUser,
+                        createdBy: req.body.createdBy,
                         estHour: req.body.estHour,
                         status: req.body.status,
                         startDate: req.body.startDate,
@@ -678,8 +679,6 @@ exports.updateSubTask = (req, res) => {
         status = false
     }
 
-    console.log("Completed At: ", req.body.completedAt)
-
     UpcomingTask.findOneAndUpdate(
         { "subTasks._id": req.params.id },
         {
@@ -692,6 +691,10 @@ exports.updateSubTask = (req, res) => {
                     startDate: req.body.startDate,
                     dueDate: req.body.dueDate,
                     completedAt: req.body.completedAt,
+                    createdBy: req.body.createdBy,
+                    createdAt: req.body.createdAt,
+                    updatedBy: req.body.updatedBy,
+                    updatedAt: new Date(),
                     refLink: req.body.refLink
                 }
             }
@@ -716,11 +719,12 @@ exports.updateSubTask = (req, res) => {
         updateSubTaskPercent(result._id)
 
         res.status(200).json({
-            result: 'newResult'
+            result: newResult
         })
     })
         .catch(err => {
             res.status(409).json({
+                message: 'ID mismatch',
                 err
             })
         })

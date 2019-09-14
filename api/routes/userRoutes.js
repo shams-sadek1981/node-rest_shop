@@ -5,7 +5,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { checkJwt } = require('../functions');
-const { deleteUser, getUserList, updateUser, getAllUser, getUserPermissions } = require('../controllers/userCtl')
+const { deleteUser, getUserList, updateUser, getAllUser, getUserPermissions, updateUserPassword } = require('../controllers/userCtl')
 
 /**
  * ------------------------------------------------------------------------------------------------
@@ -33,6 +33,7 @@ router.get('/permissions', checkJwt, getUserPermissions)
  * @params userId
  */
 router.put('/update/:id', checkJwt, updateUser)
+router.put('/update-password/:id', checkJwt, updateUserPassword)
 
 
 
@@ -116,7 +117,7 @@ router.post('/login', (req, res) => {
                         },
                         process.env.JWT_KEY,
                         {
-                            expiresIn: "24h"
+                            expiresIn: "555h"
                         }
                     );
 
