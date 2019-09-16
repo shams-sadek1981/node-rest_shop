@@ -109,7 +109,7 @@ const importCsvFile = (filePath) => {
                 assignedBy: item.assignedBy,
                 taskName: item.taskName,
                 completedAt: item.completedAt,
-                percent: Math.floor(completedHour * 100 / totalEstHour),
+                percent: Math.floor(completedHour * 100 / totalEstHour) || 0,
                 subTasks: item.subTasks
             }
         })
@@ -117,7 +117,6 @@ const importCsvFile = (filePath) => {
 
         //-- Insert All
         UpcomingTask.insertMany(result)
-        // console.log(result)
 
     })
 }
@@ -483,8 +482,8 @@ exports.updateSubTaskPercent = (id) => {
 
     Promise.all([totalEstHour, totalCompletedHour]).then(values => {
 
-        const estHour = values[0]
-        const completedHour = values[1]
+        const estHour = values[0] || 0
+        const completedHour = values[1] || 0
 
         const percent = Math.floor(completedHour * 100 / estHour)
 
