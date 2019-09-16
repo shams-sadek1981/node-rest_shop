@@ -5,6 +5,10 @@ const PublicHoliday = require('../../models/publicHoliday');
 const ObjectId = mongoose.Types.ObjectId;
 const fn = require('../../functions.js')
 
+const fs = require('fs')
+const { promisify } = require('util')
+const unlinkAsync = promisify(fs.unlink)
+
 /**
  * 
  * --------------------------------------------------------------------------------------
@@ -121,6 +125,9 @@ const importCsvFile = (filePath) => {
             UpcomingTask.insertMany(result)
                 .then(data => {
                     resolve(data)
+                    
+                    unlinkAsync(filePath)
+
                 }).catch(err => reject(err))
 
         })
