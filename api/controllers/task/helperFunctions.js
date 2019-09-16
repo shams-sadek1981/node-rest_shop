@@ -13,110 +13,117 @@ const fn = require('../../functions.js')
  */
 const importCsvFile = (filePath) => {
     const readDir = 'uploads/';
-    result = [];
+    let result = [];
     // fn.readCsvFile(readDir + 'upcomingTask.csv').then(readData => {
     // fn.readCsvFile(readDir + fileName).then(readData => {
-    fn.readCsvFile(filePath).then(readData => {
+    return new Promise((resolve, reject) => {
 
-        readData.shift()//-- Remove Header
+        fn.readCsvFile(filePath).then(readData => {
 
-        //-- create raw object
-        const rawObject = readData.map(log => {
+            readData.shift()//-- Remove Header
 
-            const taskName = log[3]
+            //-- create raw object
+            const rawObject = readData.map(log => {
 
-            return {
-                projectName: log[0],
-                taskType: log[1],
-                assignedBy: log[2],
-                taskName: taskName.trim().toProperCase(),
-                subTask: log[4],
-                estHour: log[5],
-                startDate: log[6],
-                endDate: log[7],
-                completedAt: log[8],
-                assignedUser: log[9]
+                const taskName = log[3]
+
+                return {
+                    projectName: log[0],
+                    taskType: log[1],
+                    assignedBy: log[2],
+                    taskName: taskName.trim().toProperCase(),
+                    subTask: log[4],
+                    estHour: log[5],
+                    startDate: log[6],
+                    endDate: log[7],
+                    completedAt: log[8],
+                    assignedUser: log[9]
+                }
+            })
+
+            //-- sort by taskName
+            rawObject.sort((a, b) => {
+                return a.taskName > b.taskName
+            })
+
+
+            //-- group by taskName
+            let taskName = ''
+            let newArrayObject = []
+            let newObject = {
+                subTasks: []
             }
-        })
+            rawObject.forEach(item => {
 
-        //-- sort by taskName
-        rawObject.sort((a, b) => {
-            return a.taskName > b.taskName
-        })
-
-
-        //-- group by taskName
-        let taskName = ''
-        let newArrayObject = []
-        let newObject = {
-            subTasks: []
-        }
-        rawObject.forEach(item => {
-
-            if (taskName == item.taskName) {
-                newObject.subTasks.push({
-                    name: item.subTask,
-                    estHour: item.estHour,
-                    startDate: item.startDate,
-                    endDate: item.endDate,
-                    completedAt: item.completedAt,
-                    assignedUser: item.assignedUser
-                })
-            } else {
-                newObject = {
-                    projectName: item.projectName,
-                    taskType: item.taskType,
-                    assignedBy: item.assignedBy,
-                    taskName: item.taskName,
-                    completedAt: item.completedAt,
-                    subTasks: [{
+                if (taskName == item.taskName) {
+                    newObject.subTasks.push({
                         name: item.subTask,
                         estHour: item.estHour,
                         startDate: item.startDate,
                         endDate: item.endDate,
                         completedAt: item.completedAt,
                         assignedUser: item.assignedUser
-                    }]
+                    })
+                } else {
+                    newObject = {
+                        projectName: item.projectName,
+                        taskType: item.taskType,
+                        assignedBy: item.assignedBy,
+                        taskName: item.taskName,
+                        completedAt: item.completedAt,
+                        subTasks: [{
+                            name: item.subTask,
+                            estHour: item.estHour,
+                            startDate: item.startDate,
+                            endDate: item.endDate,
+                            completedAt: item.completedAt,
+                            assignedUser: item.assignedUser
+                        }]
+                    }
+
+                    newArrayObject.push(newObject)
                 }
 
-                newArrayObject.push(newObject)
-            }
+                taskName = item.taskName
+            })
 
-            taskName = item.taskName
-        })
+            //-- set percent
+            result = newArrayObject.map(item => {
+                let totalEstHour = 0
+                let completedHour = 0
 
-        //-- set percent
-        const result = newArrayObject.map(item => {
-            let totalEstHour = 0
-            let completedHour = 0
+                item.subTasks.forEach(subTask => {
+                    totalEstHour += parseFloat(subTask.estHour)
 
-            item.subTasks.forEach(subTask => {
-                totalEstHour += parseFloat(subTask.estHour)
+                    if (subTask.completedAt) {
+                        console.log('Completed At: ', subTask.completedAt)
+                        completedHour += parseFloat(subTask.estHour)
+                    }
+                })
 
-                if (subTask.completedAt) {
-                    console.log('Completed At: ', subTask.completedAt)
-                    completedHour += parseFloat(subTask.estHour)
+
+                // console.log('Completed Hour: ', completedHour)
+                // console.log('Total. Hour: ', totalEstHour)
+
+                return {
+                    projectName: item.projectName,
+                    taskType: item.taskType,
+                    assignedBy: item.assignedBy,
+                    taskName: item.taskName,
+                    completedAt: item.completedAt,
+                    percent: Math.floor(completedHour * 100 / totalEstHour) || 0,
+                    subTasks: item.subTasks
                 }
             })
 
 
-            console.log('Completed Hour: ', completedHour)
-            console.log('Total. Hour: ', totalEstHour)
+            //-- Insert All
+            UpcomingTask.insertMany(result)
+                .then(data => {
+                    resolve(data)
+                }).catch(err => reject(err))
 
-            return {
-                projectName: item.projectName,
-                taskType: item.taskType,
-                assignedBy: item.assignedBy,
-                taskName: item.taskName,
-                completedAt: item.completedAt,
-                percent: Math.floor(completedHour * 100 / totalEstHour) || 0,
-                subTasks: item.subTasks
-            }
         })
-
-
-        //-- Insert All
-        UpcomingTask.insertMany(result)
 
     })
 }
@@ -215,8 +222,8 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
     }
 
     if (projectName != 'all') {
-        
-        if ( ! Array.isArray(projectName) ) projectName = [projectName]
+
+        if (!Array.isArray(projectName)) projectName = [projectName]
 
         match.$and = [
             ...match.$and,

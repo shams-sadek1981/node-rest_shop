@@ -14,15 +14,13 @@ exports.uploadCsv = (req, res) => {
     // console.table(req.file)
 
     importCsvFile(req.file.path)
-        .then( data => {
+        .then(data => {
             res.json({
                 message: 'Success',
                 data
             })
         })
-        .catch( err => res.json(err))
-
-    
+        .catch(err => res.status(500).json(err))
 }
 
 /**
@@ -81,7 +79,7 @@ exports.reportTaskStatus = (req, res) => {
                 }
             }
         },
-        
+
         { $sort: { "estHour": -1 } }
 
     ]).then(data => {
@@ -97,7 +95,7 @@ exports.reportTaskStatus = (req, res) => {
             totalEst += parseFloat(item.estHour)
 
             let startDate = moment(item.startDate).format("DD-MMM-YYYY")
-            if( startDate == 'Invalid date'){
+            if (startDate == 'Invalid date') {
                 startDate = "---"
             }
 
@@ -212,7 +210,7 @@ exports.taskSearchRunning = async (req, res) => {
         "subTasks.name": 1
     }
 
-    if ( newlyAdded == true ) {
+    if (newlyAdded == true) {
         sort = { createdAt: -1, ...sort }
     }
 
@@ -256,20 +254,20 @@ exports.taskSearchRunning = async (req, res) => {
                             }
                         }
 
-                            /**
-                             * ---------------------------
-                             * Set startAt
-                             * ---------------------------
-                             */
-                            if (subTask.startDate) {
-                                if (startAt == null) {
+                        /**
+                         * ---------------------------
+                         * Set startAt
+                         * ---------------------------
+                         */
+                        if (subTask.startDate) {
+                            if (startAt == null) {
+                                startAt = subTask.startDate
+                            } else {
+                                if (subTask.startDate < startAt) {
                                     startAt = subTask.startDate
-                                } else {
-                                    if (subTask.startDate < startAt) {
-                                        startAt = subTask.startDate
-                                    }
                                 }
                             }
+                        }
 
                         // totalEstHour += subTask.estHour
                         estHour += subTask.estHour
@@ -324,7 +322,7 @@ exports.taskSearchRunning = async (req, res) => {
                 result
             })
 
-            
+
         }).catch(err => {
             res.status(404).json({
                 err
@@ -581,7 +579,7 @@ createBulkTask = (id) => {
 exports.updateTask = (req, res) => {
 
     req.body.updatedAt = new Date()
-    
+
     UpcomingTask.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
         .exec()
         .then(doc => {
