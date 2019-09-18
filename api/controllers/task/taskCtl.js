@@ -556,7 +556,8 @@ createBulkTask = (id) => {
                         description: task,
                         taskType: data.taskType,
                         projectName: data.projectName,
-                        assignedBy: data.assignedBy
+                        assignedBy: data.assignedBy,
+                        createdBy: data.updatedBy,
                     }
                 })
 
