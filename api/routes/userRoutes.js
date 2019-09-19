@@ -55,7 +55,8 @@ router.post('/signup', (req, res) => {
             }
         })
 
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
+    const password = "123456" // default password Only First Time Creation
+    bcrypt.hash(password, 10, (err, hash) => {
         if (err) {
             return res.status(500).json({
                 error: err
