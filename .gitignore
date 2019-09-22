@@ -4,3 +4,5 @@ csvSummary
 yarn.lock
 csvFiles
 uploads
+nodemon.json
+server.js
