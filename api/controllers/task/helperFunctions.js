@@ -499,13 +499,13 @@ exports.updateSubTaskPercent = (id) => {
         const estHour = values[0] || 0
         const completedHour = values[1] || 0
 
-        const percent = Math.floor(completedHour * 100 / estHour)
+        const percent = Math.floor(completedHour * 100 / estHour) || 0
 
         UpcomingTask.findOneAndUpdate({ _id: id }, {
             percent
         }, { new: true })
             .then(data => {
-                console.log(data)
+                // console.log(data)
                 return data
             }).catch(err => err)
 
