@@ -39,7 +39,10 @@ exports.searchUpcomingTask = (req, res) => {
 
 
             res.json({
-                result: { ...data, totalEst, completedEst, dueEst }
+                totalEst,
+                completedEst,
+                dueEst,
+                result: data
             })
 
         })
