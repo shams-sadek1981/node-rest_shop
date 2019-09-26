@@ -15,16 +15,35 @@ const { queryBuilder } = require('./helperFunctions')
  */
 exports.searchUpcomingTask = (req, res) => {
 
-    const version = req.query.version
+    // const version = req.query.version
+    const version = decodeURIComponent(req.query.version)
 
-    UpcomingTask.find({ release: version})
+    UpcomingTask.find({ release: version })
         .exec()
-        .then( data => {
-            res.json({
-                result: data
+        .then(data => {
+
+            let totalEst = 0
+            let completedEst = 0
+            let dueEst = 0
+
+            data.forEach( task => {
+                task.subTasks.forEach( subTask => {
+                    totalEst += parseFloat(subTask.estHour)
+                    if (subTask.completedAt) {
+                        completedEst += parseFloat(subTask.estHour)
+                    } else {
+                        dueEst += parseFloat(subTask.estHour)
+                    }
+                })
             })
+
+
+            res.json({
+                result: { ...data, totalEst, completedEst, dueEst }
+            })
+
         })
-        .catch( err => res.json(err))
+        .catch(err => res.json(err))
 }
 
 
@@ -42,7 +61,7 @@ exports.search = async (req, res) => {
     const limit = await req.query.limit
 
     let sortBy = 1
-    if ( status == true ) {
+    if (status == true) {
         sortBy = -1
     }
 
@@ -67,32 +86,32 @@ exports.search = async (req, res) => {
     // )
 
     Release.find(queryObj)
-    .skip(skip).limit(limit)
-    .sort( { releaseDate: sortBy } )
-    .then(data => {
+        .skip(skip).limit(limit)
+        .sort({ releaseDate: sortBy })
+        .then(data => {
 
-        //-- Transform Data
-        const result = data.map(item => {
+            //-- Transform Data
+            const result = data.map(item => {
 
-            return {
-                _id: item._id,
-                status: item.status,
-                releaseDate: item.releaseDate,
-                projectName: item.projectName,
-                version: item.version,
-                description: item.description
-            }
-        })
+                return {
+                    _id: item._id,
+                    status: item.status,
+                    releaseDate: item.releaseDate,
+                    projectName: item.projectName,
+                    version: item.version,
+                    description: item.description
+                }
+            })
 
-        res.status(200).json({
-            result
+            res.status(200).json({
+                result
+            })
         })
-    })
-    .catch(err => {
-        res.status(404).json({
-            err
+        .catch(err => {
+            res.status(404).json({
+                err
+            })
         })
-    })
 } //-- end function
 
 /**
@@ -165,16 +184,16 @@ exports.releaseUpdate = (req, res) => {
 
             //-- bulk update also upcoming task `release`
             UpcomingTask.updateMany(
-                { release: oldVersion, completedAt: { $eq: null}},
-                {$set: {release: newVersion}},
-                {multi: true}
-            ).then( data => {
+                { release: oldVersion, completedAt: { $eq: null } },
+                { $set: { release: newVersion } },
+                { multi: true }
+            ).then(data => {
                 // res.json(data)
                 res.status(200).json(data)
             })
-            .catch( err => res.json(err))
-            
-            
+                .catch(err => res.json(err))
+
+
         })
         .catch(err => {
 
