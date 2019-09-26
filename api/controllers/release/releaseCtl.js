@@ -44,7 +44,7 @@ exports.searchUpcomingTask = (req, res) => {
                 totalEst,
                 completedEst,
                 dueEst,
-                percent,
+                percent: Math.round(percent),
                 result: data
             })
 
