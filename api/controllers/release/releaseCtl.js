@@ -252,9 +252,6 @@ exports.releaseStatusUpdate = (req, res) => {
 
             let message = 'Invalid id'
 
-            if (err.code == 11000) {
-                message = 'Already exists'
-            }
             res.status(403).json({
                 message,
                 err
