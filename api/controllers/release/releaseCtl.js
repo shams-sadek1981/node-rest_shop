@@ -26,8 +26,8 @@ exports.searchUpcomingTask = (req, res) => {
             let completedEst = 0
             let dueEst = 0
 
-            data.forEach( task => {
-                task.subTasks.forEach( subTask => {
+            data.forEach(task => {
+                task.subTasks.forEach(subTask => {
                     totalEst += parseFloat(subTask.estHour)
                     if (subTask.completedAt) {
                         completedEst += parseFloat(subTask.estHour)
@@ -190,11 +190,58 @@ exports.releaseUpdate = (req, res) => {
 
             //-- bulk update also upcoming task `release`
             UpcomingTask.updateMany(
-                { release: oldVersion, completedAt: { $eq: null } },
-                { $set: { release: newVersion } },
+                { release: oldVersion },
+                { $set: { release: newVersion, completedAt: req.body.releaseDate } },
                 { multi: true }
             ).then(data => {
-                // res.json(data)
+                res.status(200).json(data)
+            })
+                .catch(err => res.json(err))
+
+
+        })
+        .catch(err => {
+
+            let message = 'Invalid id'
+
+            if (err.code == 11000) {
+                message = 'Already exists'
+            }
+            res.status(403).json({
+                message,
+                err
+            })
+        })
+}
+
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  Update release status
+ * ------------------------------------------------------------------------------------------------
+ */
+exports.releaseStatusUpdate = (req, res) => {
+
+    Release.findOneAndUpdate({ _id: req.params.id }, req.body, { new: false })
+        .exec()
+        .then(doc => {
+
+            const { version: findByVersion } = doc
+
+            let upcomingTaskBody = {
+                completedAt: doc.releaseDate
+            }
+
+            if (!req.body.status) {
+                upcomingTaskBody.completedAt = null
+            }
+
+            //-- bulk update also upcoming task `release`
+            UpcomingTask.updateMany(
+                { release: findByVersion },
+                { $set: upcomingTaskBody },
+                { multi: true }
+            ).then(data => {
                 res.status(200).json(data)
             })
                 .catch(err => res.json(err))

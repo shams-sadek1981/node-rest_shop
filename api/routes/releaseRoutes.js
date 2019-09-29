@@ -9,7 +9,8 @@ const {
     search,
     releaseDelete,
     releaseUpdate,
-    searchUpcomingTask
+    searchUpcomingTask,
+    releaseStatusUpdate
 } = require('../controllers/release/releaseCtl')
 
 
@@ -18,5 +19,6 @@ router.get('/', checkJwt, search)
 router.get('/upcoming-task', checkJwt, searchUpcomingTask)
 router.delete('/:id', checkJwt, releaseDelete)
 router.put('/:id', checkJwt, releaseUpdate)
+router.put('/status/:id', checkJwt, releaseStatusUpdate)
 
 module.exports = router;
