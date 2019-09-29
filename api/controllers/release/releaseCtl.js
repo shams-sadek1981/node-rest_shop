@@ -250,10 +250,8 @@ exports.releaseStatusUpdate = (req, res) => {
         })
         .catch(err => {
 
-            let message = 'Invalid id'
-
             res.status(403).json({
-                message,
+                message: 'Invalid id',
                 err
             })
         })
