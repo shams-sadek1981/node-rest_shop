@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const moment = require('moment');
+// const moment = require('moment-timezone');
 require('moment-weekday-calc');
 const ObjectId = mongoose.Types.ObjectId;
 const _ = require('lodash');
@@ -199,13 +200,27 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
 exports.userReport = (req, res) => {
 
     const startDate = new Date(req.query.startDate)
-    const endDate = new Date(req.query.endDate)
+    const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
     const userName = req.query.userName
+
+    // const nDate = new Date().toLocaleString('en-US', {
+    //     timeZone: 'Asia/Dhaka'
+    // });
+
+    // res.json({
+    //     message: 'sdfs',
+    //     endDate
+    // })    
+
+    // var a = moment("2013-11-18 11:55").tz("Asia/Taipei");
+    // var b = moment("2013-11-18 11:55").tz("America/Toronto");
+
+    
 
     const queryObj = {
         "subTasks.completedAt": {
             "$gte": startDate,
-            "$lte": endDate
+            "$lt": endDate
         },
         "subTasks.assignedUser": userName
     }
@@ -300,14 +315,6 @@ exports.userReport = (req, res) => {
             })
         })
 
-        // res.json( projectGroup)
-        // const projectGroup = _.groupBy(result, 'projectName')
-
-        // res.json({
-        //     totalEst,
-        //     result,
-        //     projectGroup
-        // })
     }).catch(err => res.json(err))
 }
 
