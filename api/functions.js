@@ -14,7 +14,7 @@ exports.checkJwt = (req, res, next) => {
 
     const { authorization } = req.headers
 
-    jwt.verify(authorization, process.env.JWT_KEY, function (err, decoded) {
+    jwt.verify(authorization.split(' ')[1], process.env.JWT_KEY, function (err, decoded) {
 
         if (decoded) {
             // console.log('decoded', decoded)

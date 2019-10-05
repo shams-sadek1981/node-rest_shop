@@ -237,11 +237,9 @@ exports.getAllUser = (req, res) => {
 exports.getUserPermissions = (req, res) => {
 
     const { authorization } = req.headers
-    // res.json({
-    //     sss: authorization
-    // })
+    
 
-    jwt.verify(authorization, process.env.JWT_KEY, function (err, decoded) {
+    jwt.verify(authorization.split(" ")[1], process.env.JWT_KEY, function (err, decoded) {
 
         if (decoded) {
             return User.findOne({ email: decoded.email })

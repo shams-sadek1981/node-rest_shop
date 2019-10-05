@@ -13,6 +13,7 @@ router.use('/task-type', require('./taskTypeRoutes'));
 router.use('/public-holiday', require('./publicHolidayRoutes'));
 router.use('/user-role', require('./userRoleRoutes'));
 router.use('/user-permission', require('./userPermissionRoutes'));
+router.use('/sprint', require('./sprintRoutes'));
 // router.use('/google-api', require('./googleApiRoutes'));
 
 module.exports = router;

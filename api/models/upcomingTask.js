@@ -64,7 +64,8 @@ const upcomingTaskSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    release: String
+    release: String,
+    sprint: String
 })
 
 

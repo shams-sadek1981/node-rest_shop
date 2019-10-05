@@ -301,6 +301,7 @@ exports.taskSearchRunning = async (req, res) => {
                     dueHour,
                     subTasks: item.subTasks,
                     release: item.release,
+                    sprint: item.sprint
                 }
             })//-- end result
 
