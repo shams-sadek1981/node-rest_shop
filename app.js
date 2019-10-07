@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Set up a whitelist and check against it:
-var whitelist = ['http://localhost:3001', 'http://app.shamssadek.com', 'http://app.shamssadek.com:3000', 'https://wedevs-pm.netlify.com']
+var whitelist = ['http://localhost:3001', 'https://virtunus.netlify.com', 'https://wedevs-pm.netlify.com']
 var corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {

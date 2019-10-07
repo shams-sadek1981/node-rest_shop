@@ -91,7 +91,7 @@ exports.search = async (req, res) => {
 
     Sprint.find(queryObj)
         .skip(skip).limit(limit)
-        .sort({ releaseDate: sortBy })
+        .sort({ endDate: sortBy })
         .then(data => {
 
             return res.json(
