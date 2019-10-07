@@ -40,6 +40,7 @@ exports.searchUpcomingTask = (req, res) => {
             const percent = parseFloat(completedEst * 100 / totalEst) || 0
 
             res.json({
+                sprintName,
                 totalEst,
                 completedEst,
                 dueEst,
