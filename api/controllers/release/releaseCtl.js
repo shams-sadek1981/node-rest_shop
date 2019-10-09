@@ -95,24 +95,38 @@ exports.search = async (req, res) => {
     Release.find(queryObj)
         .skip(skip).limit(limit)
         .sort({ releaseDate: sortBy })
-        .then(data => {
+        .then(releaseList => {
+
+            let releaseNames = []
 
             //-- Transform Data
-            const result = data.map(item => {
-
-                return {
-                    _id: item._id,
-                    status: item.status,
-                    releaseDate: item.releaseDate,
-                    projectName: item.projectName,
-                    version: item.version,
-                    description: item.description
-                }
+            releaseList.forEach(item => {
+                releaseNames.push(item.version)
             })
 
-            res.status(200).json({
-                result
-            })
+            UpcomingTask.find({ release: { $in: releaseNames } })
+                .exec()
+                .then(tasks => {
+
+                    const result = releaseList.map(item => {
+
+                        const releaseTasks = tasks.filter(task => task.release == item.version)
+
+                        return {
+                            _id: item._id,
+                            status: item.status,
+                            releaseDate: item.releaseDate,
+                            projectName: item.projectName,
+                            version: item.version,
+                            description: item.description,
+                            percent: releasePercent(releaseTasks)
+                        }
+                    })
+
+                    /* --- Return API Result --- */
+                    res.status(200).json({result})
+
+                }).catch(err => res.status(404).json(err))
         })
         .catch(err => {
             res.status(404).json({
@@ -120,6 +134,26 @@ exports.search = async (req, res) => {
             })
         })
 } //-- end function
+
+// Sprint Percent Calculation
+const releasePercent = (tasks) => {
+
+    let totalEst = 0
+    let completedEst = 0
+
+    tasks.forEach(task => {
+        task.subTasks.forEach(subTask => {
+            totalEst += parseFloat(subTask.estHour)
+            if (subTask.completedAt) {
+                completedEst += parseFloat(subTask.estHour)
+            }
+        })
+    })
+
+    const percent = parseFloat(completedEst * 100 / totalEst) || 0
+
+    return Math.round(percent)
+}
 
 /**
  * ------------------------------------------------------------------------------------------------
