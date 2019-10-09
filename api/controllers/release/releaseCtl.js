@@ -112,6 +112,8 @@ exports.search = async (req, res) => {
 
                         const releaseTasks = tasks.filter(task => task.release == item.version)
 
+                        const releaseStatus = releaseCalc(releaseTasks)
+
                         return {
                             _id: item._id,
                             status: item.status,
@@ -119,7 +121,10 @@ exports.search = async (req, res) => {
                             projectName: item.projectName,
                             version: item.version,
                             description: item.description,
-                            percent: releasePercent(releaseTasks)
+                            percent: releaseStatus.percent,
+                            est: releaseStatus.est,
+                            complete: releaseStatus.complete,
+                            due: releaseStatus.due,
                         }
                     })
 
@@ -136,7 +141,7 @@ exports.search = async (req, res) => {
 } //-- end function
 
 // Sprint Percent Calculation
-const releasePercent = (tasks) => {
+const releaseCalc = (tasks) => {
 
     let totalEst = 0
     let completedEst = 0
@@ -150,9 +155,16 @@ const releasePercent = (tasks) => {
         })
     })
 
-    const percent = parseFloat(completedEst * 100 / totalEst) || 0
+    const percent = Math.floor(parseFloat(completedEst * 100 / totalEst)) || 0
 
-    return Math.round(percent)
+    const due = totalEst - completedEst
+
+    return {
+        percent,
+        est: totalEst,
+        complete: completedEst,
+        due
+    }
 }
 
 /**

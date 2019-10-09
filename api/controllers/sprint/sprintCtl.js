@@ -116,6 +116,8 @@ exports.search = async (req, res) => {
 
                         const sprintTasks = tasks.filter( task => task.sprint == item.name)
 
+                        const sprintStatus = sprintCalc(sprintTasks)
+
                         return {
                             _id: item._id,
                             status: item.status,
@@ -126,7 +128,10 @@ exports.search = async (req, res) => {
                             endDate: item.endDate,
                             createdAt: item.createdAt,
                             description: item.description,
-                            percent: sprintPercent(sprintTasks)
+                            percent: sprintStatus.percent,
+                            est: sprintStatus.est,
+                            complete: sprintStatus.complete,
+                            due: sprintStatus.due,
                         }
                     })
 
@@ -143,7 +148,7 @@ exports.search = async (req, res) => {
 } //-- end function
 
 // Sprint Percent Calculation
-const sprintPercent = (tasks) => {
+const sprintCalc = (tasks) => {
     
     let totalEst = 0
     let completedEst = 0
@@ -157,9 +162,16 @@ const sprintPercent = (tasks) => {
         })
     })
 
-    const percent = parseFloat(completedEst * 100 / totalEst) || 0
+    const percent = Math.round(parseFloat(completedEst * 100 / totalEst)) || 0
 
-    return Math.round(percent)
+    const due = totalEst - completedEst
+
+    return {
+        percent,
+        est: totalEst,
+        complete: completedEst,
+        due
+    }
 }
 
 /**
