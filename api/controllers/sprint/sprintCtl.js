@@ -93,28 +93,47 @@ exports.search = async (req, res) => {
     Sprint.find(queryObj)
         .skip(skip).limit(limit)
         .sort({ endDate: sortBy })
-        .then(data => {
+        .then(sprintList => {
 
-            return res.json(
-                data
-            )
+            // return res.json(
+            //     sprintList
+            // )
+
+            let sprintNames = []
 
             //-- Transform Data
-            const result = data.map(item => {
-
-                return {
-                    _id: item._id,
-                    status: item.status,
-                    releaseDate: item.releaseDate,
-                    projectName: item.projectName,
-                    version: item.version,
-                    description: item.description
-                }
+            sprintList.forEach(item => {
+                sprintNames.push(item.name)
             })
 
-            res.status(200).json({
-                result
-            })
+
+            UpcomingTask.find({ sprint: { $in: sprintNames } })
+                .exec()
+                .then( tasks => {
+                    // return res.json(tasks)
+
+                    const result = sprintList.map(item => {
+
+                        const sprintTasks = tasks.filter( task => task.sprint == item.name)
+
+                        return {
+                            _id: item._id,
+                            status: item.status,
+                            projects: item.projects,
+                            status: item.status,
+                            name: item.name,
+                            startDate: item.startDate,
+                            endDate: item.endDate,
+                            createdAt: item.createdAt,
+                            description: item.description,
+                            percent: sprintPercent(sprintTasks)
+                        }
+                    })
+
+                    /* --- Return API Result --- */
+                    res.status(200).json(result)
+
+                }).catch(err => res.json(err))
         })
         .catch(err => {
             res.status(404).json({
@@ -122,6 +141,26 @@ exports.search = async (req, res) => {
             })
         })
 } //-- end function
+
+// Sprint Percent Calculation
+const sprintPercent = (tasks) => {
+    
+    let totalEst = 0
+    let completedEst = 0
+
+    tasks.forEach(task => {
+        task.subTasks.forEach(subTask => {
+            totalEst += parseFloat(subTask.estHour)
+            if (subTask.completedAt) {
+                completedEst += parseFloat(subTask.estHour)
+            }
+        })
+    })
+
+    const percent = parseFloat(completedEst * 100 / totalEst) || 0
+
+    return Math.round(percent)
+}
 
 /**
  * ------------------------------------------------------------------------------------------------
@@ -190,7 +229,7 @@ exports.sprintUpdate = (req, res) => {
     Sprint.findOneAndUpdate({ _id: req.params.id }, req.body, { new: false })
         .exec()
         .then(doc => {
-            
+
             const { name: oldSprintName } = doc
             const { name: newSprintName } = req.body
 
@@ -234,7 +273,7 @@ exports.sprintStatusUpdate = (req, res) => {
             res.json({
                 doc
             })
-            
+
             // const { version: findByVersion } = doc
 
             // let upcomingTaskBody = {
