@@ -327,7 +327,7 @@ exports.userReport = (req, res) => {
 exports.userReportSummary = async (req, res) => {
 
     const startDate = new Date(req.query.startDate)
-    const endDate = new Date(req.query.endDate)
+    const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
 
     const publicHolidays = await getPublicHolidays(startDate, endDate)
 
@@ -338,7 +338,7 @@ exports.userReportSummary = async (req, res) => {
     const queryObj = {
         "subTasks.completedAt": {
             "$gte": startDate,
-            "$lte": endDate
+            "$lt": endDate
         }
     }
 
@@ -407,12 +407,12 @@ exports.userReportSummary = async (req, res) => {
 exports.projectReportSummary = (req, res) => {
 
     const startDate = new Date(req.query.startDate)
-    const endDate = new Date(req.query.endDate)
+    const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
 
     const queryObj = {
         "subTasks.completedAt": {
             "$gte": startDate,
-            "$lte": endDate
+            "$lt": endDate
         }
     }
 
@@ -465,12 +465,12 @@ exports.projectReportSummary = (req, res) => {
 exports.subTaskReportSummary = (req, res) => {
 
     const startDate = new Date(req.query.startDate)
-    const endDate = new Date(req.query.endDate)
+    const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
 
     const queryObj = {
         "subTasks.completedAt": {
             "$gte": startDate,
-            "$lte": endDate
+            "$lt": endDate
         }
     }
 
@@ -523,12 +523,12 @@ exports.subTaskReportSummary = (req, res) => {
 exports.taskTypeReportSummary = (req, res) => {
 
     const startDate = new Date(req.query.startDate)
-    const endDate = new Date(req.query.endDate)
+    const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
 
     const queryObj = {
         "subTasks.completedAt": {
             "$gte": startDate,
-            "$lte": endDate
+            "$lt": endDate
         }
     }
 
