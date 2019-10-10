@@ -16,6 +16,7 @@ const unlinkAsync = promisify(fs.unlink)
  * --------------------------------------------------------------------------------------
  */
 const importCsvFile = (filePath) => {
+    
     const readDir = 'uploads/';
     let result = [];
     // fn.readCsvFile(readDir + 'upcomingTask.csv').then(readData => {
@@ -35,13 +36,15 @@ const importCsvFile = (filePath) => {
                     projectName: log[0],
                     taskType: log[1],
                     assignedBy: log[2],
+                    createdBy: log[2],
                     taskName: taskName.trim().toProperCase(),
                     subTask: log[4],
                     estHour: log[5],
                     startDate: log[6],
                     endDate: log[7],
                     completedAt: log[8],
-                    assignedUser: log[9]
+                    assignedUser: log[9],
+                    sprint: log[10],
                 }
             })
 
@@ -75,6 +78,8 @@ const importCsvFile = (filePath) => {
                         assignedBy: item.assignedBy,
                         taskName: item.taskName,
                         completedAt: item.completedAt,
+                        sprint: item.sprint,
+                        createdBy: item.createdBy,
                         subTasks: [{
                             name: item.subTask,
                             estHour: item.estHour,
@@ -115,6 +120,8 @@ const importCsvFile = (filePath) => {
                     assignedBy: item.assignedBy,
                     taskName: item.taskName,
                     completedAt: item.completedAt,
+                    sprint: item.sprint,
+                    createdBy: item.createdBy,
                     percent: Math.floor(completedHour * 100 / totalEstHour) || 0,
                     subTasks: item.subTasks
                 }
@@ -129,7 +136,6 @@ const importCsvFile = (filePath) => {
                     unlinkAsync(filePath)
 
                 }).catch(err => reject(err))
-
         })
 
     })

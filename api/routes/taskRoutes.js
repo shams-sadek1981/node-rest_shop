@@ -67,6 +67,7 @@ router.get('/summary-user', checkJwt, summaryUser)
 router.get('/summary-project', checkJwt, summaryProject)
 router.get('/task/report-task-status', checkJwt, reportTaskStatus)
 router.post('/upload-csv', checkJwt, upload.single('taskCsv'), uploadCsv)
+
 // router.post('/upload-csv', checkJwt, uploadCsv)
 
 //-- Delete user

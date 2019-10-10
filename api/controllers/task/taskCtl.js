@@ -8,10 +8,7 @@ const { queryBuilder, singleUserEst, totalEst, totalTask, importCsvFile } = requ
 
 //-- import .csv file
 exports.uploadCsv = (req, res) => {
-
-    // console.table('req.file.path')
-    // console.table(req.file.path)
-    // console.table(req.file)
+    // console.log('req.file.path')
 
     importCsvFile(req.file.path)
         .then(data => {
