@@ -109,14 +109,18 @@ exports.search = async (req, res) => {
 
             UpcomingTask.find({ sprint: { $in: sprintNames } })
                 .exec()
-                .then( tasks => {
+                .then(tasks => {
                     // return res.json(tasks)
 
                     const result = sprintList.map(item => {
 
-                        const sprintTasks = tasks.filter( task => task.sprint == item.name)
+                        const sprintTasks = tasks.filter(task => task.sprint == item.name)
 
                         const sprintStatus = sprintCalc(sprintTasks)
+
+                        const a = moment(item.endDate)
+                        const b = moment()
+                        restOfDays = a.diff(b, 'days')
 
                         return {
                             _id: item._id,
@@ -126,12 +130,14 @@ exports.search = async (req, res) => {
                             name: item.name,
                             startDate: item.startDate,
                             endDate: item.endDate,
+                            restOfDays,
                             createdAt: item.createdAt,
                             description: item.description,
                             percent: sprintStatus.percent,
                             est: sprintStatus.est,
                             complete: sprintStatus.complete,
                             due: sprintStatus.due,
+                            userDetails: sprintStatus.userDetails
                         }
                     })
 
@@ -149,28 +155,65 @@ exports.search = async (req, res) => {
 
 // Sprint Percent Calculation
 const sprintCalc = (tasks) => {
-    
+
     let totalEst = 0
     let completedEst = 0
+    let userDetails = []
 
     tasks.forEach(task => {
         task.subTasks.forEach(subTask => {
+
+            let userInfo = {
+                userName: subTask.assignedUser,
+                estHour: subTask.estHour,
+                complete: 0,
+                due: subTask.estHour
+            }
+
             totalEst += parseFloat(subTask.estHour)
             if (subTask.completedAt) {
                 completedEst += parseFloat(subTask.estHour)
+                userInfo.complete = subTask.estHour
+                userInfo.due = 0
             }
+
+            userDetails.push(userInfo)
+
         })
     })
+
+    // userDetails: Group by and sum of estHour
+    var userDetailsResult = [];
+    userDetails.reduce(function (res, value) {
+        if (!res[value.userName]) {
+            res[value.userName] = { userName: value.userName, estHour: 0, complete: 0, due: 0 };
+            userDetailsResult.push(res[value.userName])
+        }
+
+        res[value.userName].estHour += parseFloat(value.estHour);
+        res[value.userName].complete += parseFloat(value.complete);
+        res[value.userName].due += parseFloat(value.due);
+        return res;
+    }, {});
 
     const percent = Math.round(parseFloat(completedEst * 100 / totalEst)) || 0
 
     const due = totalEst - completedEst
 
+    const userDetailsFinal = userDetailsResult.map( item => ({
+        userName: item.userName,
+        estHour: item.estHour,
+        complete: item.complete,
+        due: item.due,
+        percent: Math.round(parseFloat(item.complete * 100 / item.estHour)) || 0
+    }))
+
     return {
         percent,
         est: totalEst,
         complete: completedEst,
-        due
+        due,
+        userDetails: userDetailsFinal
     }
 }
 
