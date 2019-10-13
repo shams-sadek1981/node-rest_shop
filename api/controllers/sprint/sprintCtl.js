@@ -208,6 +208,8 @@ const sprintCalc = (tasks) => {
         percent: Math.round(parseFloat(item.complete * 100 / item.estHour)) || 0
     }))
 
+    userDetailsFinal.sort((a,b) => (a.percent > b.percent) ? 1 : ((b.percent > a.percent) ? -1 : 0));
+
     return {
         percent,
         est: totalEst,
