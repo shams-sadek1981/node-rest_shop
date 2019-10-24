@@ -18,6 +18,11 @@ exports.searchUpcomingTask = (req, res) => {
     const sprintName = decodeURIComponent(req.query.sprintName)
 
     UpcomingTask.find({ sprint: sprintName })
+        .sort({ 
+            projectName: 1,
+            rate: -1,
+            taskName: 1
+        })    
         .exec()
         .then(data => {
 
@@ -110,7 +115,6 @@ exports.search = async (req, res) => {
             UpcomingTask.find({ sprint: { $in: sprintNames } })
                 .exec()
                 .then(tasks => {
-                    // return res.json(tasks)
 
                     const result = sprintList.map(item => {
 
@@ -120,7 +124,7 @@ exports.search = async (req, res) => {
 
                         const a = moment(item.endDate)
                         const b = moment()
-                        restOfDays = a.diff(b, 'days')
+                        restOfDays = a.diff(b, 'days') + 1
 
                         return {
                             _id: item._id,
