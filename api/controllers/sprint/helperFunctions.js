@@ -26,18 +26,29 @@ const sumEstHourAndTotalSubTask = (queryObj = {}) => {
 exports.sumEstHourAndTotalSubTask = sumEstHourAndTotalSubTask
 
 //-- Build Query
-exports.queryBuilder = (project = 'all', searchText, status = false) => {
+exports.queryBuilder = (projectName = 'all', searchText, status = false) => {
 
     let match = {
         $and: []
     }
 
-    if (project != 'all') {
+    // if (project != 'all') {
+    //     match.$and = [
+    //         ...match.$and,
+    //         { projects: { $in: project } }
+    //     ]
+    // }
+
+    if (projectName != 'all') {
+
+        if (!Array.isArray(projectName)) projectName = [projectName]
+
         match.$and = [
             ...match.$and,
-            { projects: { $in: project } }
+            { projects: { $in: projectName } }
         ]
     }
+
     
     if (searchText != "") {
         match = {
