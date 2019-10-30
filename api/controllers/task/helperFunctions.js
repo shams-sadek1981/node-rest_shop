@@ -253,10 +253,10 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
                         { taskName: { $regex: searchText, $options: "si" } },
                         { assignedBy: { $regex: searchText, $options: "si" } },
                         { release: { $regex: searchText, $options: "si" } },
+                        { sprint: { $regex: searchText, $options: "si" } },
                         {
                             $and: [
                                 { "subTasks.name": { $regex: searchText, $options: "si" } },
-                                // { "subTasks.status": status }
                             ]
                         },
                     ]
@@ -265,91 +265,9 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
         }
     }
 
-
-    // if (match.$and.length > 0) {
-    //     match = {
-    //         ...match,
-    //         $or: [
-    //             { completedAt: { $exists: completedAt } },
-    //             { completedAt: completedAt }
-    //         ]
-    //     }
-    // } else {
-    //     match = {
-    //         $or: [
-    //             { completedAt: { $exists: completedAt } },
-    //             { completedAt: completedAt }
-    //         ]
-    //     }
-    // }
-
     return match
 }
 
-// exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", status = false, running=false) => {
-
-//     // status = JSON.parse(status)
-
-//     let match = {
-//         $and: [ { running } ]
-//     }
-
-//     //-- Completed Status, must remove running
-//     if (status == true) {
-//         match = {
-//             $and: []
-//         }
-//     }
-
-//     if (userName != 'all') {
-//         match.$and = [
-//             ...match.$and,
-//             // { "subTasks.status": status },
-//             { "subTasks.assignedUser": userName }
-//         ]
-//     }
-
-//     if (projectName != 'all') {
-//         match.$and = [
-//             ...match.$and,
-//             { projectName: projectName }
-//         ]
-//     }
-
-//     if (searchText != "") {
-//         match = {
-//             $and: [
-//                 ...match.$and,
-//                 {
-//                     $or: [
-//                         { taskName: { $regex: searchText, $options: "si" } },
-//                         {
-//                             $and: [
-//                                 { "subTasks.name": { $regex: searchText, $options: "si" } },
-//                                 // { "subTasks.status": status }
-//                             ]
-//                         },
-//                     ]
-//                 }
-//             ]
-//         }
-//     }
-
-
-
-//     if (match.$and.length > 0) {
-//         match = {
-//             ...match,
-//             status
-//         }
-//     } else {
-//         match = {
-//             status
-//         }
-//     }
-
-//     return match
-// }
 
 //-- Single user
 const singleUserEst = async (queryObj) => {
