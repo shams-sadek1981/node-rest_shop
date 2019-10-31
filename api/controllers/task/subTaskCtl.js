@@ -466,11 +466,19 @@ exports.subTaskReportSummary = (req, res) => {
 
     const startDate = new Date(req.query.startDate)
     const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
+    const projectName = req.query.projectName
 
-    const queryObj = {
+    let queryObj = {
         "subTasks.completedAt": {
             "$gte": startDate,
             "$lt": endDate
+        }
+    }
+
+    if (projectName != 'all' ) {
+        queryObj = {
+            ...queryObj,
+            projectName
         }
     }
 
@@ -524,13 +532,23 @@ exports.taskTypeReportSummary = (req, res) => {
 
     const startDate = new Date(req.query.startDate)
     const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
+    const projectName = req.query.projectName
 
-    const queryObj = {
+    let queryObj = {
         "subTasks.completedAt": {
             "$gte": startDate,
             "$lt": endDate
         }
     }
+
+    if (projectName != 'all' ) {
+        queryObj = {
+            ...queryObj,
+            projectName
+        }
+    }
+
+    
 
     UpcomingTask.aggregate([
         {
