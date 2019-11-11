@@ -630,6 +630,7 @@ exports.createSubtask = (req, res) => {
                 subTasks: {
                     $each: [{
                         name: req.body.name,
+                        description: req.body.description,
                         assignedUser: req.body.assignedUser,
                         createdBy: req.body.createdBy,
                         estHour: req.body.estHour,
@@ -710,6 +711,7 @@ exports.updateSubTask = (req, res) => {
             $set: {
                 "subTasks.$": {
                     name: req.body.name,
+                    description: req.body.description,
                     assignedUser: req.body.assignedUser,
                     estHour: req.body.estHour,
                     status: status,
