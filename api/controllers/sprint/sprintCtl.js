@@ -22,7 +22,6 @@ exports.searchUpcomingTask = (req, res) => {
         sprint: sprintName
     }
 
-
     // Search by assigned user
     if (req.query.assignedUser) {
         queryObj = {
@@ -35,65 +34,27 @@ exports.searchUpcomingTask = (req, res) => {
         }
     }
 
-    // Main aggregate query
-    UpcomingTask.aggregate([
-        {
-            "$unwind": {
-                'path': '$subTasks',
-                "preserveNullAndEmptyArrays": true,
-                "includeArrayIndex": "arrayIndex"
-            }
-        },
-        // { $sort: { "subTasks.name": 1 } },
-        {
-            $match: queryObj
-        },
-        {
-            $group: {
-                _id: {
-                    _id: "$_id",
-                    running: "$running",
-                    rate: "$rate",
-                    percent: "$percent",
-                    projectName: "$projectName",
-                    taskType: "$taskType",
-                    assignedBy: "$assignedBy",
-                    taskName: "$taskName",
-                    description: "$description",
-                    completedAt: "$completedAt",
-                    sprint: "$sprint",
-                    createdBy: "$createdBy",
-                },
-                estHour: {
-                    $sum: "$subTasks.estHour"
-                },
-                subTasks: { $push: "$subTasks" }
-            }
-        },
-        { $sort: { "subTasks.assignedUser": 1, "_id.taskName": 1 } }
-        // { $sort: { "_id.running": -1, "_id.rate": -1, "_id.taskName": 1 } }
-
-    ])
-        // .skip(skip).limit(pageSize)
+    UpcomingTask.find( queryObj )
+        .sort({ _id: -1})
         .then(data => {
 
             // data format
             const result = data.map(item => {
 
+                let estHour = 0
+                item.subTasks.forEach( subTask => {
+                    estHour += subTask.estHour
+                })
+
                 return {
-                    ...item._id,
-                    estHour: item.estHour,
+                    ...item._doc,
+                    estHour,
                     subTasks: item.subTasks
                 }
             })
 
             // Sprint Calculation
             UpcomingTask.find({ sprint: sprintName })
-                .sort({
-                    projectName: 1,
-                    rate: -1,
-                    taskName: 1
-                })
                 .exec()
                 .then(sprintResult => {
 
@@ -111,40 +72,6 @@ exports.searchUpcomingTask = (req, res) => {
                 err
             })
         })
-
-
-
-    // UpcomingTask.find(queryObj)
-    //     .sort({
-    //         projectName: 1,
-    //         rate: -1,
-    //         taskName: 1
-    //     })
-    //     .exec()
-    //     .then(data => {
-
-
-    //         // Sprint Calculation
-    //         UpcomingTask.find({ sprint: sprintName })
-    //             .sort({
-    //                 projectName: 1,
-    //                 rate: -1,
-    //                 taskName: 1
-    //             })
-    //             .exec()
-    //             .then(sprintResult => {
-
-    //                 const sprintCalculation = sprintCalc(sprintResult)
-
-    //                 res.json({
-    //                     sprintName,
-    //                     ...sprintCalculation,
-    //                     result: data
-    //                 })
-    //             }).catch(err => res.json(err))
-
-
-    //     }).catch(err => res.json(err))
 }
 
 

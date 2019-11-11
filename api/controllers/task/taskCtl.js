@@ -472,7 +472,8 @@ exports.createNewTask = (req, res) => {
         taskType: req.body.taskType,
         projectName: req.body.projectName,
         assignedBy: req.body.assignedBy,
-        createdBy: req.body.createdBy
+        createdBy: req.body.createdBy,
+        sprint: req.body.sprint,
     })
 
     upcomingTask.save()
@@ -488,6 +489,7 @@ exports.createNewTask = (req, res) => {
                 createdAt: result.createdAt,
                 assignedBy: result.assignedBy,
                 createdBy: result.createdBy,
+                sprint: result.sprint,
             }
 
             res.status(200).json({
