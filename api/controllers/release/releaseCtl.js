@@ -10,6 +10,74 @@ const { queryBuilder } = require('./helperFunctions')
 
 /**
  * ------------------------------------------------------------------------------------
+ * Search upcoming task no release
+ * ------------------------------------------------------------------------------------
+ */
+exports.searchTaskNoRelease = async (req, res) => {
+
+    //-- Pagination settings
+    const pageSize = await JSON.parse(req.query.pageSize)
+    const pageNo = await JSON.parse(req.query.page)
+    const skip = pageNo * pageSize - pageSize
+
+    let sort = {
+        completedAt: -1,
+        percent: -1,
+        rate: -1,
+    }
+
+    const searchText = decodeURIComponent(req.query.searchText)
+    const taskType = decodeURIComponent(req.query.taskType)
+
+    // Build Query Object for search
+    let match = {
+        $and: [
+            { release: { $eq: null }  },
+            { completedAt: { $ne: null }  },
+        ]
+    }
+
+    if (taskType != 'undefined' ) {
+        match.$and = [
+            ...match.$and,
+            { taskType: { $eq: taskType } }
+        ]
+    }
+
+    if (searchText != 'undefined' ) {
+        match.$and = [
+            ...match.$and,
+            {
+                $or: [
+                    { taskName: { $regex: searchText, $options: "si" } }
+                ]
+            }
+        ]
+    }
+
+    // return res.json(
+    //     match
+    // )
+
+    
+    UpcomingTask.find(match)
+        .sort(sort)
+        .skip(skip).limit(pageSize)
+        .then(data => {
+
+            res.json({
+                pageNo,
+                pageSize,
+                data
+            })
+
+        })
+        .catch(err => res.json(err))
+}
+
+
+/**
+ * ------------------------------------------------------------------------------------
  * Search upcoming task
  * ------------------------------------------------------------------------------------
  */

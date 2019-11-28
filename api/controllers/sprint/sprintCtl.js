@@ -35,7 +35,7 @@ exports.searchUpcomingTask = (req, res) => {
     }
 
     UpcomingTask.find( queryObj )
-        .sort({ _id: -1})
+        .sort({ rate: -1})
         .then(data => {
 
             // data format
@@ -350,28 +350,24 @@ exports.sprintStatusUpdate = (req, res) => {
         .exec()
         .then(doc => {
 
-            res.json({
-                doc
-            })
+            const { name: findBySprint } = doc
 
-            // const { version: findByVersion } = doc
+            let upcomingTaskBody = {
+                completedAt: moment(new Date()).format('YYYY-MMM-DD')
+            }
 
-            // let upcomingTaskBody = {
-            //     completedAt: doc.releaseDate
-            // }
+            if (!req.body.status) {
+                upcomingTaskBody.completedAt = null
+            }
 
-            // if (!req.body.status) {
-            //     upcomingTaskBody.completedAt = null
-            // }
-
-            //-- bulk update also upcoming task `release`
-            // UpcomingTask.updateMany(
-            //     { release: findByVersion },
-            //     { $set: upcomingTaskBody },
-            //     { multi: true }
-            // ).then(data => {
-            //     res.status(200).json(data)
-            // }).catch(err => res.json(err))
+            //-- bulk update also upcoming task `sprint`
+            UpcomingTask.updateMany(
+                { sprint: findBySprint },
+                { $set: upcomingTaskBody },
+                { multi: true }
+            ).then(data => {
+                res.status(200).json(data)
+            }).catch(err => res.json(err))
 
 
         })

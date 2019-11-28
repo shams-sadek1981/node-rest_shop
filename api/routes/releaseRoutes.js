@@ -10,13 +10,15 @@ const {
     releaseDelete,
     releaseUpdate,
     searchUpcomingTask,
-    releaseStatusUpdate
+    releaseStatusUpdate,
+    searchTaskNoRelease
 } = require('../controllers/release/releaseCtl')
 
 
 router.post('/', checkJwt, createNew)
 router.get('/', checkJwt, search)
 router.get('/upcoming-task', checkJwt, searchUpcomingTask)
+router.get('/no-release', checkJwt, searchTaskNoRelease)
 router.delete('/:id', checkJwt, releaseDelete)
 router.put('/:id', checkJwt, releaseUpdate)
 router.put('/status/:id', checkJwt, releaseStatusUpdate)
