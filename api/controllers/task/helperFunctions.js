@@ -39,12 +39,13 @@ const importCsvFile = (filePath) => {
                     createdBy: log[2],
                     taskName: taskName.trim().toProperCase(),
                     subTask: log[4],
-                    estHour: log[5],
-                    startDate: log[6],
-                    endDate: log[7],
-                    completedAt: log[8],
-                    assignedUser: log[9],
-                    sprint: log[10],
+                    subtaskDescription: log[5],
+                    estHour: log[6],
+                    startDate: log[7],
+                    endDate: log[8],
+                    completedAt: log[9],
+                    assignedUser: log[10],
+                    sprint: log[11],
                 }
             })
 
@@ -82,6 +83,7 @@ const importCsvFile = (filePath) => {
                         createdBy: item.createdBy,
                         subTasks: [{
                             name: item.subTask,
+                            description: item.subtaskDescription,
                             estHour: item.estHour,
                             startDate: item.startDate,
                             endDate: item.endDate,
