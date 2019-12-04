@@ -9,6 +9,15 @@ const fs = require('fs')
 const { promisify } = require('util')
 const unlinkAsync = promisify(fs.unlink)
 
+
+// check http or url exists
+function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+        return url;
+    })
+}
+
 /**
  * 
  * --------------------------------------------------------------------------------------
@@ -84,6 +93,7 @@ const importCsvFile = (filePath) => {
                         subTasks: [{
                             name: item.subTask,
                             description: item.subtaskDescription,
+                            refLink: urlify(item.subtaskDescription),
                             estHour: item.estHour,
                             startDate: item.startDate,
                             endDate: item.endDate,
