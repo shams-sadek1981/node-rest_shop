@@ -13,7 +13,8 @@ const upcomingTaskSchema = mongoose.Schema({
         type: String
     },
     projectName: {
-        type: String
+        type: String,
+        index: true
     },
     subTasks:[
         {
