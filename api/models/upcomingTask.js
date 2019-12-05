@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const upcomingTaskSchema = mongoose.Schema({
     taskName: {
         type: String,
-        required: true
+        required: true,
+        index: true
     },
     description: {
         type: String
@@ -18,12 +19,16 @@ const upcomingTaskSchema = mongoose.Schema({
         {
             name: {
                 type: String,
-                required: true
+                required: true,
+                index: true
             },
             description: {
-                type: String
+                type: String,
             },
-            assignedUser: String,
+            assignedUser: {
+                type: String,
+                index: true
+            },
             estHour: Number,
             status: {
                 type: Boolean,
@@ -67,8 +72,14 @@ const upcomingTaskSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    release: String,
-    sprint: String
+    release: {
+        type: String,
+        index: true
+    },
+    sprint: {
+        type: String,
+        index: true
+    }
 })
 
 
