@@ -287,6 +287,7 @@ exports.userReport = (req, res) => {
                     taskType: task._id.taskType,
                     subTaskId: subTask._id,
                     subTask: subTask.name,
+                    subTaskDescription: subTask.description,
                     assignedUser: subTask.assignedUser,
                     estHour: subTask.estHour,
                     completedAt: moment(subTask.completedAt).format('DD-MMM-YYYY')
