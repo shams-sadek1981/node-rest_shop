@@ -1,0 +1,920 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const moment = require('moment');
+const EvaluationMark = require('../../models/evaluationMark');
+const { _ } = require('lodash')
+
+const { queryBuilder, singleUserEst, totalEst, totalTask, importCsvFile } = require('./helperFunctions')
+
+
+
+
+// Get all marks
+exports.getAllMarks = (req, res) => {
+
+    const badges = [
+        {
+            name: "SuperNova",
+            value: 95
+        },
+        {
+            name: "RockStar",
+            value: 85
+        },
+        {
+            name: "SuperStar",
+            value: 80
+        },
+        {
+            name: "Star",
+            value: 75
+        },
+        {
+            name: "Quite Star",
+            value: 70
+        },
+        {
+            name: "Promising Star",
+            value: 65
+        },
+        {
+            name: "Hidden Star",
+            value: 60
+        },
+        {
+            name: "Disappointing",
+            value: 50
+        },
+        {
+            name: "Frustrating",
+            value: 0
+        }
+    ];
+
+
+    const startDate = new Date(req.query.startDate)
+    const endDate = new Date(req.query.endDate)
+
+    const evaluationName = req.query.evaluationName
+
+
+    let queryObj = {}
+
+    if (startDate instanceof Date && !isNaN(startDate.valueOf())) {
+        queryObj.endDate = {
+            "$gte": startDate,
+            "$lte": endDate
+        }
+    }
+
+    // set Evaluation Name
+    if (evaluationName) {
+        queryObj.evaluationName = evaluationName
+    }
+
+    EvaluationMark.aggregate([
+        {
+            $match: queryObj
+        },
+        {
+            $group: {
+                _id: {
+                    userName: "$userName"
+                },
+                count:{$sum:1},
+                total: {
+                    $sum: {
+                        $add: [
+                            
+                            // Performance curve
+                            "$meatupDeadline", "$qualityOfWork", "$extraResponsibility",
+                            "$innovativeContribution", "$customerHappiness", "$preservingData",
+                            "$productivity",
+                            
+                            // Personality Curve
+                            "$organizationBehavior", "$standupAttendance", "$avgWorkingHour", "$helpsColleague",
+                            "$communityEngagement",
+                            
+                            // Learning Curve
+                            "$knowledgeSharing", "$domainKnowledge"
+                        ]
+                    }
+                },
+                // Performance curve total
+                performanceCurve: {
+                    $sum: {
+                        $add: [
+                            "$meatupDeadline", "$qualityOfWork", "$extraResponsibility",
+                            "$innovativeContribution", "$customerHappiness", "$preservingData",
+                            "$productivity"
+                        ]
+                    }
+                },
+                meatupDeadline: { $sum: "$meatupDeadline" },
+                qualityOfWork: { $sum: "$qualityOfWork" },
+                extraResponsibility: { $sum: "$extraResponsibility" },
+                innovativeContribution: { $sum: "$innovativeContribution" },
+                customerHappiness: { $sum: "$customerHappiness" },
+                preservingData: { $sum: "$preservingData" },
+                productivity: { $sum: "$productivity" },
+                
+                // Personality Curve total
+                personalityCurve: {
+                    $sum: {
+                        $add: [
+                            "$organizationBehavior", "$standupAttendance", "$avgWorkingHour", "$helpsColleague",
+                            "$communityEngagement"
+                        ]
+                    }
+                },
+                organizationBehavior: { $sum: "$organizationBehavior" },
+                standupAttendance: { $sum: "$standupAttendance" },
+                avgWorkingHour: { $sum: "$avgWorkingHour" },
+                helpsColleague: { $sum: "$helpsColleague" },
+                communityEngagement: { $sum: "$communityEngagement" },
+
+                 // Learning Curve total
+                learningCurve: {
+                    $sum: {
+                        $add: [
+                            "$knowledgeSharing", "$domainKnowledge"
+                        ]
+                    }
+                },
+                knowledgeSharing: { $sum: "$knowledgeSharing" },
+                domainKnowledge: { $sum: "$domainKnowledge" }
+            }
+        }
+    ]).then(data => {
+
+        // return res.json(data)
+        const result = data.map( doc => {
+
+            const userName = doc._id.userName
+            const total = parseFloat(doc.total) / parseFloat(doc.count)
+            const badge = badges.find( badge => badge.value < total )
+            
+            // Performance Curve
+            const performanceCurve = doc.performanceCurve / parseFloat(doc.count)
+            const meatupDeadline = doc.meatupDeadline / parseFloat(doc.count)
+            const qualityOfWork = doc.qualityOfWork / parseFloat(doc.count)
+            const extraResponsibility = doc.extraResponsibility / parseFloat(doc.count)
+            const innovativeContribution = doc.innovativeContribution / parseFloat(doc.count)
+            const customerHappiness = doc.customerHappiness / parseFloat(doc.count)
+            const preservingData = doc.preservingData / parseFloat(doc.count)
+            const productivity = doc.productivity / parseFloat(doc.count)
+
+            // Personality Curve
+            const personalityCurve = doc.personalityCurve / parseFloat(doc.count)
+            const organizationBehavior = doc.organizationBehavior / parseFloat(doc.count)
+            const standupAttendance = doc.standupAttendance / parseFloat(doc.count)
+            const avgWorkingHour = doc.avgWorkingHour / parseFloat(doc.count)
+            const helpsColleague = doc.helpsColleague / parseFloat(doc.count)
+            const communityEngagement = doc.communityEngagement / parseFloat(doc.count)
+
+            // Learning Curve
+            const learningCurve = doc.learningCurve / parseFloat(doc.count)
+            const knowledgeSharing = doc.knowledgeSharing / parseFloat(doc.count)
+            const domainKnowledge = doc.domainKnowledge / parseFloat(doc.count)
+
+            return {
+                userName,
+                total,
+                badge: badge.name,
+                
+                // Performance Curve
+                performanceCurve,
+                meatupDeadline,
+                qualityOfWork,
+                extraResponsibility,
+                innovativeContribution,
+                customerHappiness,
+                preservingData,
+                productivity,
+                personalityCurve,
+
+                // Personality Curve
+                organizationBehavior,
+                standupAttendance,
+                avgWorkingHour,
+                helpsColleague,
+                communityEngagement,
+                
+                // Learning Curve
+                learningCurve,
+                knowledgeSharing,
+                domainKnowledge
+            }
+        })
+
+        res.json(result)
+
+    }).catch(err => res.status(404).json(err))
+
+
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Report Task By Project (24-Jul-2019)
+ * -----------------------------------------------------------------------------
+ */
+exports.reportTaskStatus = (req, res) => {
+
+    const startDate = new Date(req.query.startDate)
+    const endDate = new Date(req.query.endDate)
+    const project = req.query.project
+
+    const queryObj = {
+        "completedAt": {
+            "$gte": startDate,
+            "$lte": endDate
+        },
+        projectName: project
+    }
+
+    UpcomingTask.aggregate([
+        {
+            "$unwind": {
+                'path': '$subTasks',
+                "preserveNullAndEmptyArrays": true,
+                "includeArrayIndex": "arrayIndex"
+            }
+        },
+        // { $sort: { "subTasks.assignedUser": 1 } },
+        {
+            $match: queryObj
+        },
+        {
+            $group: {
+                _id: {
+                    taskName: "$taskName",
+                    completedAt: "$completedAt",
+                    taskType: "$taskType",
+                },
+                estHour: {
+                    $sum: "$subTasks.estHour"
+                },
+                startDate: {
+                    $min: "$subTasks.startDate"
+                },
+                endDate: {
+                    $max: "$subTasks.completedAt"
+                },
+                subTasks: {
+                    $addToSet: {
+                        user: "$subTasks.assignedUser",
+                        estHour: "$subTasks.estHour",
+                        subTask: "$subTasks.name",
+                    }
+                }
+            }
+        },
+
+        { $sort: { "estHour": -1 } }
+
+    ]).then(data => {
+
+        // return res.json({
+        //     data: data
+        // })
+
+        let result = []
+        let totalEst = 0
+        data.forEach(item => {
+
+            totalEst += parseFloat(item.estHour)
+
+            let startDate = moment(item.startDate).format("DD-MMM-YYYY")
+            if (startDate == 'Invalid date') {
+                startDate = "---"
+            }
+
+            result.push({
+                taskName: item._id.taskName,
+                completedAt: moment(item._id.completedAt).format("DD-MMM-YYYY"),
+                taskType: item._id.taskType,
+                estHour: item.estHour,
+                startDate,
+                endDate: moment(item.endDate).format("DD-MMM-YYYY"),
+                subTasks: item.subTasks,
+            })
+        })
+
+        res.json({
+            totalTask: data.length,
+            totalEst: totalEst.toFixed(2),
+            result
+        })
+    }).catch(err => res.json(err))
+
+}
+
+//-- This script or function use only for bulk update upcoming task. -----
+exports.allTaskUpdate = (req, res) => {
+
+    UpcomingTask.find({})
+        .exec()
+        .then(doc => {
+
+            doc.forEach(task => {
+
+                let totalEstHour = 0
+                let completedHour = 0
+
+                if (task.subTasks.length > 0) {
+                    task.subTasks.forEach(subTask => {
+                        totalEstHour += subTask.estHour
+                        if (subTask.completedAt != null) {
+                            completedHour += subTask.estHour
+                        }
+                    })
+                }
+
+                const percent = Math.floor(completedHour * 100 / totalEstHour)
+
+                UpcomingTask.update({ _id: task._id }, { percent })
+                    .then(data => {
+                        console.log(data)
+                    })
+            })
+        })
+
+    res.json({
+        message: 'Success'
+    })
+
+    // UpcomingTask.updateMany(
+    //     {},
+    //     {
+    //         $addToSet: {
+    //             percent: 
+    //         }
+    //     },
+    //     {
+    //         multi: true
+    //     }
+    // )
+    // .then( data => {
+    //     res.json(data)
+    // })
+    // .catch( err => res.json(err))
+
+}
+
+exports.taskSearchRunning = async (req, res) => {
+
+    const userName = await req.query.name
+    const projectName = await req.query.project
+    const searchText = await req.query.text
+    const pageSize = await JSON.parse(req.query.pageSize)
+    const running = await JSON.parse(req.query.running)
+    const completedAt = await JSON.parse(req.query.completedAt)
+    const newlyAdded = await JSON.parse(req.query.newlyAdded)
+
+    //-- Pagination settings
+    const pageNo = await JSON.parse(req.query.page)
+    const skip = pageNo * pageSize - pageSize
+
+    //-- Set Query Object
+    const queryObj = await queryBuilder(userName, projectName, searchText, running, completedAt)
+
+    // return res.json(queryObj)
+
+    //-- Count total tasks
+    const totalTasks = await totalTask(queryObj)
+
+
+    //-- by user & project
+    const { userEstHour, userTotalSubTask } = await singleUserEst(queryObj)
+
+
+    //-- all user
+    const { totalEstHour, totalSubTask } = await totalEst(queryObj)
+
+    //-- set sort items
+    let sort = {
+        release: -1,
+        completedAt: -1,
+        percent: -1,
+        rate: -1,
+        "subTasks.name": 1
+    }
+
+    if (newlyAdded == true) {
+        sort = { createdAt: -1, ...sort }
+    }
+
+    UpcomingTask.find(queryObj)
+        .sort(sort)
+        .skip(skip).limit(pageSize)
+        // sort: { "_id.completedAt": -1, "_id.rate": -1, "_id.taskName": 1 } }
+        .then(data => {
+
+            //-- Transform Data
+            let result = data.map(item => {
+
+                let estHour = 0
+                let completedHour = 0
+                let maxCompletedAt = null
+                let startAt = null
+                let dueHour = 0
+                // let percent = 0
+
+                if (item.subTasks.length > 0) {
+
+                    item.subTasks.forEach(subTask => {
+                        //-- calculation of completed hour
+                        if (subTask.completedAt != null) {
+                            completedHour += subTask.estHour
+
+
+                            /**
+                             * ------------------------------
+                             * set subTask maxCompletedAt
+                             * ------------------------------
+                             */
+                            if (subTask.completedAt) {
+                                if (maxCompletedAt == null) {
+                                    maxCompletedAt = subTask.completedAt
+                                } else {
+                                    if (subTask.completedAt > maxCompletedAt) {
+                                        maxCompletedAt = subTask.completedAt
+                                    }
+                                }
+                            }
+                        }
+
+                        /**
+                         * ---------------------------
+                         * Set startAt
+                         * ---------------------------
+                         */
+                        if (subTask.startDate) {
+                            if (startAt == null) {
+                                startAt = subTask.startDate
+                            } else {
+                                if (subTask.startDate < startAt) {
+                                    startAt = subTask.startDate
+                                }
+                            }
+                        }
+
+                        // totalEstHour += subTask.estHour
+                        estHour += subTask.estHour
+                    })
+
+                    dueHour = estHour - completedHour
+                    // percent = Math.floor(completedHour * 100 / estHour)
+                }
+
+
+                return {
+                    _id: item._id,
+                    status: item.status,
+                    running: item.running,
+                    rate: item.rate,
+                    taskName: item.taskName,
+                    description: item.description,
+                    taskType: item.taskType,
+                    projectName: item.projectName,
+                    completedAt: item.completedAt,
+                    maxCompletedAt: maxCompletedAt,
+                    startAt,
+                    assignedBy: item.assignedBy,
+                    createdAt: moment(item.createdAt).format('DD-MMM-YYYY'),
+                    createdBy: item.createdBy,
+                    updatedBy: item.updatedBy,
+                    updatedAt: moment(item.updatedAt).format('DD-MMM-YYYY'),
+                    estHour,
+                    completedHour,
+                    percent: item.percent || 0,
+                    dueHour,
+                    subTasks: item.subTasks,
+                    release: item.release,
+                    sprint: item.sprint
+                }
+            })//-- end result
+
+
+            //-- sort by percent
+            // const newResult = _.orderBy(result, ['percent', 'rate', 'taskName'],['desc', 'desc', 'asc']); // Use Lodash to sort array by 'name'
+
+            return res.json({
+                pagination: {
+                    total: totalTasks,
+                    current: pageNo,
+                    pageSize
+                },
+                userName,
+                totalEstHour,
+                totalSubTask,
+                userEstHour,
+                userTotalSubTask,
+                result
+            })
+
+
+        }).catch(err => {
+            res.status(404).json({
+                err
+            })
+        })
+}
+
+/**
+ * ------------------------------------------------------------------------------------
+ * Search Task
+ * ------------------------------------------------------------------------------------
+ */
+exports.taskSearch = async (req, res) => {
+
+    const userName = await req.query.name
+    const projectName = await req.query.project
+    const searchText = await req.query.text
+    const pageSize = await JSON.parse(req.query.pageSize)
+    const running = await JSON.parse(req.query.running)
+    const completedAt = await JSON.parse(req.query.completedAt)
+
+    //-- Pagination settings
+    const pageNo = await JSON.parse(req.query.page)
+    // const pageSize = 3 //-- initialize the pageSize / pageSize / perPage data
+    const skip = pageNo * pageSize - pageSize
+
+
+    //-- Set Query Object
+    const queryObj = await queryBuilder(userName, projectName, searchText, running, completedAt)
+
+
+    // return res.json(
+    //     queryObj
+    // )
+
+    // UpcomingTask.find({
+    //     completedAt: { $eq: null}
+    // }).then(data => res.json(data))
+
+
+    //-- Count total tasks
+    const totalTasks = await totalTask(queryObj)
+
+
+    //-- by user & project
+    const { userEstHour, userTotalSubTask } = await singleUserEst(queryObj)
+
+
+    //-- all user
+    const { totalEstHour, totalSubTask } = await totalEst(queryObj)
+
+
+    // return res.json({
+    //     totalEstHour
+    // })
+
+    UpcomingTask.aggregate([
+        {
+            "$unwind": {
+                'path': '$subTasks',
+                "preserveNullAndEmptyArrays": true,
+                "includeArrayIndex": "arrayIndex"
+            }
+        },
+        { $sort: { "subTasks.name": 1 } },
+        {
+            $match: queryObj
+        },
+        {
+            $group: {
+                _id: {
+                    _id: "$_id",
+                    taskName: "$taskName",
+                    projectName: "$projectName",
+                    taskType: "$taskType",
+                    description: "$description",
+                    assignedBy: "$assignedBy",
+                    completedAt: "$completedAt",
+                    // status: "$status",
+                    running: "$running",
+                    rate: "$rate",
+                },
+                subTasks: { $push: "$subTasks" },
+                estHour: {
+                    $sum: "$subTasks.estHour"
+                }
+            }
+        },
+        { $sort: { "_id.completedAt": -1, "_id.rate": -1, "_id.taskName": 1 } }
+
+    ])
+        .skip(skip).limit(pageSize)
+        .then(data => {
+
+            //-------- Transform Data --------
+            const result = data.map(item => {
+
+                //-- calculation of completed hour
+                const completedHour = item.subTasks.filter(item1 => {
+                    if (item1.completedAt != null) {
+                        return item1
+                    }
+                }).reduce((acc, cur) => acc + cur.estHour, 0)
+
+                const percent = Math.floor(completedHour * 100 / item.estHour)
+
+                return {
+                    ...item._id,
+                    subTasks: item.subTasks,
+                    estHour: item.estHour,
+                    completedHour,
+                    dueHour: item.estHour - completedHour,
+                    percent: percent || 0
+                }
+            })
+
+            //-- Return Result
+            res.status(200).json({
+                pagination: {
+                    total: totalTasks,
+                    current: pageNo,
+                    pageSize
+                },
+                totalEstHour,
+                totalSubTask,
+                userName,
+                userEstHour,
+                userTotalSubTask,
+                result
+            })
+
+        }).catch(err => {
+            res.status(404).json({
+                err
+            })
+        })
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  Create New Task
+ * ------------------------------------------------------------------------------------------------
+ */
+exports.createNewTask = (req, res) => {
+
+    const upcomingTask = new UpcomingTask({
+        taskName: req.body.taskName,
+        description: req.body.description,
+        taskType: req.body.taskType,
+        projectName: req.body.projectName,
+        assignedBy: req.body.assignedBy,
+        createdBy: req.body.createdBy,
+        sprint: req.body.sprint,
+    })
+
+    upcomingTask.save()
+        .then(result => {
+
+            const formatedData = {
+                _id: result._id,
+                rate: result.rate,
+                taskName: result.taskName,
+                description: result.description,
+                projectName: result.projectName,
+                taskType: result.taskType,
+                createdAt: result.createdAt,
+                assignedBy: result.assignedBy,
+                createdBy: result.createdBy,
+                sprint: result.sprint,
+            }
+
+            res.status(200).json({
+                ...formatedData
+            })
+        })
+        .catch(err => {
+            res.status(403).json({
+                err
+            })
+        })
+}
+
+
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  All List
+ * ------------------------------------------------------------------------------------------------
+ */
+exports.taskList = (req, res) => {
+
+    UpcomingTask.aggregate([
+        {
+            $group: {
+                _id: null,
+                totalEst: { $sum: "$estHour" }
+            }
+        }
+    ])
+        .exec()
+        .then(estHour => {
+
+            //-- get Total Est Hour
+            const totalEstHour = estHour[0].totalEst
+
+            //-- get all task
+            UpcomingTask.find({})
+                .exec()
+                .then(allData => {
+                    res.status(200).json({
+                        count: allData.length,
+                        totalEstHour,
+                        result: allData
+                    })
+                })
+        })
+}
+
+
+//-- Task Bulk Insert from description (Edit Mode)
+createBulkTask = (id) => {
+    return UpcomingTask.findById(id)
+        .exec()
+        .then(data => {
+
+            const spittedTasks = data.description.split(/\r\n|\n|\r/);
+
+            if (spittedTasks.length > 0) {
+
+                const bulkTasks = spittedTasks.map(task => {
+                    return {
+                        taskName: task,
+                        description: task,
+                        taskType: data.taskType,
+                        projectName: data.projectName,
+                        assignedBy: data.assignedBy,
+                        createdBy: data.updatedBy,
+                    }
+                })
+
+                //-- Delete main task
+                UpcomingTask.deleteOne({ _id: id }).exec()
+
+                //-- Insert Many
+                return UpcomingTask.insertMany(bulkTasks)
+                    .exec()
+                    .then(result => result)
+                    .catch(err => err)
+            } else {
+                return false
+            }
+        })
+        .catch(err => err)
+}
+
+//-- Update user
+exports.updateTask = (req, res) => {
+
+    req.body.updatedAt = new Date()
+
+    UpcomingTask.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+        .exec()
+        .then(doc => {
+
+            //-- bulkInsert from description field
+            if (req.body.bulkInsert) {
+                createBulkTask(req.params.id)
+            }
+
+            res.status(200).json(doc)
+        })
+        .catch(err => {
+            res.status(403).json({
+                err
+            })
+        })
+}
+
+//-- Delete Task by ID
+exports.deleteTask = (req, res, next) => {
+
+    UpcomingTask.deleteOne({ _id: req.params.id })
+        .exec()
+        .then(docs => {
+            res.status(200).json({
+                message: 'Successfully deleted',
+                docs
+            })
+        })
+        .catch(err => {
+            res.status(500).json({ error: err })
+        })
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * user Summary Report
+ * ----------------------------------------------------------------------------------------------------
+ */
+exports.summaryUser = (req, res) => {
+
+    UpcomingTask.aggregate([
+        {
+            "$unwind": {
+                'path': '$subTasks',
+                "preserveNullAndEmptyArrays": true,
+                "includeArrayIndex": "arrayIndex"
+            }
+        },
+        {
+            $match: {
+                $and: [
+                    { completedAt: { $eq: null } },
+                    { "subTasks.completedAt": { $eq: null } }
+                ]
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    assignedUser: "$subTasks.assignedUser"
+                },
+                estHour: {
+                    $sum: "$subTasks.estHour"
+                }
+            }
+        },
+        {
+            $match: {
+                "_id.assignedUser": { $ne: null }
+            }
+        },
+        { $sort: { "_id.assignedUser": 1 } }
+
+    ])
+        .then(data => {
+
+            //-- Transform Data
+            const result = data.map(item => {
+                return {
+                    ...item._id,
+                    estHour: item.estHour,
+                }
+            })
+
+
+            res.json({
+                result
+            })
+        })
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Project Summary Report
+ * ----------------------------------------------------------------------------------------------------
+ */
+exports.summaryProject = (req, res) => {
+
+    UpcomingTask.aggregate([
+        {
+            "$unwind": {
+                'path': '$subTasks',
+                "preserveNullAndEmptyArrays": true,
+                "includeArrayIndex": "arrayIndex"
+            }
+        },
+        {
+            $match: {
+                $and: [
+                    { completedAt: { $eq: null } },
+                    { "subTasks.completedAt": { $eq: null } }
+                ]
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    projectName: "$projectName"
+                },
+                estHour: {
+                    $sum: "$subTasks.estHour"
+                }
+            }
+        },
+        { $sort: { "_id.projectName": 1 } }
+    ])
+        .then(data => {
+            //-- Transform Data
+            const result = data.map(item => {
+                return {
+                    ...item._id,
+                    estHour: item.estHour,
+                }
+            })
+
+            res.json({
+                result
+            })
+        })
+}

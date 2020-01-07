@@ -1,9 +1,33 @@
 const express = require('express');
 const router = express.Router();
 
+const { checkJwt } = require('../functions');
+
 const csvCtl=require('../controllers/csvCtl');
 
-// router.get('/read', csvCtl.readFile)
+const {
+    uploadEvaluationCsv
+} =require('../controllers/csvCtl');
+
+/**
+ * ------------------------------------------------------
+ * Upload file by using multer
+ * ------------------------------------------------------
+ */
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/')
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname)
+    }
+})
+const upload = multer({ storage: storage})
+
+
+
+router.get('/read', csvCtl.readFile)
 // router.get('/write', csvCtl.writeFile)
 
 /**
@@ -28,5 +52,8 @@ router.get('/import-three-month-data', csvCtl.importThreeMonth)
 router.get('/write-task-may-est', csvCtl.writeTaskMayEst)
 
 router.get('/read-write', csvCtl.readAndWrite)
+
+// Upload evaluation.csv file /csv/upload-csv
+router.post('/upload-evaluation-csv', checkJwt, upload.single('evaluationCsv'), uploadEvaluationCsv)
 
 module.exports = router;

@@ -7,6 +7,7 @@ const TaskEstHour = require('../models/taskEstHour');
 const ThreeMonth = require('../models/threeMonth');
 const UserTask = require('../models/userTask');
 const UpcomingTask = require('../models/upcomingTask');
+const EvaluationMark = require('../models/evaluationMark');
 
 const taskHelperFunction = require('../controllers/task/helperFunctions')
 // const PDFDocument = require('pdfkit');
@@ -33,6 +34,85 @@ String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 };
 
+
+//-- import .csv file
+/**
+ * ------------------------------------------------------------------------------------
+ * Upload evaluation marks
+ * ------------------------------------------------------------------------------------
+ */
+exports.uploadEvaluationCsv = (req, res) => {
+    
+    // console.log('req.file.path')
+    const filePath = req.file.path
+    const startDate = req.body.startDate
+    const endDate = req.body.endDate
+    const evaluationName = req.body.evaluationName
+
+    
+    fn.readCsvFile(filePath).then( readData => {
+
+        readData.shift()//-- Remove Header
+        readData.shift()//-- Remove Header
+        readData.shift()//-- Remove Header
+        readData.shift()//-- Remove Header
+
+        const rawObject = readData.map(log => {
+            return {
+                startDate,
+                endDate,
+                evaluationName,
+                userName: log[1],
+                learningCurve: log[2],
+                personalityCurve: log[3],
+                performanceCurve: log[4],
+                totalAchievePoint: log[5],
+                badge: log[6],
+                meatupDeadline: log[7],
+                qualityOfWork: log[8],
+                extraResponsibility: log[9],
+                innovativeContribution: log[10],
+                customerHappiness: log[11],
+                preservingData: log[12],
+                productivity: log[13],
+                // 14 Total
+                organizationBehavior: log[15],
+                standupAttendance: log[16],
+                avgWorkingHour: log[17],
+                helpsColleague: log[18],
+                communityEngagement: log[19],
+                // 20 Total
+                knowledgeSharing: log[21],
+                domainKnowledge: log[22]
+            }
+        })
+
+        // Delete by evaluation Name
+        EvaluationMark.deleteMany({
+            evaluationName
+        }).then( doc => {
+            // res.json( doc )
+        }).catch( err => res.json(err))
+
+        //-- Insert All
+        EvaluationMark.insertMany(rawObject)
+        .then(data => {
+            
+            unlinkAsync(filePath)
+
+            res.json({
+                filePath,
+                data,
+                rawObject
+            });
+
+        }).catch(err => res.json(err))
+
+        
+
+    })
+    
+}
 
 exports.importThreeMonth = (req, res) => {
 
@@ -241,7 +321,7 @@ exports.importUpcomingTask = (req, res) => {
     // estTaskHour()//-- generate Estimation Hour by Project
 
     return res.status(200).json({
-        message: 'Success'
+        message: 'Success 1'
     })
 
 }
