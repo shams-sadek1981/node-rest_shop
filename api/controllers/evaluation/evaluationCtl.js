@@ -8,7 +8,6 @@ const { queryBuilder, singleUserEst, totalEst, totalTask, importCsvFile } = requ
 
 
 
-
 // Get all marks
 exports.getAllMarks = (req, res) => {
 
@@ -58,6 +57,7 @@ exports.getAllMarks = (req, res) => {
     const evaluationName = req.query.evaluationName
 
 
+    // Define Query Object
     let queryObj = {}
 
     if (startDate instanceof Date && !isNaN(startDate.valueOf())) {

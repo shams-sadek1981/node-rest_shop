@@ -53,6 +53,7 @@ exports.searchUpcomingTask = (req, res) => {
                 }
             })
 
+            
             // Sprint Calculation
             UpcomingTask.find({ sprint: sprintName })
                 .exec()
@@ -188,16 +189,16 @@ const sprintCalc = (tasks) => {
 
             let userInfo = {
                 userName: subTask.assignedUser,
-                estHour: subTask.estHour,
-                complete: 0,
-                due: subTask.estHour
+                estHour: parseFloat(subTask.estHour,2),
+                complete: parseFloat(0,2),
+                due: parseFloat(subTask.estHour,2)
             }
 
-            totalEst += parseFloat(subTask.estHour)
+            totalEst += parseFloat(subTask.estHour,2)
             if (subTask.completedAt) {
-                completedEst += parseFloat(subTask.estHour)
-                userInfo.complete = subTask.estHour
-                userInfo.due = 0
+                completedEst += parseFloat(subTask.estHour,2)
+                userInfo.complete = parseFloat(subTask.estHour,2)
+                userInfo.due = parseFloat(0,2)
             }
 
             userDetails.push(userInfo)

@@ -9,6 +9,7 @@ const UserTask = require('../models/userTask');
 const UpcomingTask = require('../models/upcomingTask');
 const EvaluationMark = require('../models/evaluationMark');
 
+
 const taskHelperFunction = require('../controllers/task/helperFunctions')
 // const PDFDocument = require('pdfkit');
 // const doc = new PDFDocument;
@@ -17,6 +18,8 @@ const PdfPrinter = require('pdfmake');
 const checkAuth = require('../middleware/check-auth');
 
 const fs = require('fs');
+const { promisify } = require('util')
+const unlinkAsync = promisify(fs.unlink)
 const csv = require('fast-csv');
 
 const _ = require('lodash');
@@ -63,11 +66,11 @@ exports.uploadEvaluationCsv = (req, res) => {
                 endDate,
                 evaluationName,
                 userName: log[1],
-                learningCurve: log[2],
-                personalityCurve: log[3],
-                performanceCurve: log[4],
-                totalAchievePoint: log[5],
-                badge: log[6],
+                // learningCurve: log[2],
+                // personalityCurve: log[3],
+                // performanceCurve: log[4],
+                // totalAchievePoint: log[5],
+                // badge: log[6],
                 meatupDeadline: log[7],
                 qualityOfWork: log[8],
                 extraResponsibility: log[9],
@@ -75,12 +78,14 @@ exports.uploadEvaluationCsv = (req, res) => {
                 customerHappiness: log[11],
                 preservingData: log[12],
                 productivity: log[13],
+                
                 // 14 Total
                 organizationBehavior: log[15],
                 standupAttendance: log[16],
                 avgWorkingHour: log[17],
                 helpsColleague: log[18],
                 communityEngagement: log[19],
+                
                 // 20 Total
                 knowledgeSharing: log[21],
                 domainKnowledge: log[22]
