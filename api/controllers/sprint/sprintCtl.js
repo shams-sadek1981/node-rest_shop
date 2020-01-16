@@ -189,16 +189,16 @@ const sprintCalc = (tasks) => {
 
             let userInfo = {
                 userName: subTask.assignedUser,
-                estHour: parseFloat(subTask.estHour,2),
-                complete: parseFloat(0,2),
-                due: parseFloat(subTask.estHour,2)
+                estHour: parseFloat(subTask.estHour).toFixed(2),
+                complete: 0,
+                due: parseFloat(subTask.estHour).toFixed(2)
             }
 
-            totalEst += parseFloat(subTask.estHour,2)
+            totalEst += parseFloat(subTask.estHour).toFixed(2)
             if (subTask.completedAt) {
-                completedEst += parseFloat(subTask.estHour,2)
-                userInfo.complete = parseFloat(subTask.estHour,2)
-                userInfo.due = parseFloat(0,2)
+                completedEst += parseFloat(subTask.estHour).toFixed(2)
+                userInfo.complete = parseFloat(subTask.estHour).toFixed(2)
+                userInfo.due = 0
             }
 
             userDetails.push(userInfo)
