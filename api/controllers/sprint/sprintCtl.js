@@ -197,7 +197,7 @@ const sprintCalc = (tasks) => {
             // totalEst += parseFloat(subTask.estHour).toFixed(2)
             totalEst += subTask.estHour
             if (subTask.completedAt) {
-                completedEst += parseFloat(subTask.estHour).toFixed(2)
+                completedEst += subTask.estHour
                 userInfo.complete = parseFloat(subTask.estHour).toFixed(2)
                 userInfo.due = 0
             }
