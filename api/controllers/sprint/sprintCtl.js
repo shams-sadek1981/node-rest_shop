@@ -34,15 +34,15 @@ exports.searchUpcomingTask = (req, res) => {
         }
     }
 
-    UpcomingTask.find( queryObj )
-        .sort({ rate: -1})
+    UpcomingTask.find(queryObj)
+        .sort({ rate: -1 })
         .then(data => {
 
             // data format
             const result = data.map(item => {
 
                 let estHour = 0
-                item.subTasks.forEach( subTask => {
+                item.subTasks.forEach(subTask => {
                     estHour += subTask.estHour
                 })
 
@@ -53,7 +53,7 @@ exports.searchUpcomingTask = (req, res) => {
                 }
             })
 
-            
+
             // Sprint Calculation
             UpcomingTask.find({ sprint: sprintName })
                 .exec()
@@ -87,7 +87,7 @@ exports.search = async (req, res) => {
     const project = await req.query.project
     const status = await JSON.parse((req.query.status))
     const searchText = await req.query.text
-    const limit = await JSON.parse(req.query.limit)
+    const limit = await JSON.parse(req.query.pageSize)
 
     // return res.json({
     //     project,
@@ -145,6 +145,7 @@ exports.search = async (req, res) => {
                         const b = moment()
                         restOfDays = a.diff(b, 'days') + 1
 
+
                         return {
                             _id: item._id,
                             status: item.status,
@@ -165,7 +166,23 @@ exports.search = async (req, res) => {
                     })
 
                     /* --- Return API Result --- */
-                    res.status(200).json(result)
+                    // get Total Sprint data
+                    Sprint.aggregate([
+                        {
+                            $match: queryObj
+                        },
+                        { $group: { _id: null, count: { $sum: 1 } } }
+                    ]).then(doc => {
+
+                        res.status(200).json({
+                            pagination: {
+                                total: doc[0].count,
+                                current: pageNo,
+                                pageSize: limit
+                            },
+                            result
+                        })
+                    })
 
                 }).catch(err => res.json(err))
         })
@@ -237,8 +254,8 @@ const sprintCalc = (tasks) => {
 
     return {
         percent,
-        est: totalEst,
-        complete: completedEst,
+        est: totalEst.toString().match(/\.\d+/) ? parseFloat(totalEst).toFixed(2) : totalEst,
+        complete: completedEst.toString().match(/\.\d+/) ? parseFloat(completedEst).toFixed(2) : completedEst,
         due,
         userDetails: userDetailsFinal
     }
