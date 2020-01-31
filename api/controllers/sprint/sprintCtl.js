@@ -84,6 +84,10 @@ exports.searchUpcomingTask = (req, res) => {
  */
 exports.search = async (req, res) => {
 
+    // return res.json({
+    //     message: 'sdfs'
+    // })
+
     const project = await req.query.project
     const status = await JSON.parse((req.query.status))
     const searchText = await req.query.text
@@ -119,9 +123,19 @@ exports.search = async (req, res) => {
         .sort({ endDate: sortBy })
         .then(sprintList => {
 
-            // return res.json(
-            //     sprintList
-            // )
+            // check result is empty or not
+            if (sprintList === undefined || sprintList.length == 0) {
+                return res.status(200).json({
+                    pagination: {
+                        current: 1,
+                        total: 0,
+                        pageSize: 10
+                    },
+                    result:[],
+                    message: 'No data found'
+                })
+            }
+
 
             let sprintNames = []
 
@@ -182,9 +196,9 @@ exports.search = async (req, res) => {
                             },
                             result
                         })
-                    })
+                    }).catch( err => res.status(404).json(err))
 
-                }).catch(err => res.json(err))
+                }).catch(err => res.status(404).json(err))
         })
         .catch(err => {
             res.status(404).json({
@@ -360,10 +374,10 @@ exports.sprintUpdate = (req, res) => {
 
 /**
  * ------------------------------------------------------------------------------------------------
- *  Update release status
+ *  Update sprint status
  * ------------------------------------------------------------------------------------------------
  */
-exports.sprintStatusUpdate = (req, res) => {
+exports.sprintStatus = (req, res) => {
 
     Sprint.findOneAndUpdate({ _id: req.params.id }, req.body, { new: false })
         .exec()
@@ -388,7 +402,6 @@ exports.sprintStatusUpdate = (req, res) => {
                 res.status(200).json(data)
             }).catch(err => res.json(err))
 
-
         })
         .catch(err => {
 
@@ -397,4 +410,47 @@ exports.sprintStatusUpdate = (req, res) => {
                 err
             })
         })
+}
+
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  Update sprint status
+ * ------------------------------------------------------------------------------------------------
+ */
+exports.sprintStatusUpdate = (req, res) => {
+
+    const sprintName = req.params.sprintName
+
+    // Sprint Calculation
+    UpcomingTask.find({ sprint: sprintName })
+        // .exec()
+        .then(sprintResult => {
+
+            const sprintCalculation = sprintCalc(sprintResult)
+
+            const sprintStatus = {
+                est: sprintCalculation.est,
+                complete: sprintCalculation.complete,
+                due: sprintCalculation.due,
+                percent: sprintCalculation.percent
+            }
+
+            const body = {
+                sprintStatus,
+                usersStatus: sprintCalculation.userDetails
+            }
+
+
+            // Update Sprint Status
+            Sprint.findOneAndUpdate({ name: sprintName }, body, { new: true })
+                .then( doc => {
+                    res.json( doc )
+                })
+                .catch( err => res.json(err))
+
+        }).catch(err => {
+            return res.json(err)
+        })
+
 }

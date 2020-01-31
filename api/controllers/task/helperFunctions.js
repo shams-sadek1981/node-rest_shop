@@ -18,6 +18,14 @@ function urlify(text) {
     })
 }
 
+// sort by
+function Comparator(a, b) {
+    if (a[3] < b[3]) return -1;
+    if (a[3] > b[3]) return 1;
+    return 0;
+}
+
+
 /**
  * 
  * --------------------------------------------------------------------------------------
@@ -35,6 +43,9 @@ const importCsvFile = (filePath) => {
         fn.readCsvFile(filePath).then(readData => {
 
             readData.shift()//-- Remove Header
+
+            // Sort by task name
+            readData = readData.sort(Comparator);
 
             //-- create raw object
             const rawObject = readData.map(log => {
@@ -58,10 +69,10 @@ const importCsvFile = (filePath) => {
                 }
             })
 
-            //-- sort by taskName
-            rawObject.sort((a, b) => {
-                return a.taskName > b.taskName
-            })
+            // //-- sort by taskName
+            // rawObject.sort((a, b) => {
+            //     return a.taskName > b.taskName
+            // })
 
 
             //-- group by taskName
@@ -80,7 +91,8 @@ const importCsvFile = (filePath) => {
                         startDate: item.startDate,
                         endDate: item.endDate,
                         completedAt: item.completedAt,
-                        assignedUser: item.assignedUser
+                        assignedUser: item.assignedUser,
+                        description: item.subtaskDescription
                     })
                 } else {
                     newObject = {

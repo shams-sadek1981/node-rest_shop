@@ -18,7 +18,20 @@ const sprintSchema = mongoose.Schema({
     status: {
         type: Boolean,
         default: false
-    }
+    },
+    sprintStatus: {
+        est: Number,
+        complete: Number,
+        due: Number,
+        percent: Number
+    },
+    usersStatus: [{
+        userName: String,
+        est: Number,
+        complete: Number,
+        due: Number,
+        percent: Number
+    }]
 })
 
 module.exports = mongoose.model('sprint', sprintSchema);
