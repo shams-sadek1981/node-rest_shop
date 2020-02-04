@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Sprint = require('../../models/sprint');
+const User = require('../../models/user');
 const UpcomingTask = require('../../models/upcomingTask');
 const moment = require('moment')
 
@@ -76,7 +77,28 @@ exports.searchUpcomingTask = (req, res) => {
 }
 
 
+/**
+ * 
+ * @param {*} allUsers 
+ * @param {*} item 
+ */
+const getUsersBySprint = (allUsers, item) => {
 
+    let getUsers = allUsers.filter(doc => {
+
+        const projectList = doc.projects.filter(project => {
+
+            for (i = 0; i < item.projects.length; i++) {
+                return project.projectName == item.projects[i]
+            }
+        })
+
+        return projectList.length > 0;
+    })
+
+    return getUsers.map( item => item.name)
+
+}
 /**
  * ------------------------------------------------------------------------------------
  * Search
@@ -113,15 +135,23 @@ exports.search = async (req, res) => {
 
     // //-- Set Query Object
     const queryObj = await queryBuilder(project, searchText, status)
-    // return res.json(
-    //     queryObj
-    // )
+
+
+    // get all users
+
+    // const users = await User.find({ projects: { $exists: true, $not: { $size: 0 } } })
+
+
+
+
+    // const userResult1 = await users.filter( item => item._id == "5d84b982e2ceca298eaea5ee")
+
 
 
     Sprint.find(queryObj)
         .skip(skip).limit(limit)
         .sort({ endDate: sortBy })
-        .then(sprintList => {
+        .then(async sprintList => {
 
             // check result is empty or not
             if (sprintList === undefined || sprintList.length == 0) {
@@ -131,18 +161,36 @@ exports.search = async (req, res) => {
                         total: 0,
                         pageSize: 10
                     },
-                    result:[],
+                    result: [],
                     message: 'No data found'
                 })
             }
 
 
             let sprintNames = []
-
+            let projects = [] // for find user list
             //-- Transform Data
             sprintList.forEach(item => {
                 sprintNames.push(item.name)
+
+                projects.push(...item.projects)
+
             })
+
+
+            // Create unique elements for project list
+            projects = [...new Set(projects)]
+
+            // find users list
+            let allUsers = await User.find({ "projects.projectName": { $in: projects } })
+            
+            allUsers = allUsers.map( item => ({
+                name: item.name,
+                projects: item.projects
+            }))
+
+
+
 
 
             UpcomingTask.find({ sprint: { $in: sprintNames } })
@@ -164,6 +212,7 @@ exports.search = async (req, res) => {
                             _id: item._id,
                             status: item.status,
                             projects: item.projects,
+                            users: getUsersBySprint(allUsers, item),
                             status: item.status,
                             name: item.name,
                             startDate: item.startDate,
@@ -188,6 +237,11 @@ exports.search = async (req, res) => {
                         { $group: { _id: null, count: { $sum: 1 } } }
                     ]).then(doc => {
 
+
+                        /**
+                         * 
+                         * Return Result with pagination
+                         */
                         res.status(200).json({
                             pagination: {
                                 total: doc[0].count,
@@ -196,7 +250,7 @@ exports.search = async (req, res) => {
                             },
                             result
                         })
-                    }).catch( err => res.status(404).json(err))
+                    }).catch(err => res.status(404).json(err))
 
                 }).catch(err => res.status(404).json(err))
         })
@@ -444,10 +498,10 @@ exports.sprintStatusUpdate = (req, res) => {
 
             // Update Sprint Status
             Sprint.findOneAndUpdate({ name: sprintName }, body, { new: true })
-                .then( doc => {
-                    res.json( doc )
+                .then(doc => {
+                    res.json(doc)
                 })
-                .catch( err => res.json(err))
+                .catch(err => res.json(err))
 
         }).catch(err => {
             return res.json(err)
