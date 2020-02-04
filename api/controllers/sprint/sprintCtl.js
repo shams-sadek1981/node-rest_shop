@@ -36,7 +36,8 @@ exports.searchUpcomingTask = (req, res) => {
     }
 
     UpcomingTask.find(queryObj)
-        .sort({ rate: -1 })
+        // .sort({ rate: -1 })
+        .sort({ _id: -1 })
         .then(data => {
 
             // data format
