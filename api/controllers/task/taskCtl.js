@@ -168,11 +168,19 @@ exports.allTaskUpdate = (req, res) => {
 
 }
 
+
+
+/**
+ * Task Search Running
+ * 
+ * 
+ */
 exports.taskSearchRunning = async (req, res) => {
 
     const userName = await req.query.name
     const projectName = await req.query.project
     const searchText = await req.query.text
+    const releaseStatus = await req.query.releaseStatus
     const pageSize = await JSON.parse(req.query.pageSize)
     const running = await JSON.parse(req.query.running)
     const completedAt = await JSON.parse(req.query.completedAt)
@@ -183,7 +191,7 @@ exports.taskSearchRunning = async (req, res) => {
     const skip = pageNo * pageSize - pageSize
 
     //-- Set Query Object
-    const queryObj = await queryBuilder(userName, projectName, searchText, running, completedAt)
+    const queryObj = await queryBuilder(userName, projectName, searchText, running, completedAt, releaseStatus)
 
     // return res.json(queryObj)
 

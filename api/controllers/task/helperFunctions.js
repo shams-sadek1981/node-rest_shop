@@ -227,8 +227,12 @@ exports.sumEstHourAndTotalSubTask = sumEstHourAndTotalSubTask
 
 
 
-//-- Build Query
-exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", running = false, completedAt = null) => {
+/**
+ * Build Query
+ * 
+ * 
+ */
+exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", running = false, completedAt = null, releaseStatus = 'all') => {
 
     // status = JSON.parse(status)
     let match = {
@@ -251,6 +255,28 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
     }
 
 
+    /**
+     * set Release Status
+     */
+    if (releaseStatus != 'all') {
+
+        if ( releaseStatus == 'release') {
+            match.$and = [
+                ...match.$and,
+                { release: { $ne: null } }
+            ]
+        } else {
+            match.$and = [
+                ...match.$and,
+                { release: { $eq: null } }
+            ]
+        }
+        
+    }
+
+    /**
+     * set User name
+     */
     if (userName != 'all') {
         match.$and = [
             ...match.$and,
@@ -259,6 +285,10 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
         ]
     }
 
+    /**
+     * set Project name
+     * 
+     */
     if (projectName != 'all') {
 
         if (!Array.isArray(projectName)) projectName = [projectName]

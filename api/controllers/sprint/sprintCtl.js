@@ -5,7 +5,7 @@ const User = require('../../models/user');
 const UpcomingTask = require('../../models/upcomingTask');
 const moment = require('moment')
 
-const { queryBuilder } = require('./helperFunctions')
+const { queryBuilder, getUsersBySprint } = require('./helperFunctions')
 
 
 
@@ -78,28 +78,7 @@ exports.searchUpcomingTask = (req, res) => {
 }
 
 
-/**
- * 
- * @param {*} allUsers 
- * @param {*} item 
- */
-const getUsersBySprint = (allUsers, item) => {
 
-    let getUsers = allUsers.filter(doc => {
-
-        const projectList = doc.projects.filter(project => {
-
-            for (i = 0; i < item.projects.length; i++) {
-                return project.projectName == item.projects[i]
-            }
-        })
-
-        return projectList.length > 0;
-    })
-
-    return getUsers.map( item => item.name)
-
-}
 /**
  * ------------------------------------------------------------------------------------
  * Search

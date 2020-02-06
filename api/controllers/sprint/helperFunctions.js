@@ -161,3 +161,26 @@ exports.totalTask = (queryObj) => {
         }
     })
 }
+
+
+/**
+ * 
+ * @param {*} allUsers 
+ * @param {*} item 
+ */
+exports.getUsersBySprint = (allUsers, item) => {
+
+    let getUsers = allUsers.filter(doc => {
+
+        const projectList = doc.projects.filter(project => {
+
+            for (i = 0; i < item.projects.length; i++) {
+                return project.projectName == item.projects[i]
+            }
+        })
+
+        return projectList.length > 0;
+    })
+
+    return getUsers.map( item => item.name)
+}
