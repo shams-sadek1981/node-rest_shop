@@ -9,7 +9,7 @@ const _ = require('lodash');
 const UpcomingTask = require('../../models/upcomingTask');
 // const TaskNo = require('../../models/taskNo');
 const TaskNo = require('../../models/taskNo');
-const { queryBuilder, singleUserEst, totalEst, totalTask, updateSubTaskPercent, getPublicHolidays } = require('./helperFunctions')
+const { queryBuilder, singleUserEst, totalEst, totalTask, updateSubTaskPercent, getPublicHolidays, timeConvert } = require('./helperFunctions')
 
 
 //-- helper function project group by
@@ -43,6 +43,7 @@ const projectGroupBy = (userName, startDate, endDate) => {
                         projectName: "$projectName",
                     },
                     subTasks: { $push: "$subTasks" },
+                    myCount: { $sum: 1 },
                     estHour: {
                         $sum: "$subTasks.estHour"
                     }
@@ -61,6 +62,7 @@ const projectGroupBy = (userName, startDate, endDate) => {
                 result.push({
                     projectName: task._id.projectName,
                     estHour: task.estHour,
+                    myCount: task.myCount,
                 })
             })
 
@@ -104,6 +106,7 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
                         taskType: "$taskType",
                     },
                     subTasks: { $push: "$subTasks" },
+                    myCount: { $sum: 1 },
                     estHour: {
                         $sum: "$subTasks.estHour"
                     }
@@ -122,6 +125,7 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
                 result.push({
                     taskType: task._id.taskType,
                     estHour: task.estHour,
+                    myCount: task.myCount,
                 })
             })
 
@@ -165,6 +169,7 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
                         subTask: "$subTasks.name",
                     },
                     subTasks: { $push: "$subTasks" },
+                    myCount: { $sum: 1 },
                     estHour: {
                         $sum: "$subTasks.estHour"
                     }
@@ -183,6 +188,7 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
                 result.push({
                     subTask: task._id.subTask,
                     estHour: task.estHour,
+                    myCount: task.myCount,
                 })
             })
 
@@ -197,11 +203,27 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
 
 
 //-- Report User Report
-exports.userReport = (req, res) => {
+exports.userReport = async (req, res) => {
+
+
 
     const startDate = new Date(req.query.startDate)
     const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
     const userName = req.query.userName
+
+    const publicHolidays = await getPublicHolidays(startDate, endDate)
+    const sD = moment(req.query.startDate)
+    const eD = moment(req.query.endDate).add(1, 'days')
+    const totalDays = eD.diff(sD, 'days')
+
+
+    const totalWorkingDays = await moment().weekdayCalc({
+        rangeStart: startDate,
+        rangeEnd: endDate,
+        weekdays: [1, 2, 3, 4, 5], //weekdays Mon to Fri
+        // exclusions: ['9 Jun 2019', '8 Jun 2019', '7 Jun 2019', '6 Jun 2019', '5 Jun 2019', '4 Jun 2019', '3 Jun 2019', '2 Jun 2019']  //public holidays
+        exclusions: publicHolidays  //public holidays
+    })
 
     // const nDate = new Date().toLocaleString('en-US', {
     //     timeZone: 'Asia/Dhaka'
@@ -215,7 +237,7 @@ exports.userReport = (req, res) => {
     // var a = moment("2013-11-18 11:55").tz("Asia/Taipei");
     // var b = moment("2013-11-18 11:55").tz("America/Toronto");
 
-    
+
 
     const queryObj = {
         "subTasks.completedAt": {
@@ -263,11 +285,6 @@ exports.userReport = (req, res) => {
             }
         },
         { $sort: { "_id.completedAt": 1, "_id.taskName": 1 } }
-        // { $sort: {
-        //     '_id.year': 1,
-        //     '_id.month': 1,
-        //     '_id.day': 1
-        // }}
 
     ]).then(data => {
 
@@ -275,10 +292,12 @@ exports.userReport = (req, res) => {
 
         let result = []
         let totalEst = 0
+        let totalTask = 0
         data.forEach(task => {
 
             task.subTasks.forEach(subTask => {
                 totalEst += parseFloat(subTask.estHour)
+                totalTask++
 
                 result.push({
                     taskId: task._id._id,
@@ -290,12 +309,19 @@ exports.userReport = (req, res) => {
                     subTaskDescription: subTask.description,
                     assignedUser: subTask.assignedUser,
                     estHour: subTask.estHour,
+                    totalTask,
                     completedAt: moment(subTask.completedAt).format('DD-MMM-YYYY')
                 })
             })
         })
 
 
+        /**
+         * Group Reports
+         * 1. Project
+         * 2. Task Type
+         * 3. Subtask
+         */
         const projectGroup = projectGroupBy(userName, startDate, endDate)
         const taskTypeGroup = taskTypeGroupBy(userName, startDate, endDate)
         const subTaskGroup = subTaskGroupBy(userName, startDate, endDate)
@@ -306,7 +332,16 @@ exports.userReport = (req, res) => {
 
                 subTaskGroup.then(subTaskData => {
                     res.json({
+                        startDate: moment(startDate).format("DD-MMM-YYYY"),
+                        endDate: moment(endDate).add(-1, 'days').format("DD-MMM-YYYY"),
                         totalEst: totalEst.toFixed(2),
+                        totalTask,
+                        totalDays,
+                        avgTaskHour: (totalEst / totalTask).toFixed(2), // Avg working hour by task
+                        publicHolidays,
+                        totalWorkingDays,
+                        avgHourPerDay: (totalEst / totalWorkingDays).toFixed(2),
+                        avgTaskPerDay: (totalTask / totalWorkingDays).toFixed(2),
                         result,
                         projectData,
                         taskTypeData,
@@ -330,18 +365,43 @@ exports.userReportSummary = async (req, res) => {
     const startDate = new Date(req.query.startDate)
     const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
 
+    const project = req.query.project
+
     const publicHolidays = await getPublicHolidays(startDate, endDate)
 
     // return res.json({
-    //     publicHolidays
+    //     project
     // })
 
-    const queryObj = {
+    let queryObj = {
         "subTasks.completedAt": {
             "$gte": startDate,
             "$lt": endDate
         }
     }
+
+    /**
+     * if get project name
+     */
+    if (project) {
+        if (Array.isArray(project)) {
+            queryObj = {
+                ...queryObj,
+                projectName: {
+                    $in: project
+                }
+            }
+        } else {
+            queryObj = {
+                ...queryObj,
+                projectName: project
+            }
+        }
+    }
+
+    // return res.json({
+    //     queryObj
+    // })
 
     const totalWorkingDays = moment().weekdayCalc({
         rangeStart: startDate,
@@ -373,6 +433,7 @@ exports.userReportSummary = async (req, res) => {
                 _id: {
                     userName: "$subTasks.assignedUser",
                 },
+                myCount: { $sum: 1 },
                 estHour: {
                     $sum: "$subTasks.estHour"
                 }
@@ -384,13 +445,16 @@ exports.userReportSummary = async (req, res) => {
 
         let result = []
         let totalEst = 0
+        let totalTask = 0
         data.forEach(item => {
 
             totalEst += parseFloat(item.estHour)
+            totalTask += item.myCount
 
             result.push({
                 userName: item._id.userName,
                 estHour: item.estHour,
+                myCount: item.myCount,
                 officeHour: totalWorkingDays * 8,
                 timeLog: 140
             })
@@ -398,6 +462,7 @@ exports.userReportSummary = async (req, res) => {
 
         res.json({
             totalEst: totalEst.toFixed(2),
+            totalTask,
             result
         })
     }).catch(err => res.json(err))
@@ -433,6 +498,7 @@ exports.projectReportSummary = (req, res) => {
                 _id: {
                     projectName: "$projectName",
                 },
+                myCount: { $sum: 1 },
                 estHour: {
                     $sum: "$subTasks.estHour"
                 }
@@ -444,18 +510,22 @@ exports.projectReportSummary = (req, res) => {
 
         let result = []
         let totalEst = 0
+        let totalTask = 0
         data.forEach(item => {
 
             totalEst += parseFloat(item.estHour)
+            totalTask += item.myCount
 
             result.push({
                 projectName: item._id.projectName,
-                estHour: item.estHour
+                estHour: item.estHour,
+                myCount: item.myCount
             })
         })
 
         res.json({
             totalEst: totalEst.toFixed(2),
+            totalTask,
             result
         })
     }).catch(err => res.json(err))
@@ -467,7 +537,7 @@ exports.subTaskReportSummary = (req, res) => {
 
     const startDate = new Date(req.query.startDate)
     const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
-    const projectName = req.query.projectName
+    const project = req.query.project
 
     let queryObj = {
         "subTasks.completedAt": {
@@ -476,10 +546,22 @@ exports.subTaskReportSummary = (req, res) => {
         }
     }
 
-    if (projectName != 'all' ) {
-        queryObj = {
-            ...queryObj,
-            projectName
+    /**
+      * if get project name
+      */
+    if (project) {
+        if (Array.isArray(project)) {
+            queryObj = {
+                ...queryObj,
+                projectName: {
+                    $in: project
+                }
+            }
+        } else {
+            queryObj = {
+                ...queryObj,
+                projectName: project
+            }
         }
     }
 
@@ -499,6 +581,7 @@ exports.subTaskReportSummary = (req, res) => {
                 _id: {
                     "subTask": "$subTasks.name",
                 },
+                myCount: { $sum: 1 },
                 estHour: {
                     $sum: "$subTasks.estHour"
                 }
@@ -510,18 +593,22 @@ exports.subTaskReportSummary = (req, res) => {
 
         let result = []
         let totalEst = 0
+        let totalTask = 0
         data.forEach(item => {
 
             totalEst += parseFloat(item.estHour)
+            totalTask += item.myCount
 
             result.push({
                 subTask: item._id.subTask,
-                estHour: item.estHour
+                estHour: item.estHour,
+                myCount: item.myCount
             })
         })
 
         res.json({
             totalEst: totalEst.toFixed(2),
+            totalTask,
             result
         })
     }).catch(err => res.json(err))
@@ -533,7 +620,7 @@ exports.taskTypeReportSummary = (req, res) => {
 
     const startDate = new Date(req.query.startDate)
     const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
-    const projectName = req.query.projectName
+    const project = req.query.project
 
     let queryObj = {
         "subTasks.completedAt": {
@@ -542,14 +629,24 @@ exports.taskTypeReportSummary = (req, res) => {
         }
     }
 
-    if (projectName != 'all' ) {
-        queryObj = {
-            ...queryObj,
-            projectName
+    /**
+     * if get project name
+     */
+    if (project) {
+        if (Array.isArray(project)) {
+            queryObj = {
+                ...queryObj,
+                projectName: {
+                    $in: project
+                }
+            }
+        } else {
+            queryObj = {
+                ...queryObj,
+                projectName: project
+            }
         }
     }
-
-    
 
     UpcomingTask.aggregate([
         {
@@ -567,6 +664,7 @@ exports.taskTypeReportSummary = (req, res) => {
                 _id: {
                     taskType: "$taskType",
                 },
+                myCount: { $sum: 1 },
                 estHour: {
                     $sum: "$subTasks.estHour"
                 }
@@ -578,18 +676,22 @@ exports.taskTypeReportSummary = (req, res) => {
 
         let result = []
         let totalEst = 0
+        let totalTask = 0
         data.forEach(item => {
 
             totalEst += parseFloat(item.estHour)
+            totalTask += item.myCount
 
             result.push({
                 taskType: item._id.taskType,
-                estHour: item.estHour
+                estHour: item.estHour,
+                myCount: item.myCount
             })
         })
 
         res.json({
             totalEst: totalEst.toFixed(2),
+            totalTask,
             result
         })
     }).catch(err => res.json(err))

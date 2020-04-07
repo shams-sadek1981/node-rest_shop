@@ -13,7 +13,7 @@ const unlinkAsync = promisify(fs.unlink)
 // check http or url exists
 function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function(url) {
+    return text.replace(urlRegex, function (url) {
         return url;
     })
 }
@@ -33,7 +33,7 @@ function Comparator(a, b) {
  * --------------------------------------------------------------------------------------
  */
 const importCsvFile = (filePath) => {
-    
+
     const readDir = 'uploads/';
     let result = [];
     // fn.readCsvFile(readDir + 'upcomingTask.csv').then(readData => {
@@ -81,7 +81,7 @@ const importCsvFile = (filePath) => {
             let newObject = {
                 subTasks: []
             }
-            
+
             rawObject.forEach(item => {
 
                 if (taskName == item.taskName) {
@@ -157,7 +157,7 @@ const importCsvFile = (filePath) => {
             UpcomingTask.insertMany(result)
                 .then(data => {
                     resolve(data)
-                    
+
                     unlinkAsync(filePath)
 
                 }).catch(err => reject(err))
@@ -226,6 +226,20 @@ const sumEstHourAndTotalSubTask = (queryObj = {}) => {
 exports.sumEstHourAndTotalSubTask = sumEstHourAndTotalSubTask
 
 
+/**
+ * Number To Time Convert
+ * 
+ */
+const timeConvert = (num) => {
+    var hours = (num / 60);
+    var rhours = Math.floor(hours);
+    var minutes = (hours - rhours) * 60;
+    var rminutes = Math.round(minutes);
+    return num + " minutes = " + rhours + " hour(s) and " + rminutes + " minute(s).";
+}
+exports.timeConvert = timeConvert
+
+
 
 /**
  * Build Query
@@ -260,7 +274,7 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
      */
     if (releaseStatus != 'all') {
 
-        if ( releaseStatus == 'release') {
+        if (releaseStatus == 'release') {
             match.$and = [
                 ...match.$and,
                 { release: { $ne: null } }
@@ -271,7 +285,7 @@ exports.queryBuilder = (userName = 'all', projectName = 'all', searchText = "", 
                 { release: { $eq: null } }
             ]
         }
-        
+
     }
 
     /**

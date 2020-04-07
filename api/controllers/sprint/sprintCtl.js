@@ -163,8 +163,8 @@ exports.search = async (req, res) => {
 
             // find users list
             let allUsers = await User.find({ "projects.projectName": { $in: projects } })
-            
-            allUsers = allUsers.map( item => ({
+
+            allUsers = allUsers.map(item => ({
                 name: item.name,
                 projects: item.projects
             }))
@@ -304,7 +304,7 @@ const sprintCalc = (tasks) => {
         percent,
         est: totalEst.toString().match(/\.\d+/) ? parseFloat(totalEst).toFixed(2) : totalEst,
         complete: completedEst.toString().match(/\.\d+/) ? parseFloat(completedEst).toFixed(2) : completedEst,
-        due,
+        due: due.toString().match(/\.\d+/) ? parseFloat(due).toFixed(2) : due,
         userDetails: userDetailsFinal
     }
 }
@@ -352,13 +352,26 @@ exports.createNew = (req, res) => {
  *  Delete
  * ------------------------------------------------------------------------------------------------
  */
-exports.sprintDelete = (req, res, next) => {
+exports.sprintDelete = async (req, res, next) => {
+
+    const result = await Sprint.findById({ _id: req.params.id })
+
+    const sprintName = await result.name
+
     Sprint.deleteOne({ _id: req.params.id })
         .exec()
         .then(docs => {
-            res.status(200).json({
-                message: 'Successfully deleted',
-                docs
+            /**
+            * Delete tasks from upcoming task
+            */
+            UpcomingTask.deleteMany({
+                sprint: sprintName
+            }).then(doc => {
+                res.json({
+                    message: 'Successfully deleted',
+                    docs,
+                    doc
+                })
             })
         })
         .catch(err => {
@@ -366,11 +379,11 @@ exports.sprintDelete = (req, res, next) => {
         })
 }
 
-// /**
-//  * ------------------------------------------------------------------------------------------------
-//  *  Update Sprint
-//  * ------------------------------------------------------------------------------------------------
-//  */
+/**
+* ------------------------------------------------------------------------------------------------
+*  Update Sprint
+* ------------------------------------------------------------------------------------------------
+*/
 exports.sprintUpdate = (req, res) => {
 
     Sprint.findOneAndUpdate({ _id: req.params.id }, req.body, { new: false })
