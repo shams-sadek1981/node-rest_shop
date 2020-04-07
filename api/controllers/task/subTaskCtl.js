@@ -461,6 +461,9 @@ exports.userReportSummary = async (req, res) => {
         })
 
         res.json({
+            startDate: moment(startDate).format('DD-MMM-YYYY'),
+            endDate: moment(req.query.endDate).format('DD-MMM-YYYY'),
+            project,
             totalEst: totalEst.toFixed(2),
             totalTask,
             result
@@ -498,6 +501,7 @@ exports.projectReportSummary = (req, res) => {
                 _id: {
                     projectName: "$projectName",
                 },
+                assignedUser: { $addToSet: "$subTasks.assignedUser" },
                 myCount: { $sum: 1 },
                 estHour: {
                     $sum: "$subTasks.estHour"
@@ -518,12 +522,16 @@ exports.projectReportSummary = (req, res) => {
 
             result.push({
                 projectName: item._id.projectName,
+                totalUser: item.assignedUser.length,
+                assignedUser: item.assignedUser,
                 estHour: item.estHour,
                 myCount: item.myCount
             })
         })
 
         res.json({
+            startDate: moment(startDate).format('DD-MMM-YYYY'),
+            endDate: moment(req.query.endDate).format('DD-MMM-YYYY'),
             totalEst: totalEst.toFixed(2),
             totalTask,
             result
@@ -607,6 +615,9 @@ exports.subTaskReportSummary = (req, res) => {
         })
 
         res.json({
+            startDate: moment(startDate).format('DD-MMM-YYYY'),
+            endDate: moment(req.query.endDate).format('DD-MMM-YYYY'),
+            project,
             totalEst: totalEst.toFixed(2),
             totalTask,
             result
@@ -690,6 +701,9 @@ exports.taskTypeReportSummary = (req, res) => {
         })
 
         res.json({
+            startDate: moment(startDate).format('DD-MMM-YYYY'),
+            endDate: moment(req.query.endDate).format('DD-MMM-YYYY'),
+            project,
             totalEst: totalEst.toFixed(2),
             totalTask,
             result

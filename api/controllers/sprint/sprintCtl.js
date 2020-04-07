@@ -362,8 +362,8 @@ exports.sprintDelete = async (req, res, next) => {
         .exec()
         .then(docs => {
             /**
-            * Delete tasks from upcoming task
-            */
+              * Delete tasks from upcoming task
+              */
             UpcomingTask.deleteMany({
                 sprint: sprintName
             }).then(doc => {
