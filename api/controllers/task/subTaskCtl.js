@@ -449,7 +449,7 @@ exports.userReportSummary = async (req, res) => {
         data.forEach(item => {
 
             totalEst += parseFloat(item.estHour)
-            totalTask += item.myCount
+            totalTask += parseFloat(item.myCount)
 
             result.push({
                 userName: item._id.userName,
@@ -518,7 +518,7 @@ exports.projectReportSummary = (req, res) => {
         data.forEach(item => {
 
             totalEst += parseFloat(item.estHour)
-            totalTask += item.myCount
+            totalTask += parseFloat(item.myCount)
 
             result.push({
                 projectName: item._id.projectName,
@@ -605,7 +605,7 @@ exports.subTaskReportSummary = (req, res) => {
         data.forEach(item => {
 
             totalEst += parseFloat(item.estHour)
-            totalTask += item.myCount
+            totalTask += parseFloat(item.myCount)
 
             result.push({
                 subTask: item._id.subTask,
@@ -691,7 +691,7 @@ exports.taskTypeReportSummary = (req, res) => {
         data.forEach(item => {
 
             totalEst += parseFloat(item.estHour)
-            totalTask += item.myCount
+            totalTask += parseFloat(item.myCount)
 
             result.push({
                 taskType: item._id.taskType,
