@@ -113,7 +113,6 @@ exports.uploadEvaluationCsv = (req, res) => {
 
         }).catch(err => res.json(err))
 
-        
 
     })
     

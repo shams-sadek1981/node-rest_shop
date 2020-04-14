@@ -10,21 +10,31 @@ const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/userRoutes');
 const routes = require('./api/routes');
 const cors = require('cors');
+const path = require('path');
 
 // mongoose.connect('mongodb://shamssadek:' + process.env.MONGO_ATLAS_PW +'@projectmanager-shard-00-00-29oqc.mongodb.net:27017,projectmanager-shard-00-01-29oqc.mongodb.net:27017,projectmanager-shard-00-02-29oqc.mongodb.net:27017/test?ssl=true&replicaSet=ProjectManager-shard-0&authSource=admin&retryWrites=true', {
 mongoose.connect(process.env.DATABASE, {
     // useMongoClient: true
     useNewUrlParser: true
     // promiseLibrary: global.Promise
-}).then( data => {
+}).then(data => {
     console.log('Database Connection Success')
-}).catch( err => console.log(err))
+}).catch(err => console.log(err))
 
 
 // app.use(fileUpload());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+
+
+/**
+ * set Public static path
+ * 
+ */
+app.use('/static', express.static(path.join(__dirname, '/public')))
+
 
 // Set up a whitelist and check against it:
 var whitelist = ['http://localhost:3001', 'https://virtunus.netlify.com', 'https://wedevs-pm.netlify.com']
@@ -40,6 +50,8 @@ var corsOptions = {
 
 // Then pass them to cors:
 app.use(cors(corsOptions));
+
+
 
 // app.use( (req, res, next) => {
 //     res.header('Access-Control-Allow-Origin', '*');
@@ -57,7 +69,16 @@ app.use(cors(corsOptions));
 // })
 
 //-- declare routes
+
+
+/**
+ * 
+ * Define all routes
+ */
 app.use('/', routes);
+
+
+
 
 // Error Handling
 app.use((req, res, next) => {
@@ -65,6 +86,7 @@ app.use((req, res, next) => {
     err.status = 404;
     next(err);
 })
+
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500);

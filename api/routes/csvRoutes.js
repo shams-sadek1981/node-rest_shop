@@ -35,13 +35,13 @@ router.get('/read', csvCtl.readFile)
  * Generate Employee Evaluation Report. Please follow the STEP
  * -------------------------------------------------------------------------------------------------
  */
-// Step-1 Insert all user data in Database from .csv file
+// Step-1 Insert all user data into Database from .csv file
 router.get('/write-task-log', csvCtl.writeTaskLog)
 
 // Step-2 Insert data in Database from .csv file
 router.get('/write-task-est', csvCtl.writeTaskEst)
 
-// Step-3 Insert data in Database from .csv file
+// Step-3 Insert data into Database from .csv file
 router.get('/generate-csv', csvCtl.generateCsv)
 
 //-- Import upcoming task data from .csv file
