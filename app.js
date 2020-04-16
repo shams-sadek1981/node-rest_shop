@@ -37,7 +37,7 @@ app.use('/static', express.static(path.join(__dirname, '/public')))
 
 
 // Set up a whitelist and check against it:
-var whitelist = ['http://localhost:3001', 'https://virtunus.netlify.com', 'https://wedevs-pm.netlify.com']
+var whitelist = ['http://localhost:3001', 'https://virtunus.netlify.app', 'https://wedevs-pm.netlify.app', 'https://ctmt.netlify.app']
 var corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
