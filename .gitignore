@@ -6,3 +6,6 @@ csvFiles
 uploads
 nodemon.json
 server.js
+public/users
+public/users.zip
+public/*.pdf

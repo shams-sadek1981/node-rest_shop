@@ -24,7 +24,7 @@ const assert = require('assert')
  * isFloat
  * @param {*} n 
  */
-function isFloat(n){
+function isFloat(n) {
     return Number(n) === n && n % 1 !== 0;
 }
 
@@ -82,7 +82,7 @@ const comments = [
         msgNegative: 'You need to upgrade your productivity level, try hard to recover',
         msgPositive: 'Your Productivity level is up to the mark, great!'
     },
-    
+
     /**
      * Learning Curve
      */
@@ -142,17 +142,62 @@ const comments = [
 ]
 
 
+/**
+ * Download File
+ * 
+ */
+exports.downloadPdfFile = async (req, res) => {
+
+    const fileName = req.query.evaluationName
+
+    const file = `public/${fileName}.pdf`;
+
+    res.download(file); // Set disposition and send it.
+}
+
+/**
+ * Download Users
+ * 
+ */
+exports.downloadPdfUsersZip = async (req, res) => {
+
+    // const fileName = req.query.evaluationName
+
+    const file = `public/users.zip`;
+
+    res.download(file); // Set disposition and send it.
+}
+
 
 /**
  * 
- * Generate personal csv file
+ * Generate all emp .pdf file
  */
-exports.generatePersonalCsv = async (req, res) => {
+exports.generateAllEmpPdf = async (req, res) => {
+
+    /**
+     * get evaluation name
+     */
+    const evaluationName = await req.query.evaluationName
+
 
     /**
      * Result
      */
-    const result = await allMarks()
+    const result = await allMarks(evaluationName)
+
+    if (!result) {
+        return res.status(404).json({
+            message: 'No Data Found for generateing the .pdf file'
+        })
+    }
+
+    // return res.json(result)
+
+    /**
+     * set .pdf file name
+     */
+    const pdfFileName = await 'public/' + evaluationName + '.pdf'
 
 
 
@@ -161,19 +206,19 @@ exports.generatePersonalCsv = async (req, res) => {
         pageSize: 'a4',
         layout: 'portrait', // can be 'landscape'
         info: {
-            Title: 'Q1-2020', 
+            Title: result.evaluationName,
             Author: 'Md. Shams Sadek', // the name of the author
-            Subject: 'Evaluation Report Q1-2020', // the subject of the document
+            Subject: 'Evaluation Report ' + result.evaluationName, // the subject of the document
             // Keywords: 'pdf;javascript', // keywords associated with the document
             // CreationDate: 'DD/MM/YYYY', // the date the document was created (added automatically by PDFKit)
             // ModDate: 'DD/MM/YYYY' // the date the document was last modified
         }
     });
-    
+
 
     // Pipe its output somewhere, like to a file or HTTP response
     // See below for browser usage
-    doc.pipe(fs.createWriteStream('public/evaluationReport2020-Q1.pdf'));
+    doc.pipe(fs.createWriteStream(pdfFileName));
 
     // Embed a font, set the font size, and render some text
     doc.font('public/fonts/PalatinoBold.ttf')
@@ -183,7 +228,7 @@ exports.generatePersonalCsv = async (req, res) => {
 
     doc.fontSize(15)
 
-    result.forEach( (item, index, arr) => {
+    result.users.forEach((item, index, arr) => {
 
         /**
          * -------------------------------
@@ -217,10 +262,10 @@ exports.generatePersonalCsv = async (req, res) => {
          * Header Text
          */
         doc.fontSize(13)
-            .text('Evaluation report of the month Jan-2020 to Mar-2020', 72, 115, {
+            .text(`Evaluation report of ${moment(result.startDate).format("MMM-YYYY")} to ${moment(result.endDate).format("MMM-YYYY")}`, 72, 115, {
                 align: 'center', underline: 'true'
             })
-        
+
         /**
          * ----------------------------------
          * User Name
@@ -230,6 +275,17 @@ exports.generatePersonalCsv = async (req, res) => {
             .fontSize(16)
             .fillColor("dodgerblue")
             .text(item.userName, 72, 150)
+
+
+        /**
+         * ----------------------------------
+         * User Designation
+         * ----------------------------------
+         */
+        doc.font('public/fonts/Chalkboard.ttc', 'Chalkboard-Bold')
+            .fontSize(9)
+            .fillColor("#696969")
+            .text(item.designation, 72, 170)
 
 
 
@@ -250,16 +306,16 @@ exports.generatePersonalCsv = async (req, res) => {
             .fillColor('black')
             .opacity(50)
 
-        
+
         doc.text('Badge : ', 72, 190)
-        doc.fillColor('green').text('Total : ' + item.total, 240, 190)
+        doc.fillColor('green').text('Total : ' + item.totalAchievePoint, 240, 190)
 
         doc.font('public/fonts/good_dog/GOODDP__.ttf')
             .fontSize(17)
             .fillColor('olive')
             .text(item.badge, 115, 187)
 
-        
+
 
 
 
@@ -350,18 +406,18 @@ exports.generatePersonalCsv = async (req, res) => {
         doc.moveDown(.5)
 
         let number = 0
-        comments.forEach( comment => {
+        comments.forEach(comment => {
 
-            if(item[comment.name]){
-                if(item[comment.name] >= comment.maxPoint) {
-                    if(comment.msgPositive){
+            if (item[comment.name]) {
+                if (item[comment.name] >= comment.maxPoint) {
+                    if (comment.msgPositive) {
                         number++
                         doc.text(number + '. ' + comment.msgPositive, { listType: 'numbered', indent: 16 })
-                        
+
                     }
                 }
-                else if ( item[comment.name] <= comment.minPoint) {
-                    if( comment.msgNegative ){
+                else if (item[comment.name] <= comment.minPoint) {
+                    if (comment.msgNegative) {
                         number++
                         doc.text(number + '. ' + comment.msgNegative, { listType: 'numbered', indent: 16 })
                     }
@@ -393,7 +449,7 @@ exports.generatePersonalCsv = async (req, res) => {
         /**
          * Add New Page
          */
-        if ( arr.length > ++index) {
+        if (arr.length > ++index) {
             doc.addPage()
         }
 
@@ -469,6 +525,326 @@ exports.generatePersonalCsv = async (req, res) => {
 }
 
 
+/**
+ * 
+ * Generate personal csv file
+ */
+exports.generatePersonalPdfZip = async (req, res) => {
+
+    /**
+     * get evaluation name
+     */
+    const evaluationName = await req.query.evaluationName
+
+
+    /**
+     * Result
+     */
+    const result = await allMarks(evaluationName)
+
+    if (!result) {
+        return res.status(404).json({
+            message: 'No Data Found for generateing the .pdf file'
+        })
+    }
+
+
+    await result.users.forEach((item, index, arr) => {
+
+        // return res.json(result)
+
+        /**
+         * set .pdf file name
+         */
+        const pdfFileName = 'public/users/' + item.userName + '.pdf'
+
+
+
+        // Create a document
+        const doc = new PDFDocument({
+            pageSize: 'a4',
+            layout: 'portrait', // can be 'landscape'
+            info: {
+                Title: result.evaluationName,
+                Author: 'Md. Shams Sadek', // the name of the author
+                Subject: 'Evaluation Report ' + result.evaluationName, // the subject of the document
+                // Keywords: 'pdf;javascript', // keywords associated with the document
+                // CreationDate: 'DD/MM/YYYY', // the date the document was created (added automatically by PDFKit)
+                // ModDate: 'DD/MM/YYYY' // the date the document was last modified
+            }
+        });
+
+
+        // Pipe its output somewhere, like to a file or HTTP response
+        // See below for browser usage
+        doc.pipe(fs.createWriteStream(pdfFileName));
+
+        // Embed a font, set the font size, and render some text
+        doc.font('public/fonts/PalatinoBold.ttf')
+        // .fontSize(25)
+
+        // const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in suscipit purus.  Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus nec hendrerit felis. Morbi aliquam facilisis risus eu lacinia. Sed eu leo in turpis fringilla hendrerit. Ut nec accumsan nisl.';
+
+        doc.fontSize(15)
+
+
+        /**
+         * -------------------------------
+         * Set Header Logo
+         * -------------------------------
+         */
+        doc.moveDown(4).image('public/images/Header.png', 72, 50, {
+            // fit: [100, 100],
+            height: 40,
+            align: 'center',
+            valign: 'center',
+        })
+
+        /**
+         * -------------------------
+         * Set Background Logo
+         * -------------------------
+         */
+        doc.opacity(.2)
+        doc.moveDown(4).image('public/images/weDevsLogo.jpeg', 170, 250, {
+            fit: [250, 250],
+            // width: 50,
+            align: 'center',
+            valign: 'center',
+        })
+        doc.opacity(1)
+
+
+
+        /**
+         * Header Text
+         */
+        doc.fontSize(13)
+            .text(`Evaluation report of ${moment(result.startDate).format("MMM-YYYY")} to ${moment(result.endDate).format("MMM-YYYY")}`, 72, 115, {
+                align: 'center', underline: 'true'
+            })
+
+        /**
+         * ----------------------------------
+         * User Name
+         * ----------------------------------
+         */
+        doc.font('public/fonts/Chalkboard.ttc', 'Chalkboard-Bold')
+            .fontSize(16)
+            .fillColor("dodgerblue")
+            .text(item.userName, 72, 150)
+
+
+        /**
+         * ----------------------------------
+         * User Designation
+         * ----------------------------------
+         */
+        doc.font('public/fonts/Chalkboard.ttc', 'Chalkboard-Bold')
+            .fontSize(9)
+            .fillColor("#696969")
+            .text(item.designation, 72, 170)
+
+
+
+        /**
+         * --------------------------------------
+         * Badge
+         * --------------------------------------
+         */
+        // draw a line
+        // .quadraticCurveTo(130, 200, 150, 120)        // draw a quadratic curve
+        // .bezierCurveTo(190, -40, 200, 200, 300, 150) // draw a bezier curve
+
+        // [125,125]
+        doc.polygon([90, 205], [120, 200], [250, 200])
+            .fill('dodgerblue')
+            .stroke()
+            .fontSize(10)
+            .fillColor('black')
+            .opacity(50)
+
+
+        doc.text('Badge : ', 72, 190)
+        doc.fillColor('green').text('Total : ' + item.totalAchievePoint, 240, 190)
+
+        doc.font('public/fonts/good_dog/GOODDP__.ttf')
+            .fontSize(17)
+            .fillColor('olive')
+            .text(item.badge, 115, 187)
+
+
+
+
+
+
+
+
+        /**
+         * --------------------------------------------------------
+         * Performance Curve
+         * --------------------------------------------------------
+         */
+        doc.font('public/fonts/PalatinoBold.ttf')
+        doc.moveDown(2)
+            .fontSize(11)
+            .fillColor('green')
+            .opacity(80)
+            .text('Performance Curve : ' + item.performanceCurve + '/50', 80)
+
+        doc.moveDown(.5)
+        doc.fontSize(9)
+            .fillColor('black')
+            .opacity(80)
+            .text(
+                'Meatup Deadline : ' + item.meatupDeadline + '/10'
+                + '    Quality of Work : ' + item.qualityOfWork + '/10'
+                + '    Extra Responsibility : ' + item.extraResponsibility + '/5'
+                + '    Innovative Contribution : ' + item.innovativeContribution + '/5'
+            ).moveDown(.5)
+            .text(
+                'Customer Happiness : ' + item.customerHappiness + '/5'
+                + '     Preserving Data : ' + item.preservingData + '/5'
+                + '     Productivity : ' + item.productivity + '/10'
+            )
+
+
+
+        /**
+         * --------------------------------------
+         * Learning Curve
+         * --------------------------------------
+         */
+        doc.moveDown(3)
+            .fontSize(11)
+            .fillColor('green')
+            .opacity(80)
+            .text('Learning Curve : ' + item.learningCurve + '/17')
+
+
+        doc.moveDown(.5)
+            .fontSize(9)
+            .fillColor('black')
+            .opacity(80)
+            .text('Knowledge Sharing : ' + item.knowledgeSharing + '/7', {
+                continued: true
+            }).text('    Domain Knowledge : ' + item.domainKnowledge + '/10')
+
+        /**
+         * --------------------------------------
+         * Personality Curve
+         * --------------------------------------
+         */
+        doc.moveDown(4)
+            .fontSize(11)
+            .fillColor('green')
+            .opacity(80)
+            .text('Personality Curve : ' + item.personalityCurve + '/33')
+
+
+        doc.moveDown(.5)
+            .fontSize(9)
+            .fillColor('black')
+            .opacity(80)
+            .text('Organization Behavior : ' + item.organizationBehavior + '/10', { continued: true })
+            .text('     Standup Attendance : ' + item.standupAttendance + '/10', { continued: true })
+            .text('     Avg. WorkingHour : ' + item.avgWorkingHour + '/8', { continued: false })
+            .moveDown(.5)
+            .text('Helps Colleague : ' + item.helpsColleague + '/3', { continued: true })
+            .text('      Community Engagement : ' + item.communityEngagement + '/2', { continued: false })
+
+
+        /**
+         * ----------------------------------
+         * Comments section
+         * ----------------------------------
+         */
+        doc.moveDown(4).text('Comments : ').fillColor('#696969').font('Times-Roman').fontSize(9)
+
+        doc.moveDown(.5)
+
+        let number = 0
+        comments.forEach(comment => {
+
+            if (item[comment.name]) {
+                if (item[comment.name] >= comment.maxPoint) {
+                    if (comment.msgPositive) {
+                        number++
+                        doc.text(number + '. ' + comment.msgPositive, { listType: 'numbered', indent: 16 })
+
+                    }
+                }
+                else if (item[comment.name] <= comment.minPoint) {
+                    if (comment.msgNegative) {
+                        number++
+                        doc.text(number + '. ' + comment.msgNegative, { listType: 'numbered', indent: 16 })
+                    }
+                }
+            }
+        })
+
+
+        /**
+         * ---------------------------------------
+         * Add signature image
+         * ---------------------------------------
+         */
+        doc.moveDown(4).image('public/images/Nazir.PNG', 72, 620, {
+            fit: [100, 100],
+            // height: 50,
+            align: 'center',
+            valign: 'center'
+        });
+
+        doc.moveDown(4).image('public/images/Sadek.PNG', 450, 620, {
+            fit: [100, 100],
+            // height: 50,
+            align: 'center',
+            valign: 'center'
+        });
+
+        doc.end();
+
+    })
+
+
+    /**
+     * -------------------------------------------------------------------
+     * Create zip file for all users
+     * -------------------------------------------------------------------
+     * 
+     */
+    setTimeout(function () {
+        var archiver = require('archiver');
+
+        var output = fs.createWriteStream('public/users.zip');
+        var archive = archiver('zip');
+
+        output.on('close', function () {
+            console.log(archive.pointer() + ' total bytes');
+            console.log('archiver has been finalized and the output file descriptor has closed.');
+        });
+
+        archive.on('error', function (err) {
+            throw err;
+        });
+
+        archive.pipe(output);
+
+        archive.directory('public/users/', false);
+
+        archive.finalize();
+
+    }, 2000)
+
+    res.json({
+        message: 'Success',
+        result
+    })
+
+}
+
+
 
 /**
  * Get all marks
@@ -476,12 +852,15 @@ exports.generatePersonalCsv = async (req, res) => {
 
 exports.getAllMarks = async (req, res) => {
 
-    const startDate = new Date(req.query.startDate)
-    const endDate = new Date(req.query.endDate)
-
     const evaluationName = req.query.evaluationName
 
-    const result = await allMarks(startDate, endDate, evaluationName)
+    const result = await allMarks(evaluationName)
+
+    if (!result) {
+        res.status(404).json({
+            message: 'No Data Found'
+        })
+    }
 
     res.json({
         result
@@ -493,7 +872,12 @@ exports.getAllMarks = async (req, res) => {
  * 
  * All marks
  */
-const allMarks = (startDate, endDate, evaluationName) => {
+const allMarks = (evaluationName) => {
+
+    return EvaluationMark.findOne({ evaluationName })
+        .exec()
+        .then(data => data)
+        .catch(err => err)
 
     const badges = [
         {
@@ -547,12 +931,12 @@ const allMarks = (startDate, endDate, evaluationName) => {
      */
     let queryObj = {}
 
-    if (startDate instanceof Date && !isNaN(startDate.valueOf())) {
-        queryObj.endDate = {
-            "$gte": startDate,
-            "$lte": endDate
-        }
-    }
+    // if (startDate instanceof Date && !isNaN(startDate.valueOf())) {
+    //     queryObj.endDate = {
+    //         "$gte": startDate,
+    //         "$lte": endDate
+    //     }
+    // }
 
     // set Evaluation Name
     if (evaluationName) {
@@ -566,7 +950,8 @@ const allMarks = (startDate, endDate, evaluationName) => {
         {
             $group: {
                 _id: {
-                    userName: "$userName"
+                    userName: "$userName",
+                    designation: "$designation",
                 },
                 count: { $sum: 1 },
                 total: {
@@ -638,6 +1023,7 @@ const allMarks = (startDate, endDate, evaluationName) => {
         const result = data.map(doc => {
 
             const userName = doc._id.userName
+            const designation = doc._id.designation
             const total = (parseFloat(doc.total) / parseFloat(doc.count)).toFixed(2)
             const badge = badges.find(badge => badge.value < total)
 
@@ -666,6 +1052,7 @@ const allMarks = (startDate, endDate, evaluationName) => {
 
             return {
                 userName,
+                designation,
                 total,
                 badge: badge.name,
 

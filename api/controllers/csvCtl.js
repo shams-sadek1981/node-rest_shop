@@ -45,77 +45,79 @@ String.prototype.toProperCase = function () {
  * ------------------------------------------------------------------------------------
  */
 exports.uploadEvaluationCsv = (req, res) => {
-    
+
     // console.log('req.file.path')
     const filePath = req.file.path
     const startDate = req.body.startDate
     const endDate = req.body.endDate
     const evaluationName = req.body.evaluationName
 
-    
-    fn.readCsvFile(filePath).then( readData => {
+
+    fn.readCsvFile(filePath).then(readData => {
 
         readData.shift()//-- Remove Header
         readData.shift()//-- Remove Header
         readData.shift()//-- Remove Header
         readData.shift()//-- Remove Header
 
-        const rawObject = readData.map(log => {
+        const users = readData.map(log => {
             return {
-                startDate,
-                endDate,
-                evaluationName,
                 userName: log[1],
-                // learningCurve: log[2],
-                // personalityCurve: log[3],
-                // performanceCurve: log[4],
-                // totalAchievePoint: log[5],
-                // badge: log[6],
-                meatupDeadline: log[7],
-                qualityOfWork: log[8],
-                extraResponsibility: log[9],
-                innovativeContribution: log[10],
-                customerHappiness: log[11],
-                preservingData: log[12],
-                productivity: log[13],
+                designation: log[2],
                 
+                learningCurve: log[3],
+                personalityCurve: log[4],
+                performanceCurve: log[5],
+                totalAchievePoint: log[6],
+                badge: log[7],
+                
+                meatupDeadline: log[8],
+                qualityOfWork: log[9],
+                extraResponsibility: log[10],
+                innovativeContribution: log[11],
+                customerHappiness: log[12],
+                preservingData: log[13],
+                productivity: log[14],
+
                 // 14 Total
-                organizationBehavior: log[15],
-                standupAttendance: log[16],
-                avgWorkingHour: log[17],
-                helpsColleague: log[18],
-                communityEngagement: log[19],
-                
+                organizationBehavior: log[16],
+                standupAttendance: log[17],
+                avgWorkingHour: log[18],
+                helpsColleague: log[19],
+                communityEngagement: log[20],
+
                 // 20 Total
-                knowledgeSharing: log[21],
-                domainKnowledge: log[22]
+                knowledgeSharing: log[22],
+                domainKnowledge: log[23]
             }
         })
 
         // Delete by evaluation Name
         EvaluationMark.deleteMany({
             evaluationName
-        }).then( doc => {
-            // res.json( doc )
-        }).catch( err => res.json(err))
+        }).then(doc => {
 
-        //-- Insert All
-        EvaluationMark.insertMany(rawObject)
-        .then(data => {
-            
-            unlinkAsync(filePath)
+            //-- Insert All
+            EvaluationMark.insertMany({
+                startDate,
+                endDate,
+                evaluationName,
+                users
+            }).then(data => {
 
-            res.json({
-                filePath,
-                data,
-                rawObject
-            });
+                unlinkAsync(filePath)
 
-        }).catch(err => res.json(err))
+                res.json({
+                    filePath,
+                    data
+                });
 
+            }).catch(err => res.status(400).json(err))
 
-    })
+        }).catch(err => res.status(404).json(err))
     
+    })
+
 }
 
 exports.importThreeMonth = (req, res) => {

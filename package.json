@@ -10,6 +10,7 @@
   "author": "Shams Sadek",
   "license": "ISC",
   "dependencies": {
+    "archiver": "^4.0.1",
     "bcrypt": "^3.0.7",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",

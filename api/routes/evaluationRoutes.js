@@ -9,13 +9,22 @@ const { checkJwt } = require('../functions');
 
 const { 
     getAllMarks,
-    generatePersonalCsv
+    generateAllEmpPdf,
+    generatePersonalPdfZip,
+    downloadPdfFile,
+    downloadPdfUsersZip
 } = require('../controllers/evaluation/evaluationCtl')
 
 
 //-- task
 router.get('/get-all-marks', checkJwt, getAllMarks)
-router.get('/generate-personal-csv', checkJwt, generatePersonalCsv)
+
+router.get('/generate-all-emp-pdf', checkJwt, generateAllEmpPdf)
+router.get('/generate-personal-pdf-zip', checkJwt, generatePersonalPdfZip)
+
+router.get('/download-pdf-file', checkJwt, downloadPdfFile)
+router.get('/download-pdf-users-zip', checkJwt, downloadPdfUsersZip)
+
 // router.post('/create', checkJwt, createNewTask)
 // router.put('/update/:id', checkJwt, updateTask)
 // router.delete('/delete/:id', checkJwt, deleteTask)
