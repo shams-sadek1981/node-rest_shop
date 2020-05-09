@@ -9,6 +9,8 @@ const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/userRoutes');
 const routes = require('./api/routes');
+const routesDownload = require('./api/routes/indexDownload');
+
 const cors = require('cors');
 const path = require('path');
 
@@ -33,7 +35,13 @@ app.use(bodyParser.json());
  * set Public static path
  * 
  */
-app.use('/static', express.static(path.join(__dirname, '/public')))
+app.use('/static', express.static(path.join(__dirname, 'public')))
+
+/**
+ * 
+ * Define downloadable routes
+ */
+app.use('/download', routesDownload);
 
 
 // Set up a whitelist and check against it:

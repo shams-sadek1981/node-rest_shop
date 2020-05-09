@@ -152,6 +152,10 @@ exports.downloadPdfFile = async (req, res) => {
 
     const file = `public/${fileName}.pdf`;
 
+    // const file = path.join(__dirname, `static/${fileName}.pdf`);
+
+    // const file = `${__dirname}/public/${fileName}.pdf`;
+
     res.download(file); // Set disposition and send it.
 }
 
