@@ -57,7 +57,7 @@ var corsOptions = {
 }
 
 // Then pass them to cors:
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 
 
@@ -83,7 +83,7 @@ app.use(cors(corsOptions));
  * 
  * Define all routes
  */
-app.use('/', routes);
+app.use('/', cors(corsOptions), routes);
 
 
 
