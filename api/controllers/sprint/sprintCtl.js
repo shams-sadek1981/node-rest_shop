@@ -127,7 +127,11 @@ exports.search = async (req, res) => {
     // const userResult1 = await users.filter( item => item._id == "5d84b982e2ceca298eaea5ee")
 
 
-
+    /**
+     * Search Sprint by query obj
+     * 
+     * 
+     */
     Sprint.find(queryObj)
         .skip(skip).limit(limit)
         .sort({ endDate: sortBy })
@@ -161,7 +165,7 @@ exports.search = async (req, res) => {
             // Create unique elements for project list
             projects = [...new Set(projects)]
 
-            // find users list
+            // get all user by project list
             let allUsers = await User.find({ "projects.projectName": { $in: projects } })
 
             allUsers = allUsers.map(item => ({
@@ -170,36 +174,38 @@ exports.search = async (req, res) => {
             }))
 
 
-
-
+            // return res.json({
+            //     allUsers,
+            //     sprintList
+            // })
 
             UpcomingTask.find({ sprint: { $in: sprintNames } })
                 .exec()
                 .then(tasks => {
 
-                    const result = sprintList.map(item => {
+                    const result = sprintList.map(sprint => {
 
-                        const sprintTasks = tasks.filter(task => task.sprint == item.name)
+                        const sprintTasks = tasks.filter(task => task.sprint == sprint.name)
 
                         const sprintStatus = sprintCalc(sprintTasks)
 
-                        const a = moment(item.endDate)
+                        const a = moment(sprint.endDate)
                         const b = moment()
                         restOfDays = a.diff(b, 'days') + 1
 
 
                         return {
-                            _id: item._id,
-                            status: item.status,
-                            projects: item.projects,
-                            users: getUsersBySprint(allUsers, item),
-                            status: item.status,
-                            name: item.name,
-                            startDate: item.startDate,
-                            endDate: item.endDate,
+                            _id: sprint._id,
+                            status: sprint.status,
+                            projects: sprint.projects,
+                            users: getUsersBySprint(allUsers, sprint),
+                            status: sprint.status,
+                            name: sprint.name,
+                            startDate: sprint.startDate,
+                            endDate: sprint.endDate,
                             restOfDays,
-                            createdAt: item.createdAt,
-                            description: item.description,
+                            createdAt: sprint.createdAt,
+                            description: sprint.description,
                             percent: sprintStatus.percent,
                             est: sprintStatus.est,
                             complete: sprintStatus.complete,
@@ -207,6 +213,7 @@ exports.search = async (req, res) => {
                             userDetails: sprintStatus.userDetails
                         }
                     })
+
 
                     /* --- Return API Result --- */
                     // get Total Sprint data

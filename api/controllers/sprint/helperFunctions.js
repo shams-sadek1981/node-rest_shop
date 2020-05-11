@@ -166,21 +166,25 @@ exports.totalTask = (queryObj) => {
 /**
  * 
  * @param {*} allUsers 
- * @param {*} item 
+ * @param {*} sprint 
  */
-exports.getUsersBySprint = (allUsers, item) => {
+exports.getUsersBySprint = (allUsers, sprint) => {
 
-    let getUsers = allUsers.filter(doc => {
+    let getUsers = allUsers.filter(user => {
 
-        const projectList = doc.projects.filter(project => {
+        const projectList = user.projects.filter(project => {
 
-            for (i = 0; i < item.projects.length; i++) {
-                return project.projectName == item.projects[i]
+            for (i = 0; i < sprint.projects.length; i++) {
+
+                if ( project.projectName.localeCompare(sprint.projects[i]) == 0 ) {
+                    return project
+                }
+
             }
         })
 
         return projectList.length > 0;
     })
 
-    return getUsers.map( item => item.name)
+    return getUsers.map( sprint => sprint.name)
 }

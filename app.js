@@ -37,11 +37,7 @@ app.use(bodyParser.json());
  */
 app.use('/static', express.static(path.join(__dirname, 'public')))
 
-/**
- * 
- * Define downloadable routes
- */
-app.use('/download', routesDownload);
+
 
 
 // Set up a whitelist and check against it:
@@ -78,6 +74,12 @@ var corsOptions = {
 
 //-- declare routes
 
+
+/**
+ * 
+ * Define downloadable routes
+ */
+app.use('/download', cors(corsOptions), routesDownload);
 
 /**
  * 
