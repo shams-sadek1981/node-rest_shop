@@ -127,7 +127,11 @@ exports.search = async (req, res) => {
     // const userResult1 = await users.filter( item => item._id == "5d84b982e2ceca298eaea5ee")
 
 
-
+    /**
+     * Search Sprint by query obj
+     * 
+     * 
+     */
     Sprint.find(queryObj)
         .skip(skip).limit(limit)
         .sort({ endDate: sortBy })
@@ -161,7 +165,7 @@ exports.search = async (req, res) => {
             // Create unique elements for project list
             projects = [...new Set(projects)]
 
-            // find users list
+            // find users list by sprint
             let allUsers = await User.find({ "projects.projectName": { $in: projects } })
 
             allUsers = allUsers.map(item => ({
@@ -207,6 +211,7 @@ exports.search = async (req, res) => {
                             userDetails: sprintStatus.userDetails
                         }
                     })
+
 
                     /* --- Return API Result --- */
                     // get Total Sprint data

@@ -175,7 +175,9 @@ exports.getUsersBySprint = (allUsers, item) => {
         const projectList = doc.projects.filter(project => {
 
             for (i = 0; i < item.projects.length; i++) {
-                return project.projectName == item.projects[i]
+                // return `${project.projectName}` == `${item.projects[i]}`
+
+                return project.projectName.localeCompare(item.projects[i])
             }
         })
 
