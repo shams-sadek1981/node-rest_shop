@@ -179,7 +179,6 @@ exports.getUsersBySprint = (allUsers, sprint) => {
                 if ( project.projectName.localeCompare(sprint.projects[i]) == 0 ) {
                     return project
                 }
-
             }
         })
 
