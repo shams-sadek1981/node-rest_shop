@@ -20,7 +20,7 @@ const projectGroupBy = (userName, startDate, endDate) => {
         const queryObj = {
             "subTasks.completedAt": {
                 "$gte": startDate,
-                "$lte": endDate
+                "$lt": endDate
             },
             "subTasks.assignedUser": userName
         }
@@ -33,7 +33,6 @@ const projectGroupBy = (userName, startDate, endDate) => {
                     "includeArrayIndex": "arrayIndex"
                 }
             },
-            // { $sort: { "subTasks.completedAt": 1, "subTasks.name": 1 } },
             {
                 $match: queryObj
             },
@@ -42,7 +41,7 @@ const projectGroupBy = (userName, startDate, endDate) => {
                     _id: {
                         projectName: "$projectName",
                     },
-                    subTasks: { $push: "$subTasks" },
+                    // subTasks: { $push: "$subTasks" },
                     myCount: { $sum: 1 },
                     estHour: {
                         $sum: "$subTasks.estHour"
@@ -83,7 +82,7 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
         const queryObj = {
             "subTasks.completedAt": {
                 "$gte": startDate,
-                "$lte": endDate
+                "$lt": endDate
             },
             "subTasks.assignedUser": userName
         }
@@ -105,7 +104,7 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
                     _id: {
                         taskType: "$taskType",
                     },
-                    subTasks: { $push: "$subTasks" },
+                    // subTasks: { $push: "$subTasks" },
                     myCount: { $sum: 1 },
                     estHour: {
                         $sum: "$subTasks.estHour"
@@ -146,7 +145,7 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
         const queryObj = {
             "subTasks.completedAt": {
                 "$gte": startDate,
-                "$lte": endDate
+                "$lt": endDate
             },
             "subTasks.assignedUser": userName
         }
@@ -168,7 +167,7 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
                     _id: {
                         subTask: "$subTasks.name",
                     },
-                    subTasks: { $push: "$subTasks" },
+                    // subTasks: { $push: "$subTasks" },
                     myCount: { $sum: 1 },
                     estHour: {
                         $sum: "$subTasks.estHour"
@@ -202,7 +201,11 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
 }
 
 
-//-- Report User Report
+/**
+ * -------------------------------------------------------------------------------------
+ * Report User Report
+ * -------------------------------------------------------------------------------------
+ */
 exports.userReport = async (req, res) => {
 
 
@@ -237,8 +240,6 @@ exports.userReport = async (req, res) => {
     // var a = moment("2013-11-18 11:55").tz("Asia/Taipei");
     // var b = moment("2013-11-18 11:55").tz("America/Toronto");
 
-
-
     const queryObj = {
         "subTasks.completedAt": {
             "$gte": startDate,
@@ -262,7 +263,6 @@ exports.userReport = async (req, res) => {
                 "includeArrayIndex": "arrayIndex"
             }
         },
-        // { $sort: { "subTasks.completedAt": 1, "subTasks.name": 1 } },
         {
             $match: queryObj
         },
@@ -293,6 +293,8 @@ exports.userReport = async (req, res) => {
         let result = []
         let totalEst = 0
         let totalTask = 0
+
+
         data.forEach(task => {
 
             task.subTasks.forEach(subTask => {
@@ -315,7 +317,6 @@ exports.userReport = async (req, res) => {
             })
         })
 
-
         /**
          * Group Reports
          * 1. Project
@@ -326,30 +327,25 @@ exports.userReport = async (req, res) => {
         const taskTypeGroup = taskTypeGroupBy(userName, startDate, endDate)
         const subTaskGroup = subTaskGroupBy(userName, startDate, endDate)
 
-        projectGroup.then(projectData => {
-
-            taskTypeGroup.then(taskTypeData => {
-
-                subTaskGroup.then(subTaskData => {
-                    res.json({
-                        startDate: moment(startDate).format("DD-MMM-YYYY"),
-                        endDate: moment(endDate).add(-1, 'days').format("DD-MMM-YYYY"),
-                        totalEst: totalEst.toFixed(2),
-                        totalTask,
-                        totalDays,
-                        avgTaskHour: (totalEst / totalTask).toFixed(2), // Avg working hour by task
-                        publicHolidays,
-                        totalWorkingDays,
-                        avgHourPerDay: (totalEst / totalWorkingDays).toFixed(2),
-                        avgTaskPerDay: (totalTask / totalWorkingDays).toFixed(2),
-                        result,
-                        projectData,
-                        taskTypeData,
-                        subTaskData
-                    })
+        Promise.all([projectGroup, taskTypeGroup, subTaskGroup])
+            .then(p => {
+                res.json({
+                    startDate: moment(startDate).format("DD-MMM-YYYY"),
+                    endDate: moment(endDate).add(-1, 'days').format("DD-MMM-YYYY"),
+                    totalEst: totalEst.toFixed(2),
+                    totalTask,
+                    totalDays,
+                    avgTaskHour: (totalEst / totalTask).toFixed(2), // Avg working hour by task
+                    publicHolidays,
+                    totalWorkingDays,
+                    avgHourPerDay: (totalEst / totalWorkingDays).toFixed(2),
+                    avgTaskPerDay: (totalTask / totalWorkingDays).toFixed(2),
+                    result,
+                    projectData: p[0],
+                    taskTypeData: p[1],
+                    subTaskData: p[2],
                 })
-            })
-        })
+            }).catch(err => res.json(err))
 
     }).catch(err => res.json(err))
 }
