@@ -45,6 +45,9 @@ const projectGroupBy = (userName, startDate, endDate) => {
                     myCount: { $sum: 1 },
                     estHour: {
                         $sum: "$subTasks.estHour"
+                    },
+                    timeLog: {
+                        $sum: "$subTasks.timeLog"
                     }
                 }
             },
@@ -54,19 +57,23 @@ const projectGroupBy = (userName, startDate, endDate) => {
 
             let result = []
             let totalEst = 0
+            let totalTimeLog = 0
             data.forEach(task => {
 
                 totalEst += parseFloat(task.estHour)
+                totalTimeLog += parseFloat(task.timeLog)
 
                 result.push({
                     projectName: task._id.projectName,
                     estHour: task.estHour,
+                    timeLog: task.timeLog,
                     myCount: task.myCount,
                 })
             })
 
             resolve({
                 totalEst: totalEst.toFixed(2),
+                totalTimeLog: totalTimeLog.toFixed(2),
                 result
             })
 
@@ -108,7 +115,10 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
                     myCount: { $sum: 1 },
                     estHour: {
                         $sum: "$subTasks.estHour"
-                    }
+                    },
+                    timeLog: {
+                        $sum: "$subTasks.timeLog"
+                    },
                 }
             },
             { $sort: { "_id.taskType": 1 } }
@@ -117,19 +127,24 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
 
             let result = []
             let totalEst = 0
+            let totalTimeLog = 0
+
             data.forEach(task => {
 
                 totalEst += parseFloat(task.estHour)
+                totalTimeLog += parseFloat(task.timeLog)
 
                 result.push({
                     taskType: task._id.taskType,
                     estHour: task.estHour,
+                    timeLog: task.timeLog,
                     myCount: task.myCount,
                 })
             })
 
             resolve({
                 totalEst: totalEst.toFixed(2),
+                totalTimeLog: totalTimeLog.toFixed(2),
                 result
             })
 
@@ -171,7 +186,10 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
                     myCount: { $sum: 1 },
                     estHour: {
                         $sum: "$subTasks.estHour"
-                    }
+                    },
+                    timeLog: {
+                        $sum: "$subTasks.timeLog"
+                    },
                 }
             },
             { $sort: { "_id.subTask": 1 } }
@@ -180,19 +198,24 @@ const subTaskGroupBy = (userName, startDate, endDate) => {
 
             let result = []
             let totalEst = 0
+            let totalTimeLog = 0
+
             data.forEach(task => {
 
                 totalEst += parseFloat(task.estHour)
+                totalTimeLog += parseFloat(task.timeLog)
 
                 result.push({
                     subTask: task._id.subTask,
                     estHour: task.estHour,
+                    timeLog: task.timeLog,
                     myCount: task.myCount,
                 })
             })
 
             resolve({
                 totalEst: totalEst.toFixed(2),
+                totalTimeLog: totalTimeLog.toFixed(2),
                 result
             })
 
@@ -281,6 +304,9 @@ exports.userReport = async (req, res) => {
                 subTasks: { $push: "$subTasks" },
                 estHour: {
                     $sum: "$subTasks.estHour"
+                },
+                timeLog: {
+                    $sum: "$subTasks.timeLog"
                 }
             }
         },
@@ -292,6 +318,11 @@ exports.userReport = async (req, res) => {
 
         let result = []
         let totalEst = 0
+        
+        let totalEstWithTimeLog = 0
+        let totalTaskWithTimeLog = 0
+
+        let totalTimeLog = 0
         let totalTask = 0
 
 
@@ -299,6 +330,15 @@ exports.userReport = async (req, res) => {
 
             task.subTasks.forEach(subTask => {
                 totalEst += parseFloat(subTask.estHour)
+                
+                // this condition only for timeLog. It has to set zero for all data in update query script
+                // totalTimeLog += (typeof subTask.timeLog != 'object')  ? parseFloat(subTask.timeLog) : 0
+                totalTimeLog += parseFloat(subTask.timeLog)
+                if (subTask.timeLog > 0) {
+                    totalEstWithTimeLog += parseFloat(subTask.estHour)
+                    totalTaskWithTimeLog ++
+                }
+
                 totalTask += parseFloat(1)
 
                 result.push({
@@ -311,6 +351,11 @@ exports.userReport = async (req, res) => {
                     subTaskDescription: subTask.description,
                     assignedUser: subTask.assignedUser,
                     estHour: subTask.estHour,
+
+                    // this condition only for timeLog. It has to set zero for all data in update query script
+                    // timeLog: (typeof subTask.timeLog != 'object') ? subTask.timeLog : 0,
+                    timeLog: subTask.timeLog,
+
                     totalTask,
                     completedAt: moment(subTask.completedAt).format('DD-MMM-YYYY')
                 })
@@ -327,12 +372,25 @@ exports.userReport = async (req, res) => {
         const taskTypeGroup = taskTypeGroupBy(userName, startDate, endDate)
         const subTaskGroup = subTaskGroupBy(userName, startDate, endDate)
 
+
+        // Get efficiency
+        let efficiency = 0
+        if (totalTimeLog != 0 ) {
+            efficiency = parseFloat(totalEstWithTimeLog * 100 / totalTimeLog).toFixed(2)
+        }
+        
         Promise.all([projectGroup, taskTypeGroup, subTaskGroup])
             .then(p => {
                 res.json({
                     startDate: moment(startDate).format("DD-MMM-YYYY"),
                     endDate: moment(endDate).add(-1, 'days').format("DD-MMM-YYYY"),
                     totalEst: totalEst.toFixed(2),
+                    efficiencyInfo : {
+                        efficiency,
+                        totalEstWithTimeLog,
+                        totalTaskWithTimeLog,
+                        totalTimeLog: totalTimeLog.toFixed(2)
+                    },
                     totalTask,
                     totalDays,
                     avgTaskHour: (totalEst / totalTask).toFixed(2), // Avg working hour by task
@@ -432,6 +490,9 @@ exports.userReportSummary = async (req, res) => {
                 myCount: { $sum: 1 },
                 estHour: {
                     $sum: "$subTasks.estHour"
+                },
+                timeLog: {
+                    $sum: "$subTasks.timeLog"
                 }
             }
         },
@@ -447,12 +508,19 @@ exports.userReportSummary = async (req, res) => {
             totalEst += parseFloat(item.estHour)
             totalTask += parseFloat(item.myCount)
 
+            // get efficiency by percent
+            let efficiency = 0
+            if (item.timeLog) {
+                efficiency = parseFloat( item.estHour * 100 / item.timeLog)
+            }
+
             result.push({
                 userName: item._id.userName,
                 estHour: item.estHour,
+                timeLog: item.timeLog,
+                efficiency: efficiency.toFixed(2),
                 myCount: item.myCount,
-                officeHour: totalWorkingDays * 8,
-                timeLog: 140
+                officeHour: totalWorkingDays * 8
             })
         })
 
