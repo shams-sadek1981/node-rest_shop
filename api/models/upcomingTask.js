@@ -31,6 +31,7 @@ const upcomingTaskSchema = mongoose.Schema({
                 index: true
             },
             estHour: Number,
+            timeLog: Number,
             status: {
                 type: Boolean,
                 default: false
@@ -43,12 +44,6 @@ const upcomingTaskSchema = mongoose.Schema({
             completedAt: Date,
             dueDate: Date,
             refLink: String,
-            timeLog: [
-                {
-                    workingDate: Date,
-                    hour: Number
-                }
-            ]
         }
     ],
     createdAt : { type : Date, default: Date.now },

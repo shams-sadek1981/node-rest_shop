@@ -736,26 +736,38 @@ exports.nextSeq = (req, res) => {
  */
 exports.createSubtask = (req, res) => {
 
+    let prepareObject = {
+        $push: {
+            subTasks: {
+                $each: [{
+                    name: req.body.name,
+                    description: req.body.description,
+                    assignedUser: req.body.assignedUser,
+                    createdBy: req.body.createdBy,
+                    estHour: req.body.estHour,
+                    timeLog: req.body.timeLog,
+                    status: req.body.status,
+                    startDate: req.body.startDate,
+                    dueDate: req.body.dueDate,
+                    completedAt: req.body.completedAt,
+                    refLink: req.body.refLink
+                }]
+            }
+        }
+    }
+
+    //update task running status if found completedAt
+    if ('completedAt' in req.body) {
+        prepareObject.running = true
+    }
+
+    // return res.json({
+    //     prepareObject
+    // })
+
     UpcomingTask.findOneAndUpdate(
         { _id: req.params.id },
-        {
-            $push: {
-                subTasks: {
-                    $each: [{
-                        name: req.body.name,
-                        description: req.body.description,
-                        assignedUser: req.body.assignedUser,
-                        createdBy: req.body.createdBy,
-                        estHour: req.body.estHour,
-                        status: req.body.status,
-                        startDate: req.body.startDate,
-                        dueDate: req.body.dueDate,
-                        completedAt: req.body.completedAt,
-                        refLink: req.body.refLink
-                    }]
-                }
-            }
-        },
+        prepareObject,
         { new: true }
     ).then(result => {
 
@@ -818,27 +830,37 @@ exports.updateSubTask = (req, res) => {
         status = false
     }
 
+
+    let prepareObject = {
+        $set: {
+            "subTasks.$": {
+                name: req.body.name,
+                description: req.body.description,
+                assignedUser: req.body.assignedUser,
+                estHour: req.body.estHour,
+                timeLog: req.body.timeLog,
+                status: status,
+                startDate: req.body.startDate,
+                dueDate: req.body.dueDate,
+                completedAt: req.body.completedAt,
+                createdBy: req.body.createdBy,
+                createdAt: req.body.createdAt,
+                updatedBy: req.body.updatedBy,
+                updatedAt: new Date(),
+                refLink: req.body.refLink
+            }
+        }
+    }
+
+    
+    // update task running status if found completedAt
+    if ('completedAt' in req.body) {
+        prepareObject.running = true
+    }
+
     UpcomingTask.findOneAndUpdate(
         { "subTasks._id": req.params.id },
-        {
-            $set: {
-                "subTasks.$": {
-                    name: req.body.name,
-                    description: req.body.description,
-                    assignedUser: req.body.assignedUser,
-                    estHour: req.body.estHour,
-                    status: status,
-                    startDate: req.body.startDate,
-                    dueDate: req.body.dueDate,
-                    completedAt: req.body.completedAt,
-                    createdBy: req.body.createdBy,
-                    createdAt: req.body.createdAt,
-                    updatedBy: req.body.updatedBy,
-                    updatedAt: new Date(),
-                    refLink: req.body.refLink
-                }
-            }
-        },
+        prepareObject,
         { new: true }
     ).then(result => {
 
