@@ -10,6 +10,7 @@ const {
     sprintDelete,
     sprintUpdate,
     searchUpcomingTask,
+    sprintReport,
     sprintStatus,
     sprintStatusUpdate
 } = require('../controllers/sprint/sprintCtl')
@@ -18,6 +19,9 @@ const {
 router.post('/', checkJwt, createNew)
 router.get('/', checkJwt, search)
 router.get('/upcoming-task', checkJwt, searchUpcomingTask)
+
+router.get('/report', checkJwt, sprintReport)
+
 router.delete('/:id', checkJwt, sprintDelete)
 router.put('/:id', checkJwt, sprintUpdate)
 router.put('/status/:id', checkJwt, sprintStatus)

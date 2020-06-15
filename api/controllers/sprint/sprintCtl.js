@@ -8,10 +8,203 @@ const moment = require('moment')
 const { queryBuilder, getUsersBySprint } = require('./helperFunctions')
 
 
+/**
+ * ------------------------------------------------------------------------------------
+ * Sprint Search by date range
+ * ------------------------------------------------------------------------------------
+ */
+const sprintSearch = () => {
+
+    const startDate = new Date(req.query.startDate)
+    const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
+    const project = req.query.project
+
+    let queryObj = {
+        "startDate": {
+            "$gte": startDate,
+            "$lt": endDate
+        }
+    }
+
+    /**
+      * if get project name
+      */
+    if (project) {
+        if (Array.isArray(project)) {
+            queryObj = {
+                ...queryObj,
+                projects: {
+                    $in: project
+                }
+            }
+        } else {
+            queryObj = {
+                ...queryObj,
+                projects: project
+            }
+        }
+    }
+
+
+    Sprint.find(queryObj)
+        .then(data => {
+            res.json({
+                data
+            })
+        }).catch(err => res.status(400).json(err))
+
+}
+
+
+/**
+ * Processing Sprint Data
+ */
+const processingSprint = (sprintData, assignedUser = null) => {
+
+    const sprints = sprintData.map(doc => doc.name)
+
+    let queryObj = {
+        sprint: {
+            $in: sprints
+        }
+    }
+
+    if (assignedUser != null) {
+        queryObj = {
+            $and: [
+                queryObj,
+                {
+                    "subTasks.assignedUser": assignedUser
+                }
+            ]
+        }
+    }
+
+
+    return new Promise((resolve, reject) => {
+
+        UpcomingTask.find(queryObj)
+            .sort({"subTasks.assignedUser": 1})
+            // .sort({ _id: -1 })
+            .then(data => {
+
+                // data format
+                const result = data.map(item => {
+
+                    let estHour = 0
+                    let timeLog = 0
+                    
+                    const newSubTasks = item.subTasks.map(subTask => {
+                        estHour += parseFloat(subTask.estHour)
+                        timeLog += parseFloat(subTask.timeLog)
+
+                        let efficiency = 0
+                        if (subTask.timeLog > 0) {
+                            if (subTask.completedAt) {
+                                efficiency = parseFloat(subTask.estHour) * 100 / parseFloat(subTask.timeLog)
+                            }
+                        }
+
+                        return {
+                            _id: subTask._id,
+                            status: subTask.status,
+                            createdAt: subTask.createdAt,
+                            name: subTask.name,
+                            description: subTask.description,
+                            assignedUser: subTask.assignedUser,
+                            estHour: subTask.estHour,
+                            startDate: subTask.startDate,
+                            dueDate: subTask.dueDate,
+                            completedAt: subTask.completedAt,
+                            timeLog: subTask.timeLog,
+                            efficiency
+                        }
+                    })
+
+                    return {
+                        ...item._doc,
+                        estHour,
+                        timeLog,
+                        subTasks: newSubTasks
+                    }
+                })
+
+
+                const sprintCalculation = sprintCalcWithEfficiency(result)
+
+                resolve({
+                    ...sprintCalculation,
+                    result
+                })
+
+                return {
+
+                }
+
+            }).catch(err => reject(err))
+
+    })
+
+
+
+}
+
 
 /**
  * ------------------------------------------------------------------------------------
- * Search upcoming task
+ * Sprint Report
+ * ------------------------------------------------------------------------------------
+ */
+exports.sprintReport = (req, res) => {
+
+
+    const startDate = new Date(req.query.startDate)
+    const endDate = new Date(moment(new Date(req.query.endDate)).add(1, 'days'))
+    const project = req.query.project
+    const assignedUser = req.query.assignedUser
+
+    let queryObj = {
+        "startDate": {
+            "$gte": startDate,
+            "$lt": endDate
+        }
+    }
+
+    /**
+      * if get project name
+      */
+    if (project) {
+        if (Array.isArray(project)) {
+            queryObj = {
+                ...queryObj,
+                projects: {
+                    $in: project
+                }
+            }
+        } else {
+            queryObj = {
+                ...queryObj,
+                projects: project
+            }
+        }
+    }
+
+
+    Sprint.find(queryObj)
+        .then(sprintData => {
+
+            processingSprint(sprintData, assignedUser)
+                .then(summary => res.json({ sprintData, summary }))
+                .catch(err => res.status(400).json(err))
+
+        }).catch(err => res.status(400).json(err))
+
+}
+
+
+/**
+ * ------------------------------------------------------------------------------------
+ * Search upcoming task for Sprint Result
  * ------------------------------------------------------------------------------------
  */
 exports.searchUpcomingTask = (req, res) => {
@@ -44,14 +237,42 @@ exports.searchUpcomingTask = (req, res) => {
             const result = data.map(item => {
 
                 let estHour = 0
-                item.subTasks.forEach(subTask => {
+                let timeLog = 0
+
+                const newSubTasks = item.subTasks.map(subTask => {
                     estHour += subTask.estHour
+                    timeLog += parseFloat(subTask.timeLog)
+
+                    let efficiency = 0
+                    if (subTask.timeLog > 0) {
+                        if (subTask.completedAt) {
+                            efficiency = parseFloat(subTask.estHour) * 100 / parseFloat(subTask.timeLog)
+                        }
+                    }
+
+                    return {
+                        _id: subTask._id,
+                        status: subTask.status,
+                        createdAt: subTask.createdAt,
+                        name: subTask.name,
+                        description: subTask.description,
+                        assignedUser: subTask.assignedUser,
+                        estHour: subTask.estHour,
+                        startDate: subTask.startDate,
+                        dueDate: subTask.dueDate,
+                        completedAt: subTask.completedAt,
+                        timeLog: subTask.timeLog,
+                        efficiency
+                    }
+
                 })
+
 
                 return {
                     ...item._doc,
                     estHour,
-                    subTasks: item.subTasks
+                    timeLog,
+                    subTasks: newSubTasks
                 }
             })
 
@@ -253,6 +474,8 @@ exports.search = async (req, res) => {
 const sprintCalc = (tasks) => {
 
     let totalEst = 0
+    let totalTimeLog = 0
+
     let completedEst = 0
     let userDetails = []
 
@@ -262,15 +485,20 @@ const sprintCalc = (tasks) => {
             let userInfo = {
                 userName: subTask.assignedUser,
                 estHour: parseFloat(subTask.estHour).toFixed(2),
+                timeLog: parseFloat(subTask.timeLog).toFixed(2),
                 complete: 0,
+                completedTask: 0,
                 due: parseFloat(subTask.estHour).toFixed(2)
             }
 
             // totalEst += parseFloat(subTask.estHour).toFixed(2)
             totalEst += subTask.estHour
+            totalTimeLog += parseFloat(subTask.timeLog)
+
             if (subTask.completedAt) {
                 completedEst += subTask.estHour
                 userInfo.complete = parseFloat(subTask.estHour).toFixed(2)
+                userInfo.completedTask++
                 userInfo.due = 0
             }
 
@@ -283,13 +511,16 @@ const sprintCalc = (tasks) => {
     var userDetailsResult = [];
     userDetails.reduce(function (res, value) {
         if (!res[value.userName]) {
-            res[value.userName] = { userName: value.userName, estHour: 0, complete: 0, due: 0 };
+            res[value.userName] = { userName: value.userName, estHour: 0, timeLog: 0, complete: 0, due: 0, taskCount: 0, completedTask: 0 };
             userDetailsResult.push(res[value.userName])
         }
 
         res[value.userName].estHour += parseFloat(value.estHour);
+        res[value.userName].timeLog += parseFloat(value.timeLog);
         res[value.userName].complete += parseFloat(value.complete);
+        res[value.userName].completedTask += parseFloat(value.completedTask);
         res[value.userName].due += parseFloat(value.due);
+        res[value.userName].taskCount++;
         return res;
     }, {});
 
@@ -300,8 +531,12 @@ const sprintCalc = (tasks) => {
     const userDetailsFinal = userDetailsResult.map(item => ({
         userName: item.userName,
         estHour: item.estHour,
+        timeLog: item.timeLog,
         complete: item.complete,
+        completedTask: item.completedTask,
+        incompleteTask: parseInt(item.taskCount) - parseInt(item.completedTask),
         due: item.due,
+        taskCount: item.taskCount,
         percent: Math.round(parseFloat(item.complete * 100 / item.estHour)) || 0
     }))
 
@@ -310,6 +545,106 @@ const sprintCalc = (tasks) => {
     return {
         percent,
         est: totalEst.toString().match(/\.\d+/) ? parseFloat(totalEst).toFixed(2) : totalEst,
+        timeLog: totalTimeLog.toString().match(/\.\d+/) ? parseFloat(totalTimeLog).toFixed(2) : totalTimeLog,
+        complete: completedEst.toString().match(/\.\d+/) ? parseFloat(completedEst).toFixed(2) : completedEst,
+        due: due.toString().match(/\.\d+/) ? parseFloat(due).toFixed(2) : due,
+        userDetails: userDetailsFinal
+    }
+}
+
+
+/**
+ * Sprint Calculation With Efficiency
+ * @param {*} tasks 
+ * 
+ */
+const sprintCalcWithEfficiency = (tasks) => {
+
+    let totalEst = 0
+    let totalTimeLog = 0
+    let totalTask = 0
+
+    let completedEst = 0
+    let userDetails = []
+
+    tasks.forEach(task => {
+        task.subTasks.forEach(subTask => {
+
+            totalTask++
+
+            let userInfo = {
+                userName: subTask.assignedUser,
+                estHour: parseFloat(subTask.estHour).toFixed(2),
+                timeLog: parseFloat(subTask.timeLog).toFixed(2),
+                efficiency: parseFloat(subTask.efficiency).toFixed(2),
+                complete: 0,
+                completedTask: 0,
+                due: parseFloat(subTask.estHour).toFixed(2)
+            }
+
+            // totalEst += parseFloat(subTask.estHour).toFixed(2)
+            totalEst += subTask.estHour
+            totalTimeLog += parseFloat(subTask.timeLog)
+
+            if (subTask.completedAt) {
+                completedEst += subTask.estHour
+                userInfo.complete = parseFloat(subTask.estHour).toFixed(2)
+                userInfo.completedTask++
+                userInfo.due = 0
+            }
+
+            userDetails.push(userInfo)
+
+        })
+    })
+
+    // userDetails: Group by and sum of estHour
+    var userDetailsResult = [];
+    userDetails.reduce(function (res, value) {
+        if (!res[value.userName]) {
+            res[value.userName] = { userName: value.userName, estHour: 0, timeLog: 0, complete: 0, due: 0, taskCount: 0, efficiency: 0, completedTask: 0 };
+            userDetailsResult.push(res[value.userName])
+        }
+
+        res[value.userName].estHour += parseFloat(value.estHour);
+        res[value.userName].timeLog += parseFloat(value.timeLog);
+        res[value.userName].complete += parseFloat(value.complete);
+        res[value.userName].completedTask += parseFloat(value.completedTask);
+        res[value.userName].due += parseFloat(value.due);
+        res[value.userName].taskCount++;
+        res[value.userName].efficiency += parseFloat(value.efficiency);
+        return res;
+    }, {});
+
+    const percent = Math.round(parseFloat(completedEst * 100 / totalEst)) || 0
+
+    const due = totalEst - completedEst
+
+    const userDetailsFinal = userDetailsResult.map(item => {
+
+        const efficiency = (item.efficiency / item.taskCount).toFixed(2)
+
+        return {
+            userName: item.userName,
+            estHour: item.estHour.toFixed(2),
+            timeLog: item.timeLog,
+            efficiency: parseFloat(efficiency),
+            complete: item.complete.toFixed(2),
+            completedTask: item.completedTask,
+            incompleteTask: parseInt(item.taskCount) - parseInt(item.completedTask),
+            due: item.due.toFixed(2),
+            taskCount: item.taskCount,
+            percent: Math.round(parseFloat(item.complete * 100 / item.estHour)) || 0
+        }
+    })
+
+    userDetailsFinal.sort((a, b) => (a.percent > b.percent) ? 1 : ((b.percent > a.percent) ? -1 : 0));
+
+    return {
+        percent,
+        totalTask,
+        est: totalEst.toString().match(/\.\d+/) ? parseFloat(totalEst).toFixed(2) : totalEst,
+        timeLog: totalTimeLog.toString().match(/\.\d+/) ? parseFloat(totalTimeLog).toFixed(2) : totalTimeLog,
         complete: completedEst.toString().match(/\.\d+/) ? parseFloat(completedEst).toFixed(2) : completedEst,
         due: due.toString().match(/\.\d+/) ? parseFloat(due).toFixed(2) : due,
         userDetails: userDetailsFinal
