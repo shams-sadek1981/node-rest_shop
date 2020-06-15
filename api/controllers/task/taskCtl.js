@@ -584,27 +584,68 @@ createBulkTask = (id) => {
         .catch(err => err)
 }
 
-//-- Update user
+
+/**
+ * Update Task
+ * 
+ */
 exports.updateTask = (req, res) => {
 
+
+    const taskId = req.params.id
     req.body.updatedAt = new Date()
 
-    UpcomingTask.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-        .exec()
-        .then(doc => {
+    return UpcomingTask.findById(taskId)
+        .then(oldData => {
 
-            //-- bulkInsert from description field
-            if (req.body.bulkInsert) {
-                createBulkTask(req.params.id)
+            // return res.json({
+            //     oldData
+            // })
+            const oldSprint = oldData.sprint
+            const newSprint = req.body.sprint
+
+            // check copy string == true
+            if (req.body.sprintCopyTask) {
+                if (oldSprint.localeCompare(newSprint) != 0) {
+
+                    const upcomingTask = new UpcomingTask({
+                        taskName: "! " + req.body.taskName,
+                        description: req.body.description,
+                        taskType: req.body.taskType,
+                        projectName: req.body.projectName,
+                        assignedBy: req.body.assignedBy,
+                        createdBy: req.body.createdBy,
+                        sprint: oldSprint,
+                        subTasks: oldData.subTasks,
+                        completedAt: new Date()
+                    })
+
+                    upcomingTask.save()
+
+                }
             }
 
-            res.status(200).json(doc)
-        })
-        .catch(err => {
-            res.status(403).json({
-                err
-            })
-        })
+
+            // Update Task
+            UpcomingTask.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+                .exec()
+                .then(doc => {
+
+                    //-- bulkInsert from description field
+                    if (req.body.bulkInsert) {
+                        createBulkTask(req.params.id)
+                    }
+
+                    res.status(200).json(doc)
+                })
+                .catch(err => {
+                    res.status(403).json({
+                        err
+                    })
+                })
+
+        }).catch(err => res.json(err))
+
 }
 
 //-- Delete Task by ID
