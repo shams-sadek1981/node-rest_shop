@@ -96,7 +96,7 @@ const processingSprint = (sprintData, assignedUser = null) => {
                     
                     const newSubTasks = item.subTasks.map(subTask => {
                         estHour += parseFloat(subTask.estHour)
-                        timeLog += parseFloat(subTask.timeLog)
+                        timeLog += subTask.timeLog ? parseFloat(subTask.timeLog) : 0
 
                         let efficiency = 0
                         if (subTask.timeLog > 0) {
@@ -116,7 +116,7 @@ const processingSprint = (sprintData, assignedUser = null) => {
                             startDate: subTask.startDate,
                             dueDate: subTask.dueDate,
                             completedAt: subTask.completedAt,
-                            timeLog: subTask.timeLog,
+                            timeLog: subTask.timeLog || 0,
                             efficiency
                         }
                     })
