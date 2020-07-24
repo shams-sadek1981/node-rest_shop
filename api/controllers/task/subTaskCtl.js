@@ -333,7 +333,10 @@ exports.userReport = async (req, res) => {
                 
                 // this condition only for timeLog. It has to set zero for all data in update query script
                 // totalTimeLog += (typeof subTask.timeLog != 'object')  ? parseFloat(subTask.timeLog) : 0
-                totalTimeLog += parseFloat(subTask.timeLog)
+                if (subTask.timeLog) {
+                    totalTimeLog += parseFloat(subTask.timeLog)
+                }
+
                 if (subTask.timeLog > 0) {
                     totalEstWithTimeLog += parseFloat(subTask.estHour)
                     totalTaskWithTimeLog ++
@@ -375,7 +378,7 @@ exports.userReport = async (req, res) => {
 
         // Get efficiency
         let efficiency = 0
-        if (totalTimeLog != 0 ) {
+        if (totalTimeLog != 0) {
             efficiency = parseFloat(totalEstWithTimeLog * 100 / totalTimeLog).toFixed(2)
         }
         
