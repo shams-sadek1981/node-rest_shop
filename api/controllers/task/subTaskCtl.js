@@ -880,11 +880,13 @@ exports.deleteSubTask = (req, res) => {
         UpcomingTask.findOne({
             _id: req.body.id
         }).then( result => {
-            updateSubTaskPercent(result, new Date())
 
-            res.status(200).json({
-                result
+            updateSubTaskPercent(result, new Date()).then( latestResult => {
+                res.status(200).json({
+                    latestResult
+                })
             })
+
         })
         
 

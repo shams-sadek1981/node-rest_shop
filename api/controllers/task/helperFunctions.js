@@ -490,14 +490,14 @@ exports.updateSubTaskPercent = (result, completedAt=null) => {
     })
 
 
-    Promise.all([totalEstHour, totalCompletedHour]).then(values => {
+    return Promise.all([totalEstHour, totalCompletedHour]).then(values => {
 
         const estHour = values[0] || 0
         const completedHour = values[1] || 0
 
         const percent = Math.floor(completedHour * 100 / estHour) || 0
 
-        UpcomingTask.findOneAndUpdate({ _id: id }, {
+        return UpcomingTask.findOneAndUpdate({ _id: id }, {
             percent
         }, { new: true })
             .then(data => {
@@ -508,7 +508,7 @@ exports.updateSubTaskPercent = (result, completedAt=null) => {
                  * Update Task Completed At
                  * -------------------------------------------
                  */
-                taskKanbanStatus(data, completedAt)
+                return taskKanbanStatus(data, completedAt)
 
                 // return data
             }).catch(err => err)
@@ -571,13 +571,14 @@ const taskKanbanStatus = (result, completedAt=null) => {
      * Update UpcomingTask
      * ------------------------------s
      */
-    UpcomingTask.findOneAndUpdate(
+    return UpcomingTask.findOneAndUpdate(
         { "_id": result._id },
         prepareObject,
         { new: true }
     ).then(result => {
 
-        console.log(result)
+        return result
+
     }).catch(err => err)
     
 }
