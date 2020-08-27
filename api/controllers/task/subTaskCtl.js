@@ -881,12 +881,16 @@ exports.deleteSubTask = (req, res) => {
             _id: req.body.id
         }).then( result => {
             updateSubTaskPercent(result, new Date())
+
+            res.status(200).json({
+                result
+            })
         })
         
 
-        res.status(200).json({
-            doc
-        })
+        // res.status(200).json({
+        //     doc
+        // })
     })
         .catch(err => {
             res.status(409).json({
