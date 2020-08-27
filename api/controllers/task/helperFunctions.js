@@ -421,8 +421,11 @@ exports.totalTask = (queryObj) => {
 
 
 //-- SubTask Percent -------
-exports.updateSubTaskPercent = (id) => {
+exports.updateSubTaskPercent = (result, completedAt=null) => {
 
+    const id = result._id
+
+    
     const totalEstHour = new Promise((resolve, reject) => {
         UpcomingTask.aggregate([
             {
@@ -499,9 +502,83 @@ exports.updateSubTaskPercent = (id) => {
         }, { new: true })
             .then(data => {
                 // console.log(data)
-                return data
+
+                /**
+                 * -------------------------------------------
+                 * Update Task Completed At
+                 * -------------------------------------------
+                 */
+                taskKanbanStatus(data, completedAt)
+
+                // return data
             }).catch(err => err)
 
     });
 
 }
+
+
+
+/**
+ * ---------------------------------------
+ * Kanban Status Update
+ * ---------------------------------------
+ */
+const taskKanbanStatus = (result, completedAt=null) => {
+    
+    
+    let prepareObject = {
+        completedAt: null
+    }
+
+    /**
+     * ---------------
+     * Done process
+     * ---------------
+     */
+    if (result.percent == 100 ) {
+        // console.log('Done: ')
+        // console.log(result.percent)
+
+        prepareObject.completedAt = completedAt
+    }
+    /**
+     * ---------------
+     * Todo process
+     * ---------------
+     */
+    else if (result.percent == 0) {
+        // console.log('Todo: ')
+        // console.log(result.percent)
+
+        prepareObject.running = false
+    }
+    /**
+     * --------------------
+     * In Progress process
+     * --------------------
+     */
+    else {
+        // console.log('In Progress: ')
+        // console.log(result.percent)
+
+        prepareObject.running = true
+
+    }
+
+    /**
+     * ------------------------------
+     * Update UpcomingTask
+     * ------------------------------s
+     */
+    UpcomingTask.findOneAndUpdate(
+        { "_id": result._id },
+        prepareObject,
+        { new: true }
+    ).then(result => {
+
+        console.log(result)
+    }).catch(err => err)
+    
+}
+exports.taskKanbanStatus = taskKanbanStatus

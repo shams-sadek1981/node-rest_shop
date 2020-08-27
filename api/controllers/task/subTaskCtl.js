@@ -843,7 +843,8 @@ exports.createSubtask = (req, res) => {
     ).then(result => {
 
         //-- update subtask percent
-        updateSubTaskPercent(req.params.id)
+        // updateSubTaskPercent(req.params.id)
+        updateSubTaskPercent(result, req.body.completedAt)
 
         res.status(200).json({
             result: result.subTasks.pop()
@@ -872,13 +873,19 @@ exports.deleteSubTask = (req, res) => {
             }
         },
         { new: true }
-    ).then(result => {
+    ).then(doc => {
 
         //-- update subtask percent
-        updateSubTaskPercent(req.body.id)
+        // updateSubTaskPercent(req.body.id)
+        UpcomingTask.findOne({
+            _id: req.body.id
+        }).then( result => {
+            updateSubTaskPercent(result, new Date())
+        })
+        
 
         res.status(200).json({
-            result
+            doc
         })
     })
         .catch(err => {
@@ -948,8 +955,15 @@ exports.updateSubTask = (req, res) => {
             refLink: result.refLink
         }
 
-        //-- update subtask percent
-        updateSubTaskPercent(result._id)
+        /**
+         * ------------------------------------------
+         * update subtask percent
+         * ------------------------------------------
+         */
+        updateSubTaskPercent(result, req.body.completedAt)
+
+
+
 
         res.status(200).json({
             result: newResult
