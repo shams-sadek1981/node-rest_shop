@@ -94,15 +94,13 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
             "subTasks.assignedUser": userName
         }
 
+
+        /**
+         * Step-1
+         * Group by task type for only task count
+         * TASK
+         */
         UpcomingTask.aggregate([
-            {
-                "$unwind": {
-                    'path': '$subTasks',
-                    "preserveNullAndEmptyArrays": true,
-                    "includeArrayIndex": "arrayIndex"
-                }
-            },
-            // { $sort: { "subTasks.completedAt": 1, "subTasks.name": 1 } },
             {
                 $match: queryObj
             },
@@ -111,44 +109,77 @@ const taskTypeGroupBy = (userName, startDate, endDate) => {
                     _id: {
                         taskType: "$taskType",
                     },
-                    // subTasks: { $push: "$subTasks" },
-                    myCount: { $sum: 1 },
-                    estHour: {
-                        $sum: "$subTasks.estHour"
-                    },
-                    timeLog: {
-                        $sum: "$subTasks.timeLog"
-                    },
+                    myCount: { $sum: 1 }
                 }
             },
             { $sort: { "_id.taskType": 1 } }
 
-        ]).then(data => {
+        ]).then(taskTypeData => {
 
-            let result = []
-            let totalEst = 0
-            let totalTimeLog = 0
+            /**
+             * Step-2
+             * Count est hour & time log from subTask
+             * SubTask
+             */
+            UpcomingTask.aggregate([
+                {
+                    "$unwind": {
+                        'path': '$subTasks',
+                        "preserveNullAndEmptyArrays": true,
+                        "includeArrayIndex": "arrayIndex"
+                    }
+                },
+                // { $sort: { "subTasks.completedAt": 1, "subTasks.name": 1 } },
+                {
+                    $match: queryObj
+                },
+                {
+                    $group: {
+                        _id: {
+                            taskType: "$taskType",
+                        },
+                        // subTasks: { $push: "$subTasks" },
+                        myCount: { $sum: 1 },
+                        estHour: {
+                            $sum: "$subTasks.estHour"
+                        },
+                        timeLog: {
+                            $sum: "$subTasks.timeLog"
+                        },
+                    }
+                },
+                { $sort: { "_id.taskType": 1 } }
 
-            data.forEach(task => {
+            ]).then(data => {
 
-                totalEst += parseFloat(task.estHour)
-                totalTimeLog += parseFloat(task.timeLog)
+                let result = []
+                let totalEst = 0
+                let totalTimeLog = 0
 
-                result.push({
-                    taskType: task._id.taskType,
-                    estHour: task.estHour,
-                    timeLog: task.timeLog,
-                    myCount: task.myCount,
+                data.forEach(task => {
+
+                    totalEst += parseFloat(task.estHour)
+                    totalTimeLog += parseFloat(task.timeLog)
+
+                    result.push({
+                        taskType: task._id.taskType,
+                        estHour: task.estHour,
+                        timeLog: task.timeLog,
+                        myCount: taskTypeData.find( element => element._id.taskType ==task._id.taskType ).myCount
+                    })
                 })
-            })
 
-            resolve({
-                totalEst: totalEst.toFixed(2),
-                totalTimeLog: totalTimeLog.toFixed(2),
-                result
-            })
+                resolve({
+                    totalEst: totalEst.toFixed(2),
+                    totalTimeLog: totalTimeLog.toFixed(2),
+                    result
+                })
 
-        }).catch(err => reject(err))
+            }).catch(err => reject(err))
+        })
+
+
+
     })
 }
 
@@ -251,9 +282,12 @@ exports.userReport = async (req, res) => {
         exclusions: publicHolidays  //public holidays
     })
 
+
+
     // const nDate = new Date().toLocaleString('en-US', {
     //     timeZone: 'Asia/Dhaka'
     // });
+
 
     // res.json({
     //     message: 'sdfs',
@@ -277,6 +311,65 @@ exports.userReport = async (req, res) => {
     // return res.json({
     //     totalTAsks
     // })
+
+    // UpcomingTask.aggregate([
+    //     // {
+    //     //     "$unwind": {
+    //     //         'path': '$subTasks',
+    //     //         "preserveNullAndEmptyArrays": true,
+    //     //         "includeArrayIndex": "arrayIndex"
+    //     //     }
+    //     // },
+    //     // { $sort: { "subTasks.completedAt": 1, "subTasks.name": 1 } },
+    //     {
+    //         $match: queryObj
+    //     },
+    //     {
+    //         $group: {
+    //             _id: {
+    //                 taskType: "$taskType"
+    //             },
+    //             // subTasks: { $push: "$subTasks" },
+    //             myCount: { $sum: 1 },
+    //             // estHour: {
+    //             //     $sum: "$subTasks.estHour"
+    //             // },
+    //             // timeLog: {
+    //             //     $sum: "$subTasks.timeLog"
+    //             // },
+    //         }
+    //     },
+    //     { $sort: { "_id.taskType": 1 } }
+
+    // ]).then(data => {
+
+    //     // let result = []
+    //     // let totalEst = 0
+    //     // let totalTimeLog = 0
+
+    //     // data.forEach(task => {
+
+    //     //     totalEst += parseFloat(task.estHour)
+    //     //     totalTimeLog += parseFloat(task.timeLog)
+
+    //     //     result.push({
+    //     //         taskType: task._id.taskType,
+    //     //         estHour: task.estHour,
+    //     //         timeLog: task.timeLog,
+    //     //         myCount: task.myCount
+    //     //     })
+    //     // })
+
+    //     res.json({
+    //         // totalEst: totalEst.toFixed(2),
+    //         // totalTimeLog: totalTimeLog.toFixed(2),
+    //         // result
+    //         data
+    //     })
+
+    // }).catch(err => reject(err))
+
+
 
     UpcomingTask.aggregate([
         {
@@ -318,7 +411,7 @@ exports.userReport = async (req, res) => {
 
         let result = []
         let totalEst = 0
-        
+
         let totalEstWithTimeLog = 0
         let totalTaskWithTimeLog = 0
 
@@ -330,7 +423,7 @@ exports.userReport = async (req, res) => {
 
             task.subTasks.forEach(subTask => {
                 totalEst += parseFloat(subTask.estHour)
-                
+
                 // this condition only for timeLog. It has to set zero for all data in update query script
                 // totalTimeLog += (typeof subTask.timeLog != 'object')  ? parseFloat(subTask.timeLog) : 0
                 if (subTask.timeLog) {
@@ -339,7 +432,7 @@ exports.userReport = async (req, res) => {
 
                 if (subTask.timeLog > 0) {
                     totalEstWithTimeLog += parseFloat(subTask.estHour)
-                    totalTaskWithTimeLog ++
+                    totalTaskWithTimeLog++
                 }
 
                 totalTask += parseFloat(1)
@@ -381,14 +474,14 @@ exports.userReport = async (req, res) => {
         if (totalTimeLog != 0) {
             efficiency = parseFloat(totalEstWithTimeLog * 100 / totalTimeLog).toFixed(2)
         }
-        
+
         Promise.all([projectGroup, taskTypeGroup, subTaskGroup])
             .then(p => {
                 res.json({
                     startDate: moment(startDate).format("DD-MMM-YYYY"),
                     endDate: moment(endDate).add(-1, 'days').format("DD-MMM-YYYY"),
                     totalEst: totalEst.toFixed(2),
-                    efficiencyInfo : {
+                    efficiencyInfo: {
                         efficiency,
                         totalEstWithTimeLog,
                         totalTaskWithTimeLog,
@@ -514,7 +607,7 @@ exports.userReportSummary = async (req, res) => {
             // get efficiency by percent
             let efficiency = 0
             if (item.timeLog) {
-                efficiency = parseFloat( item.estHour * 100 / item.timeLog)
+                efficiency = parseFloat(item.estHour * 100 / item.timeLog)
             }
 
             result.push({
@@ -879,16 +972,16 @@ exports.deleteSubTask = (req, res) => {
         // updateSubTaskPercent(req.body.id)
         UpcomingTask.findOne({
             _id: req.body.id
-        }).then( result => {
+        }).then(result => {
 
-            updateSubTaskPercent(result, new Date()).then( latestResult => {
+            updateSubTaskPercent(result, new Date()).then(latestResult => {
                 res.status(200).json({
                     latestResult
                 })
             })
 
         })
-        
+
 
         // res.status(200).json({
         //     doc
@@ -936,7 +1029,7 @@ exports.updateSubTask = (req, res) => {
         }
     }
 
-    
+
     // update task running status if found completedAt
     if ('completedAt' in req.body) {
         prepareObject.running = true
