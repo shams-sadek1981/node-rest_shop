@@ -20,7 +20,7 @@
     "fast-csv": "^2.4.1",
     "google-spreadsheet": "^2.0.7",
     "googleapis": "^27.0.0",
-    "jsonwebtoken": "^8.4.0",
+    "jsonwebtoken": "^9.0.0",
     "jsonwebtoken-refresh": "^5.7.0",
     "localStorage": "^1.0.4",
     "lodash": "^4.17.11",
